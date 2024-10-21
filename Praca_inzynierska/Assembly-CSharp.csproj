@@ -60,6 +60,7 @@
     <Analyzer Include="C:\Program Files\Unity\Hub\Editor\2022.3.21f1\Editor\Data\Tools\Unity.SourceGenerators\Unity.Properties.SourceGenerator.dll" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\CarController.cs" />
     <Compile Include="Assets\VehicleSpawner.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -933,9 +934,17 @@
       <Project>{C60B04F8-ADC7-93BF-F95F-05813F7D59E3}</Project>
       <Name>Unity.TestTools.CodeCoverage.Editor.OpenCover.Model</Name>
     </ProjectReference>
+    <ProjectReference Include="Unity.AI.Navigation.csproj">
+      <Project>{0DB37B56-C8EE-2ADB-0B0A-4AC042615EBB}</Project>
+      <Name>Unity.AI.Navigation</Name>
+    </ProjectReference>
     <ProjectReference Include="Unity.PlasticSCM.Editor.csproj">
       <Project>{29E392C0-33CA-0EF8-D1C1-9B2839B7F40D}</Project>
       <Name>Unity.PlasticSCM.Editor</Name>
+    </ProjectReference>
+    <ProjectReference Include="Unity.AI.Navigation.Updater.csproj">
+      <Project>{141EAF59-E03A-4E9F-BADF-333097597D9F}</Project>
+      <Name>Unity.AI.Navigation.Updater</Name>
     </ProjectReference>
     <ProjectReference Include="Unity.VisualScripting.State.Editor.csproj">
       <Project>{355F4057-831B-478B-3C76-57E4031281D1}</Project>
@@ -973,6 +982,10 @@
       <Project>{D5AD54FD-E959-691C-98C9-E24A03613E6A}</Project>
       <Name>Unity.Rider.Editor</Name>
     </ProjectReference>
+    <ProjectReference Include="Unity.AI.Navigation.Editor.csproj">
+      <Project>{115B892D-0F82-584A-FFBC-BB9EA9CC2A77}</Project>
+      <Name>Unity.AI.Navigation.Editor</Name>
+    </ProjectReference>
     <ProjectReference Include="Unity.VisualScripting.State.csproj">
       <Project>{A37BED91-BCC9-8DFD-77A7-D6E4C1C33C42}</Project>
       <Name>Unity.VisualScripting.State</Name>
@@ -980,6 +993,10 @@
     <ProjectReference Include="Unity.VSCode.Editor.csproj">
       <Project>{2A42125B-8939-B592-257F-9310D95C8F20}</Project>
       <Name>Unity.VSCode.Editor</Name>
+    </ProjectReference>
+    <ProjectReference Include="Unity.AI.Navigation.Editor.ConversionSystem.csproj">
+      <Project>{2B4A2FD3-DC2D-33BA-B9DE-BF42B446A4D7}</Project>
+      <Name>Unity.AI.Navigation.Editor.ConversionSystem</Name>
     </ProjectReference>
     <ProjectReference Include="Unity.VisualScripting.Flow.csproj">
       <Project>{38B4CA15-291C-43ED-253C-B2BD5674917D}</Project>
