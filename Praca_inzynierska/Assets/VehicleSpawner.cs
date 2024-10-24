@@ -5,10 +5,9 @@ using UnityEngine;
 public class VehicleSpawner : MonoBehaviour
 {
     [SerializeField] GameObject[] CarPrefab;
-    public float spawnInterval = 2.0f; // Czas spawnowania pojazdów (w sekundach)
-    public int maxVehicles = 10; // Maksymalna liczba pojazdów na drodze
-
-    private int currentVehicleCount = 0; // Liczba aktualnie spawnowanych pojazdów
+    [SerializeField] float spawnInterval = 2.0f; // Czas spawnowania pojazdów (w sekundach)
+    [SerializeField] int maxVehicles; // Maksymalna liczba pojazdów na drodze
+    [SerializeField] int currentVehicleCount = 0; // Liczba aktualnie spawnowanych pojazdów
 
     private void Start()
     {
@@ -37,13 +36,14 @@ public class VehicleSpawner : MonoBehaviour
 
         // Zwiêksz licznik aktualnych pojazdów
         currentVehicleCount++;
-
-        //// Przyk³adowa logika do zarz¹dzania ¿yciem pojazdu (np. po osi¹gniêciu celu, zmniejsz licznik)
-        //newVehicle.GetComponent<Auto>().OnVehicleDestroyed += DecreaseVehicleCount; // Subskrybuj zdarzenie z klasy Auto
     }
 
-    private void DecreaseVehicleCount()
+    private void Update()
     {
-        currentVehicleCount--; // Zmniejsz licznik, gdy pojazd zostanie zniszczony lub osi¹gnie cel
+        if(Input.GetKeyDown(KeyCode.S))
+        {
+            maxVehicles++;
+            SpawnVehicle();
+        }
     }
 }

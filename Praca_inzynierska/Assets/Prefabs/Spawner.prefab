@@ -9,8 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2474900362607462544}
-  - component: {fileID: 98013006313225497}
-  - component: {fileID: 4499927760932015010}
   - component: {fileID: 1656809029527427692}
   m_Layer: 0
   m_Name: Spawner
@@ -27,63 +25,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3902954657870228505}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -37.58, y: -18.36, z: -52.48}
-  m_LocalScale: {x: 4.7985654, y: 1, z: 4.4716887}
+  m_LocalScale: {x: 4.7985644, y: 1, z: 4.471688}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &98013006313225497
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3902954657870228505}
-  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!23 &4499927760932015010
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3902954657870228505}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 2100000, guid: b6747bf277df0e344ac544c7cfa37c62, type: 2}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!114 &1656809029527427692
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -91,11 +39,15 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3902954657870228505}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b638ff06467f77141ac59d3d6906033c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CarPrefab: []
+  CarPrefab:
+  - {fileID: 4951595217962183574, guid: 776ce350e5eff024a8a6ee522df07f06, type: 3}
+  - {fileID: 9034529363044805627, guid: d7940ea4207480e46b4697ad1f7f1419, type: 3}
+  - {fileID: 384044636258007228, guid: f09721bdc01bd734dbcda3fcc02860a1, type: 3}
+  - {fileID: 2548371734403636046, guid: 29b0f0b565bb9aa48ad8ef51d1fd5f55, type: 3}
   spawnInterval: 2
-  maxVehicles: 10
+  maxVehicles: 2

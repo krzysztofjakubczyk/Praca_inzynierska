@@ -300,8 +300,8 @@
     <Compile Include="Library\PackageCache\com.unity.collab-proxy@2.5.2\Editor\PlasticSCM\Inspector\DrawInspectorOperations.cs" />
     <Compile Include="Library\PackageCache\com.unity.collab-proxy@2.5.2\Editor\PlasticSCM\UI\UnityPlasticGuiMessage.cs" />
     <Compile Include="Library\PackageCache\com.unity.collab-proxy@2.5.2\Editor\PlasticSCM\Developer\UpdateReport\UpdateReportDialog.cs" />
-    <Compile Include="Library\PackageCache\com.unity.collab-proxy@2.5.2\Editor\PlasticSCM\AssemblyInfo.cs" />
     <Compile Include="Library\PackageCache\com.unity.collab-proxy@2.5.2\Editor\PlasticSCM\UI\DockEditorWindow.cs" />
+    <Compile Include="Library\PackageCache\com.unity.collab-proxy@2.5.2\Editor\PlasticSCM\AssemblyInfo.cs" />
     <Compile Include="Library\PackageCache\com.unity.collab-proxy@2.5.2\Editor\PlasticSCM\UI\UnityPlasticTimer.cs" />
     <Compile Include="Library\PackageCache\com.unity.collab-proxy@2.5.2\Editor\PlasticSCM\UI\Progress\ProgressControlsForDialogs.cs" />
     <Compile Include="Library\PackageCache\com.unity.collab-proxy@2.5.2\Editor\PlasticSCM\Views\Locks\LocksSelector.cs" />
@@ -1256,13 +1256,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="UnityEngine.TestRunner.csproj">
-      <Project>{F583CDBD-9D00-1C1B-8548-E87E46769F9D}</Project>
-      <Name>UnityEngine.TestRunner</Name>
-    </ProjectReference>
     <ProjectReference Include="UnityEditor.TestRunner.csproj">
       <Project>{DDEB4574-3B59-FD70-B8E8-7B156AC1ED19}</Project>
       <Name>UnityEditor.TestRunner</Name>
+    </ProjectReference>
+    <ProjectReference Include="UnityEngine.TestRunner.csproj">
+      <Project>{F583CDBD-9D00-1C1B-8548-E87E46769F9D}</Project>
+      <Name>UnityEngine.TestRunner</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
