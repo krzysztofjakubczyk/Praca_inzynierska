@@ -5,7 +5,7 @@ using UnityEngine.AI;
 
 public class CarController : MonoBehaviour
 {
-    private NavMeshAgent agent;
+    public   NavMeshAgent agent;
     public float detectionDistance = 10f;
     public float stopDistance = 8f;
     private float detectionInterval = 0.5f;
