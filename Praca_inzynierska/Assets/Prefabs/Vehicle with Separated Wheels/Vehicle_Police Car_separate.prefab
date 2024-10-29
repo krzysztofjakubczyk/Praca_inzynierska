@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 5375421982015753400}
   - component: {fileID: 493469050171900140}
   - component: {fileID: -2247148878819629406}
+  - component: {fileID: 6753062129190705106}
   m_Layer: 0
   m_Name: Vehicle_Police Car_separate
   m_TagString: Car
@@ -51,9 +52,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c40128ded95e48846b3d38d8b11202b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  agent: {fileID: 0}
   detectionDistance: 10
   stopDistance: 10
+  detectionInterval: 0.5
+  currentWaypoint: {fileID: 0}
 --- !u!195 &493469050171900140
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -67,8 +69,8 @@ NavMeshAgent:
   m_Speed: 8
   m_Acceleration: 8
   avoidancePriority: 50
-  m_AngularSpeed: 120
-  m_StoppingDistance: 0
+  m_AngularSpeed: 60
+  m_StoppingDistance: 3
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
@@ -98,6 +100,33 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 4300000, guid: c89ff10cad1be9a4e83cf49bf466e148, type: 3}
+--- !u!54 &6753062129190705106
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 384044636258007228}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &1410269257331901292
 GameObject:
   m_ObjectHideFlags: 0

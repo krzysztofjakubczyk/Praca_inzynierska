@@ -5,10 +5,11 @@ using UnityEngine.AI;
 
 public class CarController : MonoBehaviour
 {
-    public   NavMeshAgent agent;
-    public float detectionDistance = 10f;
-    public float stopDistance = 8f;
-    private float detectionInterval = 0.5f;
+    private NavMeshAgent agent;
+    [SerializeField] float detectionDistance = 10f;
+    [SerializeField] float stopDistance = 8f;
+    [SerializeField] float detectionInterval = 0.5f;
+    public Waypoint currentWaypoint;  // Aktualny waypoint, na który pojazd zmierza
 
     void Start()
     {
@@ -16,12 +17,24 @@ public class CarController : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
 
         // Ustawienie celu jako miejsce, do którego pojazd ma siê udaæ
-        Transform nearestParkingSpot = FindNearestStopLine(agent.transform);
-        agent.SetDestination(nearestParkingSpot.position);
+        Transform nearestParkingSpot = FindLineChooser(agent.transform);
+        SetAgentDestination(nearestParkingSpot.position);
 
         StartCoroutine(DetectCarsCoroutine());
     }
-    Transform FindNearestStopLine(Transform carTransform)
+    private void Update()
+    {
+        if (!agent.pathPending && agent.remainingDistance < 0.5f)
+        {
+            // Przeskakuj do kolejnego waypointa, gdy dotrzesz do bie¿¹cego
+            currentWaypoint = currentWaypoint.NextWaypoint;
+            if (currentWaypoint != null)
+            {
+                agent.SetDestination(currentWaypoint.transform.position);
+            }
+        }
+    }
+    private Transform FindLineChooser(Transform carTransform)
     {
         GameObject[] parkingSpots = GameObject.FindGameObjectsWithTag("StopPoint"); 
 
@@ -80,4 +93,9 @@ public class CarController : MonoBehaviour
             agent.isStopped = false;
         }
     }
+    public void SetAgentDestination(Vector3 destinationTransform)
+    {
+         agent.SetDestination(destinationTransform);
+    }
+
 }

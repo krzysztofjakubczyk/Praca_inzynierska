@@ -363,6 +363,7 @@
 "Assets/Scripts/CarController.cs"
 "Assets/Scripts/TimeManager.cs"
 "Assets/Scripts/VehicleSpawner.cs"
+"Assets/Waypoint.cs"
 -langversion:9.0
 
 /deterministic
