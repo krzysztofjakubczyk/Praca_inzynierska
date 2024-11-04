@@ -8,7 +8,6 @@ public class VehicleSpawner : MonoBehaviour
     [SerializeField] float spawnInterval = 2.0f; // Czas spawnowania pojazdów (w sekundach)
     [SerializeField] int maxVehicles; // Maksymalna liczba pojazdów na drodze
     [SerializeField] int currentVehicleCount = 0; // Liczba aktualnie spawnowanych pojazdów
-
     private void Start()
     {
         StartCoroutine(SpawnVehicles()); // Rozpocznij spawnowanie pojazdów
@@ -32,10 +31,10 @@ public class VehicleSpawner : MonoBehaviour
         GameObject vehiclePrefab = CarPrefab[Random.Range(0, CarPrefab.Length)];
 
         // Tworzenie pojazdu w punkcie spawnowania
-        GameObject newVehicle = Instantiate(vehiclePrefab, transform.position, transform.rotation);
+        Instantiate(vehiclePrefab, transform.position, transform.rotation);
 
         // Zwiêksz licznik aktualnych pojazdów
-        currentVehicleCount++;
+        currentVehicleCount++;  
     }
 
     private void Update()

@@ -45,9 +45,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CarPrefab:
-  - {fileID: 4951595217962183574, guid: 776ce350e5eff024a8a6ee522df07f06, type: 3}
+  - {fileID: 126966, guid: bfac59a351ce5184a8a5a49eead19b7f, type: 3}
+  - {fileID: 181422, guid: 9ba16d2cbda3b7b40940ad26adea1997, type: 3}
   - {fileID: 9034529363044805627, guid: d7940ea4207480e46b4697ad1f7f1419, type: 3}
+  - {fileID: 4951595217962183574, guid: 776ce350e5eff024a8a6ee522df07f06, type: 3}
   - {fileID: 384044636258007228, guid: f09721bdc01bd734dbcda3fcc02860a1, type: 3}
   - {fileID: 2548371734403636046, guid: 29b0f0b565bb9aa48ad8ef51d1fd5f55, type: 3}
   spawnInterval: 2
-  maxVehicles: 2
+  maxVehicles: 1
+  currentVehicleCount: 0

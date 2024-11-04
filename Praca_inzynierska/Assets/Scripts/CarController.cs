@@ -13,17 +13,23 @@ public class CarController : MonoBehaviour
 
     void Start()
     {
-        // Pobranie komponentu NavMeshAgent
+            // Pobranie komponentu NavMeshAgent
         agent = GetComponent<NavMeshAgent>();
 
         // Ustawienie celu jako miejsce, do którego pojazd ma siê udaæ
         Transform nearestParkingSpot = FindLineChooser(agent.transform);
         SetAgentDestination(nearestParkingSpot.position);
+        
 
         StartCoroutine(DetectCarsCoroutine());
     }
     private void Update()
     {
+
+        if (currentWaypoint == null)
+        {
+            return;
+        }
         if (!agent.pathPending && agent.remainingDistance < 0.5f)
         {
             // Przeskakuj do kolejnego waypointa, gdy dotrzesz do bie¿¹cego
@@ -68,11 +74,13 @@ public class CarController : MonoBehaviour
         RaycastHit hit;
         // Ustawienie wektora kierunku do przodu
         Vector3 forwardDirection = transform.TransformDirection(Vector3.forward) * detectionDistance;
-        Debug.DrawRay(transform.position, forwardDirection, Color.red); // Rysuje czerwony promieñ
+        Vector3 rayStartPosition = transform.position + Vector3.up * 1f;
+        Debug.DrawRay(transform.position, forwardDirection, Color.green); // Rysuje czerwony promieñ
 
         // Sprawdzenie, czy raycast trafia w inne auto
-        if (Physics.Raycast(transform.position, forwardDirection, out hit, detectionDistance))
+        if (Physics.Raycast(rayStartPosition, forwardDirection, out hit, detectionDistance))
         {
+            print(hit.collider.name +  " + " + hit.distance);
             if (hit.collider.CompareTag("Car")) // Zak³adamy, ¿e inne samochody maj¹ tag "Car"
             {
                 // Jeœli wykryto inne auto, zatrzymaj siê, jeœli jest za blisko
