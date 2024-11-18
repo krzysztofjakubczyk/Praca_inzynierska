@@ -1,31 +1,31 @@
-using System;
-using System.Collections;
-using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine;
+using System.Collections;
 
 public class CarController : MonoBehaviour
 {
     private NavMeshAgent agent;
+    public LocalTrafficController controller;
     [SerializeField] float detectionDistance = 10f;
     [SerializeField] float stopDistance = 8f;
     [SerializeField] float detectionInterval = 0.5f;
     public Waypoint currentWaypoint;  // Aktualny waypoint, na który pojazd zmierza
+    private string currentTraficColor;
 
     void Start()
     {
-            // Pobranie komponentu NavMeshAgent
+        // Pobranie komponentu NavMeshAgent
         agent = GetComponent<NavMeshAgent>();
 
         // Ustawienie celu jako miejsce, do którego pojazd ma siê udaæ
         Transform nearestParkingSpot = FindLineChooser(agent.transform);
         SetAgentDestination(nearestParkingSpot.position);
-        
+
 
         StartCoroutine(DetectCarsCoroutine());
     }
     private void Update()
     {
-
         if (currentWaypoint == null)
         {
             return;
@@ -33,16 +33,21 @@ public class CarController : MonoBehaviour
         if (!agent.pathPending && agent.remainingDistance < 0.5f)
         {
             // Przeskakuj do kolejnego waypointa, gdy dotrzesz do bie¿¹cego
+
             currentWaypoint = currentWaypoint.NextWaypoint;
-            if (currentWaypoint != null)
-            {
+            //if (!currentWaypoint.isBeforeTrafiicLight)
+            //{
                 agent.SetDestination(currentWaypoint.transform.position);
-            }
+            //}
+            //else
+            //{
+            //    print("swiatla");
+            //}
         }
     }
     private Transform FindLineChooser(Transform carTransform)
     {
-        GameObject[] parkingSpots = GameObject.FindGameObjectsWithTag("StopPoint"); 
+        GameObject[] parkingSpots = GameObject.FindGameObjectsWithTag("StopPoint");
 
         Transform nearestSpot = null;
         float nearestDistance = Mathf.Infinity;
@@ -73,14 +78,13 @@ public class CarController : MonoBehaviour
     {
         RaycastHit hit;
         // Ustawienie wektora kierunku do przodu
+        Vector3 rayStartPosition = transform.position + Vector3.up * 2f;
         Vector3 forwardDirection = transform.TransformDirection(Vector3.forward) * detectionDistance;
-        Vector3 rayStartPosition = transform.position + Vector3.up * 1f;
-        Debug.DrawRay(transform.position, forwardDirection, Color.green); // Rysuje czerwony promieñ
 
         // Sprawdzenie, czy raycast trafia w inne auto
         if (Physics.Raycast(rayStartPosition, forwardDirection, out hit, detectionDistance))
         {
-            print(hit.collider.name +  " + " + hit.distance);
+            print(hit.collider.name + " + " + hit.distance);
             if (hit.collider.CompareTag("Car")) // Zak³adamy, ¿e inne samochody maj¹ tag "Car"
             {
                 // Jeœli wykryto inne auto, zatrzymaj siê, jeœli jest za blisko
@@ -103,7 +107,14 @@ public class CarController : MonoBehaviour
     }
     public void SetAgentDestination(Vector3 destinationTransform)
     {
-         agent.SetDestination(destinationTransform);
+        agent.SetDestination(destinationTransform);
     }
 
-}
+    private void OnDrawGizmos()
+    {
+        Vector3 rayStartPosition = transform.position + Vector3.up * 2f;
+
+        Vector3 forwardDirection = transform.TransformDirection(Vector3.forward) * detectionDistance;
+        Debug.DrawRay(rayStartPosition, forwardDirection, Color.green); // Rysuje czerwony promieñ
+    }
+} 

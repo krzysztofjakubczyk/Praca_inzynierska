@@ -6,12 +6,13 @@ public class ChooseLane : MonoBehaviour
 {
     CarController controller;
     [SerializeField] Waypoint[] wayPointForLane;
+    public int choosedLane;
 
     private void OnTriggerEnter(Collider other)
     {
         print(other.name);
         controller = other.GetComponent<CarController>();
-        int choosedLane = Random.Range(0, 1);
+        choosedLane = Random.Range(0, 2);
         controller.SetAgentDestination(wayPointForLane[choosedLane].transform.position);
         controller.currentWaypoint = wayPointForLane[choosedLane];
     }
