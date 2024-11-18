@@ -8,12 +8,12 @@ public class LocalTrafficController : MonoBehaviour
     [SerializeField]private Sensor sensor;
     [SerializeField]private int carCountOnEntrance;
     private string carCountFusedLogic;
-    public string currentLight { get; private set; }
+     public string currentLight;
     
     private void Start()
     {
         StartCoroutine(getCarCount());
-        currentLight = "green";
+        currentLight = "red";
     }
 
     private IEnumerator getCarCount()

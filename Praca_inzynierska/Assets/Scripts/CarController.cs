@@ -1,6 +1,7 @@
 using UnityEngine.AI;
 using UnityEngine;
 using System.Collections;
+using Unity.VisualScripting;
 
 public class CarController : MonoBehaviour
 {
@@ -26,24 +27,41 @@ public class CarController : MonoBehaviour
     }
     private void Update()
     {
-        if (currentWaypoint == null)
+        if (currentWaypoint == null || currentWaypoint.NextWaypoint == null)
         {
             return;
+        }   
+        if(currentWaypoint.isFirstWaypoint)
+        {
+            controller = currentWaypoint.linkedController;
         }
         if (!agent.pathPending && agent.remainingDistance < 0.5f)
         {
-            // Przeskakuj do kolejnego waypointa, gdy dotrzesz do bie¿¹cego
-
             currentWaypoint = currentWaypoint.NextWaypoint;
-            //if (!currentWaypoint.isBeforeTrafiicLight)
-            //{
+            if (!currentWaypoint.isBeforeTrafiicLight)
+            {
                 agent.SetDestination(currentWaypoint.transform.position);
-            //}
-            //else
-            //{
-            //    print("swiatla");
-            //}
-        }
+            }
+           if(currentWaypoint.isBeforeTrafiicLight && controller.currentLight == "green")
+            {
+                agent.SetDestination(currentWaypoint.transform.position);
+            }
+           if(currentWaypoint.isBeforeTrafiicLight && controller.currentLight == "red")
+            {
+                print(agent.remainingDistance);
+
+                if (agent.remainingDistance < 0.5f)
+                {
+                    agent.speed = 0;
+                }
+                else
+                {
+                    agent.speed = 3;
+                    
+                }
+                agent.SetDestination(currentWaypoint.transform.position);
+            }
+    }
     }
     private Transform FindLineChooser(Transform carTransform)
     {
