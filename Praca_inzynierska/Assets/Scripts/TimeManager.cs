@@ -1,8 +1,10 @@
+using System;
 using UnityEngine;
 
 public class TimeManager : MonoBehaviour
 {
     private bool isPaused = false; // Flaga okreœlaj¹ca, czy gra jest zatrzymana
+    private bool isSpeeded = false;
 
     void Update()
     {
@@ -11,6 +13,34 @@ public class TimeManager : MonoBehaviour
         {
             TogglePause();
         }
+        if(Input.GetKeyDown(KeyCode.Q))
+        {
+            ToogleSpeedUp();
+        }
+    }
+
+    private void ToogleSpeedUp()
+    {
+        if(isSpeeded)
+        {
+            StopSpeedUpSimulation();
+        }
+        else
+        {
+            SpeedUpSimulation();
+        }
+    }
+
+    private void SpeedUpSimulation()
+    {
+        Time.timeScale = 3f;
+        isSpeeded = true;
+    }
+
+    private void StopSpeedUpSimulation()
+    {
+        Time.timeScale = 1f;
+        isSpeeded = false;
     }
 
     // Funkcja prze³¹czaj¹ca pauzê

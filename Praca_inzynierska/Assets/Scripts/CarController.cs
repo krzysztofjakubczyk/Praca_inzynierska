@@ -1,7 +1,6 @@
-using UnityEngine.AI;
-using UnityEngine;
 using System.Collections;
-using Unity.VisualScripting;
+using UnityEngine;
+using UnityEngine.AI;
 
 public class CarController : MonoBehaviour
 {
@@ -24,45 +23,48 @@ public class CarController : MonoBehaviour
 
 
         StartCoroutine(DetectCarsCoroutine());
+        StartCoroutine(MoveCoroutine());
     }
-    private void Update()
-    {
-        if (currentWaypoint == null || currentWaypoint.NextWaypoint == null)
-        {
-            return;
-        }   
-        if(currentWaypoint.isFirstWaypoint)
-        {
-            controller = currentWaypoint.linkedController;
-        }
-        if (!agent.pathPending && agent.remainingDistance < 0.5f)
-        {
-            currentWaypoint = currentWaypoint.NextWaypoint;
-            if (!currentWaypoint.isBeforeTrafiicLight)
-            {
-                agent.SetDestination(currentWaypoint.transform.position);
-            }
-           if(currentWaypoint.isBeforeTrafiicLight && controller.currentLight == "green")
-            {
-                agent.SetDestination(currentWaypoint.transform.position);
-            }
-           if(currentWaypoint.isBeforeTrafiicLight && controller.currentLight == "red")
-            {
-                print(agent.remainingDistance);
 
-                if (agent.remainingDistance < 0.5f)
-                {
-                    agent.speed = 0;
-                }
-                else
-                {
-                    agent.speed = 3;
-                    
-                }
-                agent.SetDestination(currentWaypoint.transform.position);
+    private IEnumerator MoveCoroutine()
+    {
+        while (currentWaypoint == null)
+        {
+            Debug.LogWarning("Waiting to have currentWaypoint...");
+            yield return null; // Sprawdza w ka¿dej klatce
+        }
+
+        while (true)
+        {
+            if (currentWaypoint.isFirstWaypoint)
+            {
+                controller = currentWaypoint.linkedController;
             }
+            if (!agent.pathPending && agent.remainingDistance < 0.5f)
+            {
+                currentWaypoint = currentWaypoint.NextWaypoint;
+                if (!currentWaypoint.isBeforeTrafiicLight)
+                {
+                    agent.SetDestination(currentWaypoint.transform.position);
+                }
+                if (currentWaypoint.isBeforeTrafiicLight)
+                {
+                    agent.SetDestination(currentWaypoint.transform.position);
+                    if (controller.currentLight == "green")
+                    {
+                        agent.speed = 3f;
+                    }
+                    else if (controller.currentLight == "red")
+                    {
+                        agent.speed = 0f;
+                    }
+                }
+
+            }
+            yield return null;
+        }
     }
-    }
+
     private Transform FindLineChooser(Transform carTransform)
     {
         GameObject[] parkingSpots = GameObject.FindGameObjectsWithTag("StopPoint");
@@ -135,4 +137,4 @@ public class CarController : MonoBehaviour
         Vector3 forwardDirection = transform.TransformDirection(Vector3.forward) * detectionDistance;
         Debug.DrawRay(rayStartPosition, forwardDirection, Color.green); // Rysuje czerwony promieñ
     }
-} 
+}
