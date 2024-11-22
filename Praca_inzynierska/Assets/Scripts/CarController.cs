@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
+
 
 public class CarController : MonoBehaviour
 {
@@ -10,7 +12,6 @@ public class CarController : MonoBehaviour
     [SerializeField] float stopDistance = 8f;
     [SerializeField] float detectionInterval = 0.5f;
     public Waypoint currentWaypoint;  // Aktualny waypoint, na który pojazd zmierza
-    private string currentTraficColor;
 
     void Start()
     {
@@ -31,7 +32,7 @@ public class CarController : MonoBehaviour
         while (currentWaypoint == null)
         {
             Debug.LogWarning("Waiting to have currentWaypoint...");
-            yield return null; // Sprawdza w ka¿dej klatce
+            yield return null;
         }
 
         while (true)
@@ -43,25 +44,39 @@ public class CarController : MonoBehaviour
             if (!agent.pathPending && agent.remainingDistance < 0.5f)
             {
                 currentWaypoint = currentWaypoint.NextWaypoint;
-                if (!currentWaypoint.isBeforeTrafiicLight)
-                {
-                    agent.SetDestination(currentWaypoint.transform.position);
-                }
+                agent.SetDestination(currentWaypoint.transform.position);
+
                 if (currentWaypoint.isBeforeTrafiicLight)
                 {
-                    agent.SetDestination(currentWaypoint.transform.position);
-                    if (controller.currentLight == "green")
-                    {
-                        agent.speed = 3f;
-                    }
-                    else if (controller.currentLight == "red")
-                    {
-                        agent.speed = 0f;
-                    }
+                    StartCoroutine(LightMonitor());
                 }
-
+                if (currentWaypoint.isAfterTrafiicLight)
+                {
+                    StopCoroutine(LightMonitor());
+                }
             }
             yield return null;
+        }
+    }
+
+    private IEnumerator LightMonitor()
+    {
+        while (true)
+        {
+            if (controller.currentLight == TrafficLightColor.Green)
+            {
+                agent.speed = 3f; // Pe³na prêdkoœæ
+            }
+            else if (controller.currentLight == TrafficLightColor.Red)
+            {
+                agent.speed = 0f; // Zatrzymanie pojazdu
+            }
+            else if (controller.currentLight == TrafficLightColor.Yellow)
+            {
+                agent.speed = 1.5f; // Zwolnienie przed œwiat³em
+            }
+
+            yield return new WaitForSeconds(1f); // Odœwie¿anie co 1 sekundê
         }
     }
 
@@ -127,7 +142,7 @@ public class CarController : MonoBehaviour
     }
     public void SetAgentDestination(Vector3 destinationTransform)
     {
-        agent.SetDestination(destinationTransform);
+        agent.SetDestination(destinationTransform); 
     }
 
     private void OnDrawGizmos()

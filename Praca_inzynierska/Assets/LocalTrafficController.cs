@@ -1,19 +1,25 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+
+public enum TrafficLightColor
+{
+    Red,
+    Yellow,
+    Green
+}
 
 public class LocalTrafficController : MonoBehaviour
 {
-    [SerializeField]private Sensor sensor;
-    [SerializeField]private int carCountOnEntrance;
+
+    [SerializeField] private Sensor sensor;
+    [SerializeField] private int carCountOnEntrance;
     private string carCountFusedLogic;
-     public string currentLight;
-    
+    public TrafficLightColor currentLight;
+
     private void Start()
     {
         StartCoroutine(getCarCount());
-        currentLight = "red";
+        currentLight = TrafficLightColor.Red;
     }
 
     private IEnumerator getCarCount()

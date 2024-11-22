@@ -8,4 +8,5 @@ public class Waypoint : MonoBehaviour
     public bool isBeforeTrafiicLight;
     public LocalTrafficController linkedController;
     public bool isFirstWaypoint;
+    public bool isAfterTrafiicLight;
 }
