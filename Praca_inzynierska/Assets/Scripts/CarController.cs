@@ -45,38 +45,8 @@ public class CarController : MonoBehaviour
             {
                 currentWaypoint = currentWaypoint.NextWaypoint;
                 agent.SetDestination(currentWaypoint.transform.position);
-
-                if (currentWaypoint.isBeforeTrafiicLight)
-                {
-                    StartCoroutine(LightMonitor());
-                }
-                if (currentWaypoint.isAfterTrafiicLight)
-                {
-                    StopCoroutine(LightMonitor());
-                }
             }
             yield return null;
-        }
-    }
-
-    private IEnumerator LightMonitor()
-    {
-        while (true)
-        {
-            if (controller.currentLight == TrafficLightColor.Green)
-            {
-                agent.speed = 3f; // Pe³na prêdkoœæ
-            }
-            else if (controller.currentLight == TrafficLightColor.Red)
-            {
-                agent.speed = 0f; // Zatrzymanie pojazdu
-            }
-            else if (controller.currentLight == TrafficLightColor.Yellow)
-            {
-                agent.speed = 1.5f; // Zwolnienie przed œwiat³em
-            }
-
-            yield return new WaitForSeconds(1f); // Odœwie¿anie co 1 sekundê
         }
     }
 

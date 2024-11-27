@@ -64,9 +64,11 @@
     <Compile Include="Assets\Scripts\CarController.cs" />
     <Compile Include="Assets\LocalTrafficController.cs" />
     <Compile Include="Assets\Sensor.cs" />
+    <Compile Include="Assets\MainTrafiicController.cs" />
     <Compile Include="Assets\Scripts\TimeManager.cs" />
     <Compile Include="Assets\ChooseLane.cs" />
     <Compile Include="Assets\Scripts\CameraManager.cs" />
+    <Compile Include="Assets\Scripts\LightMonitorForCar.cs" />
     <Compile Include="Assets\Waypoint.cs" />
   </ItemGroup>
   <ItemGroup>
