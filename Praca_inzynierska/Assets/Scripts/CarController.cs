@@ -12,7 +12,6 @@ public class CarController : MonoBehaviour
     [SerializeField] float stopDistance = 8f;
     [SerializeField] float detectionInterval = 0.5f;
     public Waypoint currentWaypoint;  // Aktualny waypoint, na który pojazd zmierza
-
     void Start()
     {
         // Pobranie komponentu NavMeshAgent
@@ -46,7 +45,32 @@ public class CarController : MonoBehaviour
                 currentWaypoint = currentWaypoint.NextWaypoint;
                 agent.SetDestination(currentWaypoint.transform.position);
             }
+
             yield return null;
+        }
+    }
+
+    public IEnumerator MonitorTrafficLight()
+    {
+        while (true)
+        {
+            if (controller != null)
+            {
+                switch (controller.currentLight)
+                {
+                    case TrafficLightColor.Green:
+                        agent.speed = 3f; // Pe³na prêdkoœæ
+                        break;
+                    case TrafficLightColor.Red:
+                        agent.speed = 0f; // Zatrzymanie pojazdu
+                        break;
+                    case TrafficLightColor.Yellow:
+                        agent.speed = 1.5f; // Zwolnienie przed œwiat³em
+                        break;
+                }
+            }
+            print("korutyna dizala" + name);
+            yield return new WaitForSeconds(1f); // Regularne sprawdzanie stanu sygnalizacji
         }
     }
 
@@ -68,6 +92,28 @@ public class CarController : MonoBehaviour
         }
 
         return nearestSpot;
+    }
+
+    private Coroutine trafficLightCoroutine; // Przechowuje referencjê do uruchomionej korutyny
+
+    public void StartTrafficLightMonitoring()
+    {
+        if (trafficLightCoroutine == null)
+        {
+            trafficLightCoroutine = StartCoroutine(MonitorTrafficLight());
+        }
+    }
+
+    public void StopTrafficLightMonitoring()
+    {
+        if (trafficLightCoroutine != null)
+        {
+            StopCoroutine(trafficLightCoroutine);
+            trafficLightCoroutine = null; // Resetuj referencjê
+        }
+
+        // Przywróæ pe³n¹ prêdkoœæ, gdy opuszczamy trigger
+        agent.speed = 3f;
     }
 
     private IEnumerator DetectCarsCoroutine()

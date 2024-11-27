@@ -1,50 +1,28 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.AI;
 
 public class LightMonitorForCar : MonoBehaviour
 {
-    NavMeshAgent agent;
-    LocalTrafficController trafficController;
-    private bool isMonitoring = false;
-
     private void OnTriggerEnter(Collider other)
     {
-        agent = other.GetComponent<NavMeshAgent>();
-        trafficController = other.GetComponent<CarController>().controller;
+        print("Wjechano w trigger");
 
-        if (!isMonitoring)
+        // Pobierz komponent CarController i powiadom go o wejœciu w trigger
+        CarController carController = other.GetComponent<CarController>();
+        if (carController != null)
         {
-            isMonitoring = true;
-            StartCoroutine(MonitorTrafficLight());
+            carController.StartTrafficLightMonitoring(); // Uruchom monitorowanie œwiate³
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        StopCoroutine(MonitorTrafficLight());
-        agent.speed = 3f; // Przywrócenie pe³nej prêdkoœci
-        isMonitoring = false;
-    }
+        print("Wyjechano z triggera");
 
-    private IEnumerator MonitorTrafficLight()
-    {
-        while (isMonitoring)
+        // Pobierz komponent CarController i powiadom go o wyjœciu z triggera
+        CarController carController = other.GetComponent<CarController>();
+        if (carController != null)
         {
-            switch (trafficController.currentLight)
-            {
-                case TrafficLightColor.Green:
-                    agent.speed = 3f; // Pe³na prêdkoœæ
-                    break;
-                case TrafficLightColor.Red:
-                    agent.speed = 0f; // Zatrzymanie pojazdu
-                    break;
-                case TrafficLightColor.Yellow:
-                    agent.speed = 1.5f; // Zwolnienie przed œwiat³em
-                    break;
-            }
-            yield return new WaitForSeconds(1f); // Unikanie blokowania systemu
+            carController.StopTrafficLightMonitoring(); // Zatrzymaj monitorowanie œwiate³
         }
     }
 }
