@@ -395,8 +395,8 @@
     <Compile Include="Library\PackageCache\com.unity.visualscripting@1.9.1\Editor\VisualScripting.Core\Plugin\Acknowledgements\Acknowledgement_DeepCopy.cs" />
     <Compile Include="Library\PackageCache\com.unity.visualscripting@1.9.1\Editor\VisualScripting.Core\Windows\Sidebars\SidebarPanelWindow.cs" />
     <Compile Include="Library\PackageCache\com.unity.visualscripting@1.9.1\Editor\VisualScripting.Core\Canvases\WidgetList.cs" />
-    <Compile Include="Library\PackageCache\com.unity.visualscripting@1.9.1\Editor\VisualScripting.Core\Dependencies\ReorderableList\Internal\SerializedPropertyUtility.cs" />
     <Compile Include="Library\PackageCache\com.unity.visualscripting@1.9.1\Editor\VisualScripting.Core\Platforms\AotStubWriter.cs" />
+    <Compile Include="Library\PackageCache\com.unity.visualscripting@1.9.1\Editor\VisualScripting.Core\Dependencies\ReorderableList\Internal\SerializedPropertyUtility.cs" />
     <Compile Include="Library\PackageCache\com.unity.visualscripting@1.9.1\Editor\VisualScripting.Core\Graph\GraphPointerData.cs" />
     <Compile Include="Library\PackageCache\com.unity.visualscripting@1.9.1\Editor\VisualScripting.Core\Plugin\Changelogs\LegacyLudiqGraphs\Changelog_1_4_6.cs" />
     <Compile Include="Library\PackageCache\com.unity.visualscripting@1.9.1\Editor\VisualScripting.Core\Product\LudiqProduct.cs" />
