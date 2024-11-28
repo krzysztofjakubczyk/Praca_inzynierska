@@ -11,6 +11,7 @@ public class CarController : MonoBehaviour
     [SerializeField] float detectionDistance = 10f;
     [SerializeField] float stopDistance = 8f;
     [SerializeField] float detectionInterval = 0.5f;
+    public bool wantWarnings;
     public Waypoint currentWaypoint;  // Aktualny waypoint, na który pojazd zmierza
     void Start()
     {
@@ -30,7 +31,10 @@ public class CarController : MonoBehaviour
     {
         while (currentWaypoint == null)
         {
-            Debug.LogWarning("Waiting to have currentWaypoint...");
+            if (wantWarnings)
+            {
+                Debug.LogWarning("Waiting to have currentWaypoint...");
+            }
             yield return null;
         }
 
@@ -69,7 +73,10 @@ public class CarController : MonoBehaviour
                         break;
                 }
             }
-            print("korutyna dizala" + name);
+            if (wantWarnings)
+            {
+                print("korutyna dizala" + name);
+            }
             yield return new WaitForSeconds(1f); // Regularne sprawdzanie stanu sygnalizacji
         }
     }
@@ -135,13 +142,14 @@ public class CarController : MonoBehaviour
         // Sprawdzenie, czy raycast trafia w inne auto
         if (Physics.Raycast(rayStartPosition, forwardDirection, out hit, detectionDistance))
         {
-            print(hit.collider.name + " + " + hit.distance);
+            
+            //print(hit.collider.name + " + " + hit.distance);
             if (hit.collider.CompareTag("Car")) // Zak³adamy, ¿e inne samochody maj¹ tag "Car"
             {
                 // Jeœli wykryto inne auto, zatrzymaj siê, jeœli jest za blisko
                 if (hit.distance < stopDistance)
                 {
-                    print("Zatrzymano autko");
+                    //print("Zatrzymano autko");
                     agent.isStopped = true; // Zatrzymaj pojazd
                 }
                 else

@@ -6,21 +6,16 @@ using UnityEngine.Events;
 
 public class Sensor : MonoBehaviour
 {
-    public int CarCount { get; set; }
+    [SerializeField] public int CarCount;
     private void OnTriggerEnter(Collider other)
     {
         if (!other.CompareTag("Car")) return;
-        AddCar();
-    }
-    public void AddCar()
-    {
         CarCount++;
     }
-
-    public void ResetCarCount()
+    private void OnTriggerExit(Collider other)
     {
-        CarCount = 0;
+        if (!other.CompareTag("Car")) return;
+        CarCount--;
+
     }
-
-
 }
