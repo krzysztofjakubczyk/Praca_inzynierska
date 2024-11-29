@@ -6,9 +6,9 @@ public class MainTrafficController : MonoBehaviour
 {
     [SerializeField] private List<LocalTrafficController> ControllerList;
     [SerializeField] private Dictionary<LocalTrafficController, int> CarCountOnInlet = new Dictionary<LocalTrafficController, int>();
-    [SerializeField] private Dictionary<LocalTrafficController, Dictionary<TrafficLightColor, int>> ColorCycle = new Dictionary<LocalTrafficController, Dictionary<TrafficLightColor, int>>();
     public bool wantWarning;
-
+    [SerializeField] private float greenLightDuration = 10f;  // Duration of the green light
+    [SerializeField] private float yellowLightDuration = 3f; // Duration of the yellow light
     private int currentActiveControllerIndex = 0; // Indeks aktywnego kontrolera
 
     private void Start()
@@ -17,11 +17,11 @@ public class MainTrafficController : MonoBehaviour
         foreach (var controller in ControllerList)
         {
             CarCountOnInlet.Add(controller, 0);
-            ColorCycle.Add(controller, controller.GetTrafficLightCycle());
+            controller.SetTrafficLight(TrafficLightColor.Red);
         }
 
         StartCoroutine(GetCarCountOnEntrance());
-        StartCoroutine(SetLightCycle());
+        StartCoroutine(CycleTrafficLights());
     }
 
     // Korutyna do zbierania liczby samochodów na wlocie
@@ -48,66 +48,63 @@ public class MainTrafficController : MonoBehaviour
     }
 
     // Korutyna do ustawiania cykli œwiate³ w kontrolerach lokalnych
-    private IEnumerator SetLightCycle()
+    private IEnumerator CycleTrafficLights()
     {
         while (true)
         {
-            // Resetujemy wszystkie kontrolery na czerwone (wszystkie œwiat³a czerwone)
-            foreach (var kvp in ColorCycle)
-            {
-                LocalTrafficController controller = kvp.Key;
-                var cycle = new Dictionary<TrafficLightColor, int>
-                {
-                    { TrafficLightColor.Red, 10 },    // Czerwone œwiat³o
-                    { TrafficLightColor.Yellow, 0 },  // ¯ó³te œwiat³o wy³¹czone
-                    { TrafficLightColor.Green, 0 }    // Zielone œwiat³o wy³¹czone
-                };
-                controller.SetTrafficLightCycle(cycle); // Wymuszenie czerwonego œwiat³a
-            }
-
-            // Wybieramy jeden kontroler do ustawienia na zielone
+            // Get the active controller
+            
             var activeController = ControllerList[currentActiveControllerIndex];
-
-            // Jeœli to pierwszy kontroler, ustawiamy go na zielone, pozosta³e kontrolery maj¹ czerwone
-            var greenCycle = new Dictionary<TrafficLightColor, int>
+            int carCountOnActiveController = CarCountOnInlet[activeController];
+            string sizeOfJam = null;
+            if(carCountOnActiveController <= 3)
             {
-                { TrafficLightColor.Red, 0 },     // Czerwone œwiat³o wy³¹czone
-                { TrafficLightColor.Yellow, 3 },  // Krótkie ¿ó³te œwiat³o
-                { TrafficLightColor.Green, 7 }    // D³u¿sze zielone œwiat³o
-            };
-
-            activeController.SetTrafficLightCycle(greenCycle); // Zielone œwiat³o tylko dla aktywnego kontrolera
-
-            if (wantWarning)
+                sizeOfJam = "small";
+            }
+            else if(carCountOnActiveController > 3 && carCountOnActiveController <= 6)
             {
-                Debug.Log("Active controller with green light: " + activeController.name);
+                sizeOfJam = "medium";
+            }
+            else if(carCountOnActiveController > 6 && carCountOnActiveController <= 9)
+            {
+                sizeOfJam = "big";
             }
 
-            // Ustawiamy pozosta³e kontrolery na czerwone
-            for (int i = 0; i < ControllerList.Count; i++)
+            switch (sizeOfJam)
             {
-                if (i != currentActiveControllerIndex) // Dla wszystkich poza aktywnym kontrolerem
-                {
-                    var controller = ControllerList[i];
-                    var cycleForOtherControllers = new Dictionary<TrafficLightColor, int>
-                    {
-                        { TrafficLightColor.Red, 10 },    // Czerwone œwiat³o
-                        { TrafficLightColor.Yellow, 0 },  // ¯ó³te wy³¹czone
-                        { TrafficLightColor.Green, 0 }    // Zielone wy³¹czone
-                    };
-                    controller.SetTrafficLightCycle(cycleForOtherControllers); // Ustawienie dla innych kontrolerów
-                }
-            }
+                case "small":
+                    print("small Jam");
+                    greenLightDuration = 5;
+                    yellowLightDuration = 3;
+                    break;
+                case "medium":
+                    print("medium Jam");
 
-            // PrzejdŸ do nastêpnego kontrolera w kolejce
-            currentActiveControllerIndex++;
-            if (currentActiveControllerIndex >= ControllerList.Count)
-            {
-                currentActiveControllerIndex = 0; // Wracamy do pierwszego w kolejce
-            }
+                    greenLightDuration = 7;
+                    yellowLightDuration = 2;
+                    break;
+                case "big":
+                    print("big Jam");
 
-            // Odczekaj pe³en cykl œwiate³, zanim zmienisz aktywny kontroler
-            yield return new WaitForSeconds(10f);  // Mo¿esz dostosowaæ ten czas, aby odpowiada³ Twoim potrzebom
+                    greenLightDuration = 10;
+                    yellowLightDuration = 2;
+                    break;
+                case "nulls":
+                    break;
+            }
+            // Set the active controller to green
+            activeController.SetTrafficLight(TrafficLightColor.Green);
+            yield return new WaitForSeconds(greenLightDuration);
+
+            // Transition to yellow
+            activeController.SetTrafficLight(TrafficLightColor.Yellow);
+            yield return new WaitForSeconds(yellowLightDuration);
+
+            // Set the current controller to red
+            activeController.SetTrafficLight(TrafficLightColor.Red);
+
+            // Move to the next controller (loop back to the start if at the end)
+            currentActiveControllerIndex = (currentActiveControllerIndex + 1) % ControllerList.Count;
         }
     }
 }

@@ -11,8 +11,8 @@ public enum TrafficLightColor
 
 public class LocalTrafficController : MonoBehaviour
 {
-    [SerializeField] private Sensor sensor;
-    public int carCountOnEntrance { get; private set; }
+    [SerializeField] private List<Sensor> sensor;
+    public int carCountOnEntrance;
     public TrafficLightColor currentLight;
     private Dictionary<TrafficLightColor, int> TimeForTrafficLightColor = new Dictionary<TrafficLightColor, int>();
 
@@ -28,52 +28,47 @@ public class LocalTrafficController : MonoBehaviour
 
     private void Start()
     {
-        StartCoroutine(getCarCount());
+        StartCoroutine(GetCarCount());
     }
 
-    private IEnumerator getCarCount()
+    private IEnumerator GetCarCount()
     {
         while (true)
         {
-            carCountOnEntrance = sensor.CarCount;
-            yield return new WaitForSeconds(5.0f);  // Co 5 sekund odœwie¿amy liczbê samochodów
+            carCountOnEntrance = 0; // Reset car count before summing up
+
+            foreach (var s in sensor) // Loop through all sensors
+            {
+                carCountOnEntrance += s.CarCount; // Add car count from each sensor
+            }
+
+            yield return new WaitForSeconds(0.5f); // Update car count every 0.5 seconds
         }
     }
+
 
     // Ustawienie cyklu œwiate³ (mo¿emy zmieniaæ czasy trwania ka¿dego koloru)
-    public void SetTrafficLightCycle(Dictionary<TrafficLightColor, int> cycleToSet)
+    public void SetTrafficLight(TrafficLightColor color)
     {
-        foreach (var entry in cycleToSet)
-        {
-            TimeForTrafficLightColor[entry.Key] = entry.Value;
-        }
-        StartCoroutine(ChangeTrafficLights());  // Uruchamiamy zmianê œwiate³
+        currentLight = color;
+
+        UpdateTrafficLightVisuals(color);
     }
 
-    // Korutyna do zmiany œwiate³ na podstawie cyklu
-    private IEnumerator ChangeTrafficLights()
+    private void UpdateTrafficLightVisuals(TrafficLightColor color)
     {
-        // Tworzymy kopiê kluczy z TimeForTrafficLightColor
-        List<TrafficLightColor> colors = new List<TrafficLightColor>(TimeForTrafficLightColor.Keys);
-
-        // Iterujemy po kopii listy kolorów (nie po oryginalnym s³owniku)
-        foreach (var color in colors)
+        switch (color)
         {
-            currentLight = color;  // Ustawiamy obecny kolor
-            yield return new WaitForSeconds(TimeForTrafficLightColor[color]);  // Czekamy, a¿ czas minie
+            case TrafficLightColor.Red:
+                Debug.Log(name + " set to RED");
+                break;
+            case TrafficLightColor.Yellow:
+                Debug.Log(name + " set to YELLOW");
+                break;
+            case TrafficLightColor.Green:
+                Debug.Log(name + " set to GREEN");
+                break;
         }
     }
 
-
-    public Dictionary<TrafficLightColor, int> GetTrafficLightCycle()
-    {
-        if (wantWarning)
-        {
-            foreach (var entry in TimeForTrafficLightColor)
-            {
-                print("controller: " + this.name + " key: " + entry.Key + " value: " + entry.Value);
-            }
-        }
-        return TimeForTrafficLightColor;  // Zwracamy cykl œwiate³
-    }
 }
