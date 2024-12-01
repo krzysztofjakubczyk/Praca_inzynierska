@@ -6,7 +6,7 @@ public class VehicleSpawner : MonoBehaviour
 {
     [SerializeField] GameObject[] CarPrefab;
     [SerializeField] float spawnInterval = 2.0f; // Czas spawnowania pojazdów (w sekundach)
-    [SerializeField] int maxVehicles; // Maksymalna liczba pojazdów na drodze
+    [SerializeField] public int maxVehicles; // Maksymalna liczba pojazdów na drodze
     [SerializeField] int currentVehicleCount = 0; // Liczba aktualnie spawnowanych pojazdów
     private void Start()
     {
