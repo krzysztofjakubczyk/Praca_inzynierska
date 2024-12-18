@@ -45,4 +45,8 @@ public class VehicleSpawner : MonoBehaviour
             SpawnVehicle();
         }
     }
+    public void ResetSpawner()
+    {
+        currentVehicleCount = 0;
+    }
 }

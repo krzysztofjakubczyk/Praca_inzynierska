@@ -52,6 +52,7 @@ public class TimeManager : MonoBehaviour
 
     public void ChoosedDay()
     {
+        ResetSimulation();
         // Get selected day
         int dayChoosed = dropDownDay.value;
         string dayChoosedString = dropDownDay.options[dayChoosed].text;
@@ -69,6 +70,21 @@ public class TimeManager : MonoBehaviour
             // Update dictionary for tracking
             countForVehicles[spawners[i]] = VehicleCountToSpawn[i];
         }
+    }
+
+    private void ResetSimulation()
+    {
+        GameObject[] Cars = GameObject.FindGameObjectsWithTag("Car");
+        VehicleSpawner[] Spawners = VehicleSpawner.FindObjectsOfType<VehicleSpawner>();
+        foreach (GameObject Car in Cars)
+        {
+            Destroy(Car);
+        }
+        foreach (VehicleSpawner Spawner in Spawners)
+        {
+            Spawner.ResetSpawner();
+        }
+        print("reset simulation");
     }
 
     private void SetVehicleCountsForDay(string day)
@@ -115,9 +131,7 @@ public class TimeManager : MonoBehaviour
         int hourChoosed = dropDownHour.value;
         string hourChoosedString = dropDownHour.options[hourChoosed].text;
         print(hourChoosedString);
-
-        // Example: Adjust simulation settings based on time of day
-        // For example, fewer vehicles at night or rush hours
+        ResetSimulation();
     }
 
     private void SpeedUpSimulation()
