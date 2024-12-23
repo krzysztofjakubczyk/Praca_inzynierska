@@ -74,24 +74,25 @@ public class MainTrafficController : MonoBehaviour
             {
                 case "small":
                     print("small Jam");
-                    greenLightDuration = 5;
+                    greenLightDuration = 30;
                     yellowLightDuration = 3;
                     break;
                 case "medium":
                     print("medium Jam");
 
-                    greenLightDuration = 7;
+                    greenLightDuration = 13;
                     yellowLightDuration = 2;
                     break;
                 case "big":
                     print("big Jam");
 
-                    greenLightDuration = 10;
+                    greenLightDuration = 15;
                     yellowLightDuration = 2;
                     break;
                 case "nulls":
                     break;
             }
+
             // Set the active controller to green
             activeController.SetTrafficLight(TrafficLightColor.Green);
             yield return new WaitForSeconds(greenLightDuration);
