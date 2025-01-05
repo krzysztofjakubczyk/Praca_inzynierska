@@ -144,14 +144,13 @@ public class CarController : MonoBehaviour
     {
         RaycastHit hit;
         // Ustawienie wektora kierunku do przodu
-        Vector3 rayStartPosition = transform.position + Vector3.up * 2f;
+        Vector3 rayStartPosition = transform.position + Vector3.up;
         Vector3 forwardDirection = transform.TransformDirection(Vector3.forward) * detectionDistance;
 
         // Sprawdzenie, czy raycast trafia w inne auto
         if (Physics.Raycast(rayStartPosition, forwardDirection, out hit, detectionDistance))
         {
             
-            print(hit.collider.name + " + " + hit.distance);
             if (hit.collider.CompareTag("Car")) // Zak³adamy, ¿e inne samochody maj¹ tag "Car"
             {
                 // Jeœli wykryto inne auto, zatrzymaj siê, jeœli jest za blisko
@@ -179,7 +178,7 @@ public class CarController : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        Vector3 rayStartPosition = transform.position + Vector3.up * 2f;
+        Vector3 rayStartPosition = transform.position + Vector3.up;
 
         Vector3 forwardDirection = transform.TransformDirection(Vector3.forward) * detectionDistance;
         Debug.DrawRay(rayStartPosition, forwardDirection, Color.green); // Rysuje czerwony promieñ
