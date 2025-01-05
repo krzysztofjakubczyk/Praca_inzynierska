@@ -15,7 +15,7 @@ public class LightMonitorForCar : MonoBehaviour
         {
             carController.StartTrafficLightMonitoring(); // Uruchom monitorowanie œwiate³
         }
-    }
+    }   
 
     private void OnTriggerExit(Collider other)
     {

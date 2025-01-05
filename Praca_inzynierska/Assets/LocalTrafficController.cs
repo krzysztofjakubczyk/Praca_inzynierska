@@ -21,7 +21,7 @@ public class LocalTrafficController : MonoBehaviour
     private void Awake()
     {
         currentLight = TrafficLightColor.Red;
-        TimeForTrafficLightColor[TrafficLightColor.Red] = 10;    // Domyœlny czas czerwonego
+        TimeForTrafficLightColor[TrafficLightColor.Red] = 30;    // Domyœlny czas czerwonego
         TimeForTrafficLightColor[TrafficLightColor.Yellow] = 5;  // Domyœlny czas ¿ó³tego
         TimeForTrafficLightColor[TrafficLightColor.Green] = 5;   // Domyœlny czas zielonego
     }
@@ -60,13 +60,13 @@ public class LocalTrafficController : MonoBehaviour
         switch (color)
         {
             case TrafficLightColor.Red:
-                Debug.Log(name + " set to RED");
+                if (wantWarning) Debug.Log(name + " set to RED");
                 break;
             case TrafficLightColor.Yellow:
-                Debug.Log(name + " set to YELLOW");
+                if (wantWarning) Debug.Log(name + " set to YELLOW");
                 break;
             case TrafficLightColor.Green:
-                Debug.Log(name + " set to GREEN");
+                if (wantWarning) Debug.Log(name + " set to GREEN");
                 break;
         }
     }

@@ -11,8 +11,9 @@ public class CarController : MonoBehaviour
     [SerializeField] float detectionDistance = 10f;
     [SerializeField] float stopDistance = 8f;
     [SerializeField] float detectionInterval = 0.5f;
-    public bool wantWarnings;
-    public Waypoint currentWaypoint;  // Aktualny waypoint, na który pojazd zmierza
+    public bool WantWarnings;
+    public Waypoint CurrentWaypoint;  // Aktualny waypoint, na który pojazd zmierza
+    public int FullSpeed;
     void Start()
     {
         // Pobranie komponentu NavMeshAgent
@@ -29,9 +30,9 @@ public class CarController : MonoBehaviour
 
     private IEnumerator MoveCoroutine()
     {
-        while (currentWaypoint == null)
+        while (CurrentWaypoint == null)
         {
-            if (wantWarnings)
+            if (WantWarnings)
             {
                 Debug.LogWarning("Waiting to have currentWaypoint...");
             }
@@ -40,14 +41,21 @@ public class CarController : MonoBehaviour
 
         while (true)
         {
-            if (currentWaypoint.isFirstWaypoint)
+            if (CurrentWaypoint.isFirstWaypoint)
             {
-                controller = currentWaypoint.linkedController;
+                controller = CurrentWaypoint.linkedController;
             }
-            if (!agent.pathPending && agent.remainingDistance < 0.5f)
+            if (!agent.pathPending && agent.remainingDistance < 2f  )
             {
-                currentWaypoint = currentWaypoint.NextWaypoint;
-                agent.SetDestination(currentWaypoint.transform.position);
+                if (CurrentWaypoint.isBeforeTrafiicLight)
+                {
+                    agent.SetDestination(CurrentWaypoint.laneChooser.transform.position);
+                }
+                else
+                {
+                    CurrentWaypoint = CurrentWaypoint.NextWaypoint;
+                    agent.SetDestination(CurrentWaypoint.transform.position);
+                }
             }
 
             yield return null;
@@ -63,17 +71,17 @@ public class CarController : MonoBehaviour
                 switch (controller.currentLight)
                 {
                     case TrafficLightColor.Green:
-                        agent.speed = 3f; // Pe³na prêdkoœæ
+                        agent.speed = FullSpeed; // Pe³na prêdkoœæ
                         break;
                     case TrafficLightColor.Red:
                         agent.speed = 0f; // Zatrzymanie pojazdu
                         break;
                     case TrafficLightColor.Yellow:
-                        agent.speed = 1.5f; // Zwolnienie przed œwiat³em
+                        agent.speed = FullSpeed; // Zwolnienie przed œwiat³em
                         break;
                 }
             }
-            if (wantWarnings)
+            if (WantWarnings)
             {
                 print("korutyna dizala" + name);
             }
@@ -120,7 +128,7 @@ public class CarController : MonoBehaviour
         }
 
         // Przywróæ pe³n¹ prêdkoœæ, gdy opuszczamy trigger
-        agent.speed = 3f;
+        agent.speed = FullSpeed;
     }
 
     private IEnumerator DetectCarsCoroutine()
@@ -143,7 +151,7 @@ public class CarController : MonoBehaviour
         if (Physics.Raycast(rayStartPosition, forwardDirection, out hit, detectionDistance))
         {
             
-            //print(hit.collider.name + " + " + hit.distance);
+            print(hit.collider.name + " + " + hit.distance);
             if (hit.collider.CompareTag("Car")) // Zak³adamy, ¿e inne samochody maj¹ tag "Car"
             {
                 // Jeœli wykryto inne auto, zatrzymaj siê, jeœli jest za blisko

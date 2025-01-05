@@ -5,8 +5,18 @@ using UnityEngine;
 public class Waypoint : MonoBehaviour
 {
     public Waypoint NextWaypoint;
+    public ChooseLane laneChooser;
     public bool isBeforeTrafiicLight;
     public LocalTrafficController linkedController;
     public bool isFirstWaypoint;
     public bool isAfterTrafiicLight;
+
+    public void Awake()
+    {
+        if (!isBeforeTrafiicLight)
+        {
+            laneChooser = null;
+        }
+        
+    }
 }

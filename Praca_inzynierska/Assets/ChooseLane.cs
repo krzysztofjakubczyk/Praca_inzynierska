@@ -8,14 +8,13 @@ public class ChooseLane : MonoBehaviour
     [SerializeField] Waypoint[] wayPointForLane;
     public int choosedLane;
     public bool wantWarnings;
-
     private void OnTriggerEnter(Collider other)
     {
         if (wantWarnings) { print(other.name); }
         controller = other.GetComponent<CarController>();
-        choosedLane = Random.Range(0, 2);
+        choosedLane = Random.Range(0, wayPointForLane.Length);
         controller.SetAgentDestination(wayPointForLane[choosedLane].transform.position);
-        controller.currentWaypoint = wayPointForLane[choosedLane];
+        controller.CurrentWaypoint = wayPointForLane[choosedLane];
     }
 
 }

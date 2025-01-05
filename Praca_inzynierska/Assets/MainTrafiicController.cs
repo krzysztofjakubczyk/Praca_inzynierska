@@ -73,20 +73,19 @@ public class MainTrafficController : MonoBehaviour
             switch (sizeOfJam)
             {
                 case "small":
-                    print("small Jam");
+                    if(wantWarning) print("small Jam");
                     greenLightDuration = 30;
                     yellowLightDuration = 3;
                     break;
                 case "medium":
-                    print("medium Jam");
+                    if (wantWarning) print("medium Jam");
 
-                    greenLightDuration = 13;
+                    greenLightDuration = 20;
                     yellowLightDuration = 2;
                     break;
                 case "big":
-                    print("big Jam");
-
-                    greenLightDuration = 15;
+                    if (wantWarning) print("big Jam");
+                    greenLightDuration = 10;
                     yellowLightDuration = 2;
                     break;
                 case "nulls":
