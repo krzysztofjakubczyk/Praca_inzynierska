@@ -7,6 +7,11 @@ TagManager:
   - StopPoint
   - Car
   - Spawner
+  - TramSpawner
+  - CarLoop
+  - TramLoop
+  - TramMonitor
+  - CarMonitor
   layers:
   - Default
   - TransparentFX

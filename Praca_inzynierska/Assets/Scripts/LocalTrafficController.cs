@@ -8,12 +8,13 @@ public enum TrafficLightColor
     Yellow,
     Green
 }
-
 public class LocalTrafficController : MonoBehaviour
 {
     [SerializeField] private List<Sensor> sensor;
-    public int carCountOnEntrance;
+    public int carCountOnEntrance, tramCount;
+    public bool hasTrams;
     public TrafficLightColor currentLight;
+    public TrafficLightColor currentLightForTram;
     private Dictionary<TrafficLightColor, int> TimeForTrafficLightColor = new Dictionary<TrafficLightColor, int>();
 
     public bool wantWarning;
@@ -28,18 +29,25 @@ public class LocalTrafficController : MonoBehaviour
 
     private void Start()
     {
-        StartCoroutine(GetCarCount());
+        StartCoroutine(getVehicleCount());
     }
 
-    private IEnumerator GetCarCount()
+    private IEnumerator getVehicleCount()
     {
         while (true)
         {
             carCountOnEntrance = 0; // Reset car count before summing up
-
+            tramCount = 0;
             foreach (var s in sensor) // Loop through all sensors
             {
-                carCountOnEntrance += s.CarCount; // Add car count from each sensor
+                if (s.gameObject.CompareTag("CarLoop")) 
+                {
+                    carCountOnEntrance += s.VehicleCount; // Add car count from each sensor
+                }
+                else if(s.gameObject.CompareTag("TramLoop"))
+                {
+                    tramCount += s.VehicleCount;
+                }
             }
 
             yield return new WaitForSeconds(0.5f); // Update car count every 0.5 seconds
@@ -48,25 +56,24 @@ public class LocalTrafficController : MonoBehaviour
 
 
     // Ustawienie cyklu œwiate³ (mo¿emy zmieniaæ czasy trwania ka¿dego koloru)
-    public void SetTrafficLight(TrafficLightColor color)
+    public void SetTrafficLight(TrafficLightColor colorForCars)
     {
-        currentLight = color;
-
-        UpdateTrafficLightVisuals(color);
+        currentLight = colorForCars;
+        UpdateTrafficLightVisualsForVehicle(colorForCars);
     }
 
-    private void UpdateTrafficLightVisuals(TrafficLightColor color)
+    private void UpdateTrafficLightVisualsForVehicle(TrafficLightColor color)
     {
         switch (color)
         {
             case TrafficLightColor.Red:
-                if (wantWarning) Debug.Log(name + " set to RED");
+                if (wantWarning) Debug.Log(name + " set to RED for Vehicle");
                 break;
             case TrafficLightColor.Yellow:
-                if (wantWarning) Debug.Log(name + " set to YELLOW");
+                if (wantWarning) Debug.Log(name + " set to YELLOW for Vehicle");
                 break;
             case TrafficLightColor.Green:
-                if (wantWarning) Debug.Log(name + " set to GREEN");
+                if (wantWarning) Debug.Log(name + " set to GREEN for Vehicle");
                 break;
         }
     }

@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 7261910634641025239}
   m_Layer: 0
   m_Name: LightMonitorForCar
-  m_TagString: Untagged
+  m_TagString: CarMonitor
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -118,3 +118,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49182ea5eb23f2a41bc522969787a21a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  wantWarning: 0

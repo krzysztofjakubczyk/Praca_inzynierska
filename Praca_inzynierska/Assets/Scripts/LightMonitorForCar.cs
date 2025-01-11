@@ -9,7 +9,6 @@ public class LightMonitorForCar : MonoBehaviour
         {
             print("Wjechano w trigger");
         }
-        // Pobierz komponent CarController i powiadom go o wejœciu w trigger
         CarController carController = other.GetComponent<CarController>();
         if (carController != null)
         {

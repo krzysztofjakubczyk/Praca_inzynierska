@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class VehicleSpawner : MonoBehaviour
@@ -41,6 +42,13 @@ public class VehicleSpawner : MonoBehaviour
     {
         if(Input.GetKeyDown(KeyCode.S))
         {
+            if (!gameObject.CompareTag("Spawner")) return;
+            maxVehicles++;
+            SpawnVehicle();
+        }
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            if (!gameObject.CompareTag("TramSpawner")) return;
             maxVehicles++;
             SpawnVehicle();
         }

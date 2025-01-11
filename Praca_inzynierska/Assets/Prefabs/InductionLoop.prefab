@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 6514150031698727270}
   m_Layer: 0
   m_Name: InductionLoop
-  m_TagString: Untagged
+  m_TagString: CarLoop
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -119,3 +119,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f3cedb7cb247a644ade35a3d74cd3aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  VehicleCount: 0

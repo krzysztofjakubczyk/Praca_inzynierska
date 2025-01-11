@@ -1,5 +1,5 @@
 sceneSetups:
-- path: Assets/Scenes/Sczanieckiej-Plater.unity
+- path: Assets/Scenes/Arkonska-Niemierzynska.unity
   isLoaded: 1
   isActive: 1
   isSubScene: 0

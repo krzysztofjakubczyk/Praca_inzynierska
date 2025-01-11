@@ -62,13 +62,21 @@ public class CarController : MonoBehaviour
         }
     }
 
-    public IEnumerator MonitorTrafficLight()
+    public IEnumerator MonitorTrafficLightForVehicle()
     {
         while (true)
         {
             if (controller != null)
             {
-                switch (controller.currentLight)
+                var x = controller.currentLight;
+                if (this.name == "Tram")
+                {
+                     x = controller.currentLightForTram;
+                }
+                else if (this.name == "CarArkonska") {
+                     x = controller.currentLight;
+                }
+                switch (x)
                 {
                     case TrafficLightColor.Green:
                         agent.speed = FullSpeed; // Pe³na prêdkoœæ
@@ -115,7 +123,7 @@ public class CarController : MonoBehaviour
     {
         if (trafficLightCoroutine == null)
         {
-            trafficLightCoroutine = StartCoroutine(MonitorTrafficLight());
+            trafficLightCoroutine = StartCoroutine(MonitorTrafficLightForVehicle());
         }
     }
 
