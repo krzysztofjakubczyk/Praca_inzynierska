@@ -62,8 +62,8 @@
   <ItemGroup>
     <Compile Include="Assets\Scripts\VehicleSpawner.cs" />
     <Compile Include="Assets\Scripts\Waypoint.cs" />
-    <Compile Include="Assets\Scripts\LocalTrafficController.cs" />
     <Compile Include="Assets\Scripts\CarController.cs" />
+    <Compile Include="Assets\LineLightManager.cs" />
     <Compile Include="Assets\Scripts\MainTrafiicController.cs" />
     <Compile Include="Assets\Scripts\CarDestroyer.cs" />
     <Compile Include="Assets\Scripts\TimeManager.cs" />

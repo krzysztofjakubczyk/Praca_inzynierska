@@ -1,30 +1,42 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class MainTrafficController : MonoBehaviour
 {
-    [SerializeField] private List<LocalTrafficController> ControllerList;
-    [SerializeField] private Dictionary<LocalTrafficController, int> CarCountOnInlet = new Dictionary<LocalTrafficController, int>();
-    [SerializeField] private Dictionary<LocalTrafficController, int> TramCountOnInlet = new Dictionary<LocalTrafficController, int>();
-    public bool wantWarning;
+    [Header("List of lanes to concrete cycle")]
+    [SerializeField] private List<LineLightManager> Phase1 = new List<LineLightManager>();
+    [SerializeField] private List<LineLightManager> Phase2 = new List<LineLightManager>();
+    [SerializeField] private List<LineLightManager> Phase3 = new List<LineLightManager>();
+    [SerializeField] private List<LineLightManager> Phase4 = new List<LineLightManager>();
+    [SerializeField] private List<LineLightManager> Phase5 = new List<LineLightManager>();
+    [SerializeField] private List<List<LineLightManager>> listToChangeColors = new List<List<LineLightManager>>();
+
+    [SerializeField] private Dictionary<LineLightManager, int> CarCountOnInlet = new Dictionary<LineLightManager, int>();
+
+    [Header("Floats and ints")]
     [SerializeField] private float greenLightDuration;  // Duration of the green light
-    [SerializeField] private float greenLightDurationForTram;  // Duration of the green light
     [SerializeField] private float yellowLightDuration; // Duration of the yellow light
-    [SerializeField] private float yellowLightDurationForTram; // Duration of the yellow light
-    [SerializeField]private int currentActiveControllerIndex = 0; // Indeks aktywnego kontrolera
-    [SerializeField]private int countOfCars; // Indeks aktywnego kontrolera
+    [SerializeField] private int countOfCars; // Indeks aktywnego kontrolera
+
     private float timeBeforeGreenLights = 5f;
+    public bool wantWarning;
     private void Start()
     {
-        // Pocz¹tkowe ustawienie dla ka¿dego kontrolera
-        foreach (var controller in ControllerList)
+        listToChangeColors.Add(Phase1);
+        listToChangeColors.Add(Phase2);
+        listToChangeColors.Add(Phase3);
+        listToChangeColors.Add(Phase4);
+        listToChangeColors.Add(Phase5);
+        foreach (var listForPhase in listToChangeColors)
         {
-            CarCountOnInlet.Add(controller, 0);
-            TramCountOnInlet.Add(controller, 0);
-            controller.SetTrafficLight(TrafficLightColor.Red);
+            foreach (var lineInPhase in listForPhase)
+            {
+                CarCountOnInlet.Add(lineInPhase, 0);
+                lineInPhase.ChangeColor(TrafficLightColor.red);
+            }
         }
-
         StartCoroutine(GetVehicleCountOnEntrance());
         StartCoroutine(CycleTrafficLights());
     }
@@ -34,30 +46,22 @@ public class MainTrafficController : MonoBehaviour
     {
         while (true)
         {
-            Dictionary<LocalTrafficController, int> updatedCarCounts = new Dictionary<LocalTrafficController, int>();
-            Dictionary<LocalTrafficController, int> updatedTramCounts = new Dictionary<LocalTrafficController, int>();
+            Dictionary<LineLightManager, int> updatedCarCount = new Dictionary<LineLightManager, int>();
+            // tymczasowy s³ownik by nie edytowaæ przetwarzanego s³ownika
 
-            foreach (var kvp in CarCountOnInlet)
+            foreach (var kvp in CarCountOnInlet) //przejdz sobie po ilosci aut
             {
-                LocalTrafficController trafficController = kvp.Key;
-                int carCount = trafficController.carCountOnEntrance;
-                updatedCarCounts[trafficController] = carCount;
-            }
-            foreach (var tram in TramCountOnInlet)
-            {
-                LocalTrafficController trafficController = tram.Key;
-                int tramCountToSave = trafficController.tramCount;
-                updatedTramCounts[trafficController] = tramCountToSave;
-            }
-            foreach (var kvp in updatedCarCounts)
-            {
-                CarCountOnInlet[kvp.Key] = kvp.Value;
-            }
-            foreach (var tram in updatedTramCounts)
-            {
-                TramCountOnInlet[tram.Key] = tram.Value;
+                LineLightManager LineController = kvp.Key; //lineManager
+                int countOfVehiclesOnLine = LineController.countOfVehicles; //tymczasowa zmienna, która wyra¿a iloœæ aut na danym pasie
+                updatedCarCount[LineController] = countOfVehiclesOnLine; //wartosc dla inta w slownika sterowników jest zapisana do tymczasowego s³ownika
             }
 
+            foreach (var kvp in updatedCarCount) // PrzejdŸ po tymczasowym s³owniku
+            {
+                LineLightManager LineController = kvp.Key; //lineManager
+                int countOfVehiclesOnLine = LineController.countOfVehicles; //tymczasowa zmienna, która wyra¿a iloœæ aut na danym pasie
+                CarCountOnInlet[LineController] = countOfVehiclesOnLine; // Przenieœ dane z tymczasowego s³ownika do g³ównego
+            }
             yield return new WaitForSeconds(5f);  // Odœwie¿enie liczby pojazdów co 5 sekund
         }
     }
@@ -67,76 +71,94 @@ public class MainTrafficController : MonoBehaviour
     {
         while (true)
         {
-            // Get the active controller
-
-            LocalTrafficController activeController = ControllerList[currentActiveControllerIndex];
-            int carCountOnActiveController = CarCountOnInlet[activeController];
-            print(carCountOnActiveController);
-            countOfCars = carCountOnActiveController;
-            if (activeController.hasTrams)
+            // PrzejdŸ przez wszystkie fazy
+            for (int phaseIndex = 0; phaseIndex < listToChangeColors.Count; phaseIndex++)
             {
-                int tramCountOnActiveController = TramCountOnInlet[activeController];
-                if (tramCountOnActiveController > 0)
+                // Ustaw aktywn¹ fazê
+                manageTimeOfColors(listToChangeColors[phaseIndex]);
+                // Ustaw œwiat³a zielone tylko dla bie¿¹cej fazy
+                foreach (var lineInPhase in listToChangeColors[phaseIndex])
                 {
-                    greenLightDurationForTram = 15f;
-                    yield return new WaitForSeconds(greenLightDurationForTram);
-
-                    yellowLightDurationForTram = 3f;
-                    yield return new WaitForSeconds(yellowLightDurationForTram);
-
+                    lineInPhase.ChangeColor(TrafficLightColor.green);
                 }
-                activeController.SetTrafficLight(TrafficLightColor.Red);
 
+                // Ustaw œwiat³a czerwone dla pozosta³ych faz
+                for (int otherPhaseIndex = 0; otherPhaseIndex < listToChangeColors.Count; otherPhaseIndex++)
+                {
+                    if (otherPhaseIndex != phaseIndex)
+                    {
+                        foreach (var lineInPhase in listToChangeColors[otherPhaseIndex])
+                        {
+                            lineInPhase.ChangeColor(TrafficLightColor.red);
+                        }
+                    }
+                }
+
+                // Odczekaj czas zielonego œwiat³a
+                yield return new WaitForSeconds(greenLightDuration);
+
+                // Zmieñ œwiat³a bie¿¹cej fazy na ¿ó³te
+                foreach (var lineInPhase in listToChangeColors[phaseIndex])
+                {
+                    lineInPhase.ChangeColor(TrafficLightColor.yellow);
+                }
+
+                // Odczekaj czas ¿ó³tego œwiat³a
+                yield return new WaitForSeconds(yellowLightDuration);
+
+                // Ustaw czerwone œwiat³a na koñcu dla bie¿¹cej fazy
+                foreach (var lineInPhase in listToChangeColors[phaseIndex])
+                {
+                    lineInPhase.ChangeColor(TrafficLightColor.red);
+                }
             }
-            string sizeOfJam = null;
-            if (carCountOnActiveController <= 3)
+        }
+    }
+
+
+    private void manageTimeOfColors(List<LineLightManager> listOfPhase)
+    {
+        int carCountOnActivePhase = 0;
+        foreach (var line in listOfPhase)
+        {
+            if (CarCountOnInlet.ContainsKey(line))
             {
-                sizeOfJam = "small";
+                carCountOnActivePhase += CarCountOnInlet[line]; 
             }
-            else if (carCountOnActiveController > 3 && carCountOnActiveController <= 6)
-            {
-                sizeOfJam = "medium";
-                if (wantWarning) print("medium ustawiono");
-            }
-            else if (carCountOnActiveController > 6 && carCountOnActiveController <= 9)
-            {
-                sizeOfJam = "big";
-            }
-            switch (sizeOfJam)
-            {
-                case "small":
-                    if (wantWarning) print("small Jam");
-                    greenLightDuration = 10;
-                    yellowLightDuration = 5;
-                    break;
-                case "medium":
-                    if (wantWarning) print("medium Jam");
-                    greenLightDuration = 15;
-                    yellowLightDuration = 5;
-                    break;
-                case "big":
-                    if (wantWarning) print("big Jam");
-                    greenLightDuration = 20;
-                    yellowLightDuration = 5;
-                    break;
-                case "nulls":
-                    break;
-            }
-            yield return new WaitForSeconds(timeBeforeGreenLights);
-            // Set the active controller to green
-            activeController.SetTrafficLight(TrafficLightColor.Green);
-            yield return new WaitForSeconds(greenLightDuration);
-
-            // Transition to yellow
-            activeController.SetTrafficLight(TrafficLightColor.Yellow);
-            yield return new WaitForSeconds(yellowLightDuration);
-
-            // Set the current controller to red
-            activeController.SetTrafficLight(TrafficLightColor.Red);
-
-            // Move to the next controller (loop back to the start if at the end)
-            currentActiveControllerIndex = (currentActiveControllerIndex + 1) % ControllerList.Count;
-
+        }
+        string sizeOfJam = null;
+        if (carCountOnActivePhase <= 10)
+        {
+            sizeOfJam = "small";
+        }
+        else if (carCountOnActivePhase > 10 && carCountOnActivePhase <= 15)
+        {
+            sizeOfJam = "medium";
+            if (wantWarning) print("medium ustawiono");
+        }
+        else if (carCountOnActivePhase > 15 && carCountOnActivePhase <= 30)
+        {
+            sizeOfJam = "big";
+        }
+        switch (sizeOfJam)
+        {
+            case "small":
+                if (wantWarning) print("small Jam");
+                greenLightDuration = 10;
+                yellowLightDuration = 5;
+                break;
+            case "medium":
+                if (wantWarning) print("medium Jam");
+                greenLightDuration = 15;
+                yellowLightDuration = 5;
+                break;
+            case "big":
+                if (wantWarning) print("big Jam");
+                greenLightDuration = 20;
+                yellowLightDuration = 5;
+                break;
+            case "nulls":
+                break;
         }
     }
 }

@@ -7,7 +7,7 @@ public class Waypoint : MonoBehaviour
     public Waypoint NextWaypoint;
     public ChooseLane laneChooser;
     public bool isBeforeTrafiicLight;
-    public LocalTrafficController linkedController;
+    public LineLightManager linkedController;
     public bool isFirstWaypoint;
     public bool isAfterTrafiicLight;
 

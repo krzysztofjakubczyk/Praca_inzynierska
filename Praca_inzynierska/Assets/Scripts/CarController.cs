@@ -7,7 +7,7 @@ using UnityEngine.AI;
 public class CarController : MonoBehaviour
 {
     private NavMeshAgent agent;
-    public LocalTrafficController controller;
+    public LineLightManager lineManager;
     [SerializeField] float detectionDistance = 10f;
     [SerializeField] float stopDistance = 8f;
     [SerializeField] float detectionInterval = 0.5f;
@@ -43,7 +43,7 @@ public class CarController : MonoBehaviour
         {
             if (CurrentWaypoint.isFirstWaypoint)
             {
-                controller = CurrentWaypoint.linkedController;
+                lineManager = CurrentWaypoint.linkedController;
             }
             if (!agent.pathPending && agent.remainingDistance < 2f  )
             {
@@ -66,32 +66,21 @@ public class CarController : MonoBehaviour
     {
         while (true)
         {
-            if (controller != null)
+            if (lineManager != null)
             {
-                var x = controller.currentLight;
-                if (this.name == "Tram")
+                var currentColor = lineManager.currentColor;
+                switch (currentColor)
                 {
-                     x = controller.currentLightForTram;
-                }
-                else if (this.name == "CarArkonska") {
-                     x = controller.currentLight;
-                }
-                switch (x)
-                {
-                    case TrafficLightColor.Green:
+                    case TrafficLightColor.green:
                         agent.speed = FullSpeed; // Pe³na prêdkoœæ
                         break;
-                    case TrafficLightColor.Red:
+                    case TrafficLightColor.red:
                         agent.speed = 0f; // Zatrzymanie pojazdu
                         break;
-                    case TrafficLightColor.Yellow:
+                    case TrafficLightColor.yellow:
                         agent.speed = FullSpeed; // Zwolnienie przed œwiat³em
                         break;
                 }
-            }
-            if (WantWarnings)
-            {
-                print("korutyna dizala" + name);
             }
             yield return new WaitForSeconds(1f); // Regularne sprawdzanie stanu sygnalizacji
         }
