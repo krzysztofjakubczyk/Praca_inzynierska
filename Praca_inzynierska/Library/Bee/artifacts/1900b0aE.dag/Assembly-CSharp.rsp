@@ -365,6 +365,7 @@
 "Assets/Scripts/ChooseLane.cs"
 "Assets/Scripts/LightMonitorForCar.cs"
 "Assets/Scripts/MainTrafiicController.cs"
+"Assets/Scripts/MainTrafiicControllerForSczanieckiej.cs"
 "Assets/Scripts/Sensor.cs"
 "Assets/Scripts/TimeManager.cs"
 "Assets/Scripts/VehicleSpawner.cs"

@@ -14,6 +14,7 @@ public class MainTrafficController : MonoBehaviour
     [SerializeField] private List<List<LineLightManager>> listToChangeColors = new List<List<LineLightManager>>();
 
     [SerializeField] private Dictionary<LineLightManager, int> CarCountOnInlet = new Dictionary<LineLightManager, int>();
+    [SerializeField] private Dictionary<LineLightManager, int> CarQueueOnInlet = new Dictionary<LineLightManager, int>();
 
     [Header("Floats and ints")]
     [SerializeField] private float greenLightDuration;  // Duration of the green light
@@ -34,6 +35,7 @@ public class MainTrafficController : MonoBehaviour
             foreach (var lineInPhase in listForPhase)
             {
                 CarCountOnInlet.Add(lineInPhase, 0);
+                CarQueueOnInlet.Add(lineInPhase, 0);
                 lineInPhase.ChangeColor(TrafficLightColor.red);
             }
         }
@@ -47,20 +49,25 @@ public class MainTrafficController : MonoBehaviour
         while (true)
         {
             Dictionary<LineLightManager, int> updatedCarCount = new Dictionary<LineLightManager, int>();
+            Dictionary<LineLightManager, int> updatedCarQueue = new Dictionary<LineLightManager, int>();
             // tymczasowy s³ownik by nie edytowaæ przetwarzanego s³ownika
 
             foreach (var kvp in CarCountOnInlet) //przejdz sobie po ilosci aut
             {
                 LineLightManager LineController = kvp.Key; //lineManager
                 int countOfVehiclesOnLine = LineController.countOfVehicles; //tymczasowa zmienna, która wyra¿a iloœæ aut na danym pasie
+                int queueOfVehiclesOnLine = LineController.queueLength;
                 updatedCarCount[LineController] = countOfVehiclesOnLine; //wartosc dla inta w slownika sterowników jest zapisana do tymczasowego s³ownika
+                updatedCarQueue[LineController] = queueOfVehiclesOnLine;
             }
 
             foreach (var kvp in updatedCarCount) // PrzejdŸ po tymczasowym s³owniku
             {
                 LineLightManager LineController = kvp.Key; //lineManager
                 int countOfVehiclesOnLine = LineController.countOfVehicles; //tymczasowa zmienna, która wyra¿a iloœæ aut na danym pasie
+                int countOfQueueOnLine = LineController.queueLength; //tymczasowa zmienna, która wyra¿a iloœæ aut na danym pasie
                 CarCountOnInlet[LineController] = countOfVehiclesOnLine; // Przenieœ dane z tymczasowego s³ownika do g³ównego
+                CarQueueOnInlet[LineController] = countOfQueueOnLine; // Przenieœ dane z tymczasowego s³ownika do g³ównego
             }
             yield return new WaitForSeconds(5f);  // Odœwie¿enie liczby pojazdów co 5 sekund
         }
@@ -119,24 +126,26 @@ public class MainTrafficController : MonoBehaviour
     private void manageTimeOfColors(List<LineLightManager> listOfPhase)
     {
         int carCountOnActivePhase = 0;
+        int carQueueOnActivePhase = 0;
         foreach (var line in listOfPhase)
         {
-            if (CarCountOnInlet.ContainsKey(line))
+            if (CarCountOnInlet.ContainsKey(line) && CarQueueOnInlet.ContainsKey(line))
             {
-                carCountOnActivePhase += CarCountOnInlet[line]; 
+                carCountOnActivePhase += CarCountOnInlet[line];
+                carQueueOnActivePhase += CarQueueOnInlet[line];
             }
         }
         string sizeOfJam = null;
-        if (carCountOnActivePhase <= 10)
+        if (carCountOnActivePhase <= 10 && carQueueOnActivePhase<= 50)
         {
             sizeOfJam = "small";
         }
-        else if (carCountOnActivePhase > 10 && carCountOnActivePhase <= 15)
+        else if ((carCountOnActivePhase > 10 && carCountOnActivePhase <= 15) && (carQueueOnActivePhase > 50 && carQueueOnActivePhase <= 70))
         {
             sizeOfJam = "medium";
             if (wantWarning) print("medium ustawiono");
         }
-        else if (carCountOnActivePhase > 15 && carCountOnActivePhase <= 30)
+        else if ((carCountOnActivePhase > 15 && carCountOnActivePhase <= 30) && (carQueueOnActivePhase > 70 && carQueueOnActivePhase <=200))
         {
             sizeOfJam = "big";
         }

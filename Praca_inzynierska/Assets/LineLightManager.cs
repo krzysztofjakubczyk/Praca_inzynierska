@@ -13,6 +13,7 @@ public class LineLightManager : MonoBehaviour
 {
     [SerializeField] public TrafficLightColor currentColor;
     [SerializeField] public int countOfVehicles;
+    [SerializeField] public int queueLength;
     [SerializeField] public int idAtDraw;
     public List<Sensor> sensors;
 
@@ -25,9 +26,12 @@ public class LineLightManager : MonoBehaviour
     {
         while (true)
         {
+            countOfVehicles = 0;
+            queueLength = 0;
             foreach (var sensor in sensors)
             {
                 countOfVehicles += sensor.VehicleCount;
+                queueLength += sensor.QueueLength;
             }
 
             yield return new WaitForSeconds(5f);
