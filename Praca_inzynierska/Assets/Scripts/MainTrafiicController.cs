@@ -33,7 +33,7 @@ public class MainTrafficController : MonoBehaviour
     FuzzyRule rule0, rule1, rule2, rule3, rule4, rule5, rule6, rule7, rule8, rule9;
     private void Start()
     {
-        fuzzyEngine = new FuzzyEngineFactory().Default();
+        fuzzyEngine = new FuzzyEngineFactory().Create(new MoMDefuzzification());
 
 
         // Dodanie i dostosowanie funkcji przynale¿noœci
@@ -69,6 +69,7 @@ public class MainTrafficController : MonoBehaviour
         rule8 = Rule.If(carCount.Is(highCount).And(queueLength.Is(mediumCount))).Then(greenLightDurationVar.Is(longGreen));
         rule9 = Rule.If(carCount.Is(highCount).And(queueLength.Is(bigQueue))).Then(greenLightDurationVar.Is(longGreen));
 
+        fuzzyEngine.Rules.Add(rule0);
         fuzzyEngine.Rules.Add(rule1);
         fuzzyEngine.Rules.Add(rule2);
         fuzzyEngine.Rules.Add(rule3);
@@ -173,6 +174,8 @@ public class MainTrafficController : MonoBehaviour
                 {
                     lineInPhase.ChangeColor(TrafficLightColor.red);
                 }
+
+                yield return new WaitForSeconds(5f);
             }
         }
     }
@@ -197,8 +200,6 @@ public class MainTrafficController : MonoBehaviour
             mediumQueue.Fuzzify(carQueueOnActivePhase);
             highCount.Fuzzify(carCountOnActivePhase);
             bigQueue.Fuzzify(carQueueOnActivePhase);
-
-            print("CAR QUEUE : " + carQueueOnActivePhase + "CAR COUNT: " + carCountOnActivePhase);
 
             // Uruchomienie silnika rozmytego i obliczenie wartoœci wyjœciowej
             var fuzzyResult = fuzzyEngine.Defuzzify(new { carCount = carCountOnActivePhase, queueLength = carQueueOnActivePhase });
