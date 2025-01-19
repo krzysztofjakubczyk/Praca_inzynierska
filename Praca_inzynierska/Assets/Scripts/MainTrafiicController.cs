@@ -3,7 +3,6 @@ using FLS.MembershipFunctions;
 using FLS.Rules;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 public class MainTrafficController : MonoBehaviour
@@ -20,7 +19,7 @@ public class MainTrafficController : MonoBehaviour
     [SerializeField] private Dictionary<LineLightManager, float> CarQueueOnInlet = new Dictionary<LineLightManager, float>();
 
     [Header("Floats and ints")]
-    [SerializeField] private float greenLightDuration;  // Duration of the green light
+    [SerializeField] private double greenLightDuration;  // Duration of the green light
     [SerializeField] private float yellowLightDuration; // Duration of the yellow light
     [SerializeField] private int countOfCars; // Indeks aktywnego kontrolera
 
@@ -29,7 +28,7 @@ public class MainTrafficController : MonoBehaviour
 
     IFuzzyEngine fuzzyEngine;
     LinguisticVariable carCount, queueLength, greenLightDurationVar;
-    IMembershipFunction nullCount, lowCount, mediumCount, HighCount, nullQueue, smallQueue,
+    IMembershipFunction nullCount, lowCount, mediumCount, highCount, nullQueue, smallQueue,
     mediumQueue, bigQueue, nullGreen, shortGreen, mediumGreen, longGreen;
     FuzzyRule rule0, rule1, rule2, rule3, rule4, rule5, rule6, rule7, rule8, rule9;
     private void Start()
@@ -37,23 +36,26 @@ public class MainTrafficController : MonoBehaviour
         fuzzyEngine = new FuzzyEngineFactory().Default();
 
 
+        // Dodanie i dostosowanie funkcji przynale¿noœci
+        // Dodanie i dostosowanie funkcji przynale¿noœci
         carCount = new LinguisticVariable("CarCount");
-        nullCount = carCount.MembershipFunctions.AddTrapezoid("Null", 0, 0, 0, 0);
-        lowCount = carCount.MembershipFunctions.AddTrapezoid("Low", 0, 0, 10, 20);
-        mediumCount = carCount.MembershipFunctions.AddTrapezoid("Medium", 10, 15, 20, 20);
-        HighCount = carCount.MembershipFunctions.AddTrapezoid("High", 20, 30, 30, 20);
+        nullCount = carCount.MembershipFunctions.AddTrapezoid("Null", 0.0, 0.0, 2.0, 5.0);
+        lowCount = carCount.MembershipFunctions.AddTrapezoid("Low", 3.0, 5.0, 10.0, 15.0);
+        mediumCount = carCount.MembershipFunctions.AddTrapezoid("Medium", 10.0, 15.0, 20.0, 25.0);
+        highCount = carCount.MembershipFunctions.AddTrapezoid("High", 20.0, 25.0, 30.0, 35.0);
 
         queueLength = new LinguisticVariable("QueueLength");
-        nullQueue = queueLength.MembershipFunctions.AddTrapezoid("Null", 0, 0, 0, 0);
-        smallQueue = queueLength.MembershipFunctions.AddTrapezoid("Low", 0, 0, 10, 20);
-        mediumQueue = queueLength.MembershipFunctions.AddTrapezoid("Medium", 10, 15, 20, 20);
-        bigQueue = queueLength.MembershipFunctions.AddTrapezoid("High", 20, 30, 30, 20);
+        nullQueue = queueLength.MembershipFunctions.AddTrapezoid("Null", 0.0, 0.0, 4.5, 9.0);
+        smallQueue = queueLength.MembershipFunctions.AddTrapezoid("Low", 4.5, 9.0, 13.5, 18.0);
+        mediumQueue = queueLength.MembershipFunctions.AddTrapezoid("Medium", 13.5, 18.0, 22.5, 27.0);
+        bigQueue = queueLength.MembershipFunctions.AddTrapezoid("High", 22.5, 27.0, 31.5, 36.0);
 
         greenLightDurationVar = new LinguisticVariable("GreenLightDuration");
-        nullGreen = greenLightDurationVar.MembershipFunctions.AddTrapezoid("Null", 0, 0, 0, 0);
-        shortGreen = greenLightDurationVar.MembershipFunctions.AddTrapezoid("Short", 5, 10, 15, 20);
-        mediumGreen = greenLightDurationVar.MembershipFunctions.AddTrapezoid("Medium", 10, 15, 20, 20);
-        longGreen = greenLightDurationVar.MembershipFunctions.AddTrapezoid("Long", 15, 20, 25, 20);
+        nullGreen = greenLightDurationVar.MembershipFunctions.AddTrapezoid("Null", 0.0, 0.0, 5.0, 10.0);
+        shortGreen = greenLightDurationVar.MembershipFunctions.AddTrapezoid("Short", 5.0, 10.0, 15.0, 20.0);
+        mediumGreen = greenLightDurationVar.MembershipFunctions.AddTrapezoid("Medium", 15.0, 20.0, 25.0, 30.0);
+        longGreen = greenLightDurationVar.MembershipFunctions.AddTrapezoid("Long", 25.0, 30.0, 35.0, 40.0);
+
 
 
         rule0 = Rule.If(carCount.Is(nullCount).And(queueLength.Is(nullQueue))).Then(greenLightDurationVar.Is(nullGreen));
@@ -63,15 +65,26 @@ public class MainTrafficController : MonoBehaviour
         rule4 = Rule.If(carCount.Is(mediumCount).And(queueLength.Is(smallQueue))).Then(greenLightDurationVar.Is(mediumGreen));
         rule5 = Rule.If(carCount.Is(mediumCount).And(queueLength.Is(mediumQueue))).Then(greenLightDurationVar.Is(mediumGreen));
         rule6 = Rule.If(carCount.Is(mediumCount).And(queueLength.Is(bigQueue))).Then(greenLightDurationVar.Is(longGreen));
-        rule7 = Rule.If(carCount.Is(HighCount).And(queueLength.Is(smallQueue))).Then(greenLightDurationVar.Is(mediumGreen));
-        rule8 = Rule.If(carCount.Is(HighCount).And(queueLength.Is(mediumCount))).Then(greenLightDurationVar.Is(longGreen));
-        rule9 = Rule.If(carCount.Is(HighCount).And(queueLength.Is(bigQueue))).Then(greenLightDurationVar.Is(longGreen));
+        rule7 = Rule.If(carCount.Is(highCount).And(queueLength.Is(smallQueue))).Then(greenLightDurationVar.Is(mediumGreen));
+        rule8 = Rule.If(carCount.Is(highCount).And(queueLength.Is(mediumCount))).Then(greenLightDurationVar.Is(longGreen));
+        rule9 = Rule.If(carCount.Is(highCount).And(queueLength.Is(bigQueue))).Then(greenLightDurationVar.Is(longGreen));
+
+        fuzzyEngine.Rules.Add(rule1);
+        fuzzyEngine.Rules.Add(rule2);
+        fuzzyEngine.Rules.Add(rule3);
+        fuzzyEngine.Rules.Add(rule4);
+        fuzzyEngine.Rules.Add(rule5);
+        fuzzyEngine.Rules.Add(rule6);
+        fuzzyEngine.Rules.Add(rule7);
+        fuzzyEngine.Rules.Add(rule8);
+        fuzzyEngine.Rules.Add(rule9);
 
         listToChangeColors.Add(Phase1);
         listToChangeColors.Add(Phase2);
         listToChangeColors.Add(Phase3);
         listToChangeColors.Add(Phase4);
         listToChangeColors.Add(Phase5);
+
         foreach (var listForPhase in listToChangeColors)
         {
             foreach (var lineInPhase in listForPhase)
@@ -144,7 +157,7 @@ public class MainTrafficController : MonoBehaviour
                 }
 
                 // Odczekaj czas zielonego œwiat³a
-                yield return new WaitForSeconds(greenLightDuration);
+                yield return new WaitForSeconds((float)greenLightDuration);
 
                 // Zmieñ œwiat³a bie¿¹cej fazy na ¿ó³te
                 foreach (var lineInPhase in listToChangeColors[phaseIndex])
@@ -167,8 +180,8 @@ public class MainTrafficController : MonoBehaviour
 
     private void manageTimeOfColors(List<LineLightManager> listOfPhase)
     {
-        int carCountOnActivePhase = 0;
-        float carQueueOnActivePhase = 0;
+        double carCountOnActivePhase = 0;
+        double carQueueOnActivePhase = 0;
         foreach (var line in listOfPhase)
         {
             if (CarCountOnInlet.ContainsKey(line) && CarQueueOnInlet.ContainsKey(line))
@@ -176,16 +189,25 @@ public class MainTrafficController : MonoBehaviour
                 carCountOnActivePhase += CarCountOnInlet[line];
                 carQueueOnActivePhase += CarQueueOnInlet[line];
             }
-            if (carCountOnActivePhase > 0 && carQueueOnActivePhase >= 0)
-            {
-                // Uruchomienie silnika rozmytego i obliczenie wartoœci wyjœciowej
-                var fuzzyResult = fuzzyEngine.Defuzzify(new { carCount = carCountOnActivePhase, queueLength = carQueueOnActivePhase });
+            nullCount.Fuzzify(carCountOnActivePhase);
+            nullQueue.Fuzzify(carQueueOnActivePhase);
+            lowCount.Fuzzify(carCountOnActivePhase);
+            smallQueue.Fuzzify(carQueueOnActivePhase);
+            mediumCount.Fuzzify(carCountOnActivePhase);
+            mediumQueue.Fuzzify(carQueueOnActivePhase);
+            highCount.Fuzzify(carCountOnActivePhase);
+            bigQueue.Fuzzify(carQueueOnActivePhase);
 
-                // Ustawienie wyniku jako czas trwania zielonego œwiat³a
-                greenLightDuration = (float)fuzzyResult;
-            }
+            print("CAR QUEUE : " + carQueueOnActivePhase + "CAR COUNT: " + carCountOnActivePhase);
+
+            // Uruchomienie silnika rozmytego i obliczenie wartoœci wyjœciowej
+            var fuzzyResult = fuzzyEngine.Defuzzify(new { carCount = carCountOnActivePhase, queueLength = carQueueOnActivePhase });
+            print("CAHNGED NA: " + fuzzyResult.ToString());
+            // Ustawienie wyniku jako czas trwania zielonego œwiat³a
+            greenLightDuration = fuzzyResult;
+
 
         }
-       
+
     }
 }
