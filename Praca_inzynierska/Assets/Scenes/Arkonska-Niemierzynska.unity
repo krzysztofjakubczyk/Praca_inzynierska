@@ -4706,6 +4706,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentColor: 0
   countOfVehicles: 0
+  queueLength: 0
   idAtDraw: 15
   sensors:
   - {fileID: 1028476408}
@@ -5140,6 +5141,10 @@ PrefabInstance:
     - target: {fileID: 2344605760804664235, guid: a62126b02651b0f47933ce590b5915ee, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2951707867576324168, guid: a62126b02651b0f47933ce590b5915ee, type: 3}
+      propertyPath: wayPointForLane.Array.size
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2951707867576324168, guid: a62126b02651b0f47933ce590b5915ee, type: 3}
       propertyPath: wayPointForLane.Array.data[0]
@@ -10871,6 +10876,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentColor: 0
   countOfVehicles: 0
+  queueLength: 0
   idAtDraw: 9
   sensors:
   - {fileID: 1240040500}
@@ -16679,6 +16685,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentColor: 0
   countOfVehicles: 0
+  queueLength: 0
   idAtDraw: 12
   sensors:
   - {fileID: 1732892113}
@@ -16842,6 +16849,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentColor: 0
   countOfVehicles: 0
+  queueLength: 0
   idAtDraw: 8
   sensors:
   - {fileID: 373028786}
@@ -18939,6 +18947,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentColor: 0
   countOfVehicles: 0
+  queueLength: 0
   idAtDraw: 7
   sensors:
   - {fileID: 773378848}
@@ -21026,6 +21035,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentColor: 0
   countOfVehicles: 0
+  queueLength: 0
   idAtDraw: 11
   sensors:
   - {fileID: 528319328}
@@ -25147,6 +25157,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentColor: 0
   countOfVehicles: 0
+  queueLength: 0
   idAtDraw: 0
   sensors: []
 --- !u!1 &1426745852
@@ -26602,6 +26613,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentColor: 0
   countOfVehicles: 0
+  queueLength: 0
   idAtDraw: 0
   sensors: []
 --- !u!1 &1493289581
@@ -28888,6 +28900,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentColor: 0
   countOfVehicles: 0
+  queueLength: 0
   idAtDraw: 14
   sensors:
   - {fileID: 4021728}
@@ -29776,6 +29789,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentColor: 0
   countOfVehicles: 0
+  queueLength: 0
   idAtDraw: 13
   sensors:
   - {fileID: 2132281766}
@@ -31349,6 +31363,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentColor: 0
   countOfVehicles: 0
+  queueLength: 0
   idAtDraw: 6
   sensors:
   - {fileID: 1564917145}
@@ -32090,6 +32105,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: LightMonitorForCar
       objectReference: {fileID: 0}
+    - target: {fileID: 591444944916482104, guid: 4c473e3e40e8f0f48861fd2cff7e86b8, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6402830419772076552, guid: 4c473e3e40e8f0f48861fd2cff7e86b8, type: 3}
       propertyPath: m_ProvidesContacts
       value: 0
@@ -32483,6 +32502,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentColor: 0
   countOfVehicles: 0
+  queueLength: 0
   idAtDraw: 5
   sensors:
   - {fileID: 297140219}
@@ -36982,6 +37002,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentColor: 0
   countOfVehicles: 0
+  queueLength: 0
   idAtDraw: 10
   sensors:
   - {fileID: 52188933}

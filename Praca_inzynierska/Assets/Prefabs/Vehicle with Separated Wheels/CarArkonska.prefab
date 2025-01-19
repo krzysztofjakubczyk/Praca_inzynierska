@@ -103,6 +103,7 @@ MonoBehaviour:
   detectionDistance: 12.6
   stopDistance: 11.8
   detectionInterval: 0.5
+  vehicleLength: 4.5
   WantWarnings: 0
   CurrentWaypoint: {fileID: 0}
   FullSpeed: 15

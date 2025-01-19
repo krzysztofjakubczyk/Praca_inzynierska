@@ -1,3 +1,6 @@
+using FLS;
+using FLS.MembershipFunctions;
+using FLS.Rules;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +17,7 @@ public class MainTrafficController : MonoBehaviour
     [SerializeField] private List<List<LineLightManager>> listToChangeColors = new List<List<LineLightManager>>();
 
     [SerializeField] private Dictionary<LineLightManager, int> CarCountOnInlet = new Dictionary<LineLightManager, int>();
-    [SerializeField] private Dictionary<LineLightManager, int> CarQueueOnInlet = new Dictionary<LineLightManager, int>();
+    [SerializeField] private Dictionary<LineLightManager, float> CarQueueOnInlet = new Dictionary<LineLightManager, float>();
 
     [Header("Floats and ints")]
     [SerializeField] private float greenLightDuration;  // Duration of the green light
@@ -23,8 +26,47 @@ public class MainTrafficController : MonoBehaviour
 
     private float timeBeforeGreenLights = 5f;
     public bool wantWarning;
+
+    IFuzzyEngine fuzzyEngine;
+    LinguisticVariable carCount, queueLength, greenLightDurationVar;
+    IMembershipFunction nullCount, lowCount, mediumCount, HighCount, nullQueue, smallQueue,
+    mediumQueue, bigQueue, nullGreen, shortGreen, mediumGreen, longGreen;
+    FuzzyRule rule0, rule1, rule2, rule3, rule4, rule5, rule6, rule7, rule8, rule9;
     private void Start()
     {
+        fuzzyEngine = new FuzzyEngineFactory().Default();
+
+
+        carCount = new LinguisticVariable("CarCount");
+        nullCount = carCount.MembershipFunctions.AddTrapezoid("Null", 0, 0, 0, 0);
+        lowCount = carCount.MembershipFunctions.AddTrapezoid("Low", 0, 0, 10, 20);
+        mediumCount = carCount.MembershipFunctions.AddTrapezoid("Medium", 10, 15, 20, 20);
+        HighCount = carCount.MembershipFunctions.AddTrapezoid("High", 20, 30, 30, 20);
+
+        queueLength = new LinguisticVariable("QueueLength");
+        nullQueue = queueLength.MembershipFunctions.AddTrapezoid("Null", 0, 0, 0, 0);
+        smallQueue = queueLength.MembershipFunctions.AddTrapezoid("Low", 0, 0, 10, 20);
+        mediumQueue = queueLength.MembershipFunctions.AddTrapezoid("Medium", 10, 15, 20, 20);
+        bigQueue = queueLength.MembershipFunctions.AddTrapezoid("High", 20, 30, 30, 20);
+
+        greenLightDurationVar = new LinguisticVariable("GreenLightDuration");
+        nullGreen = greenLightDurationVar.MembershipFunctions.AddTrapezoid("Null", 0, 0, 0, 0);
+        shortGreen = greenLightDurationVar.MembershipFunctions.AddTrapezoid("Short", 5, 10, 15, 20);
+        mediumGreen = greenLightDurationVar.MembershipFunctions.AddTrapezoid("Medium", 10, 15, 20, 20);
+        longGreen = greenLightDurationVar.MembershipFunctions.AddTrapezoid("Long", 15, 20, 25, 20);
+
+
+        rule0 = Rule.If(carCount.Is(nullCount).And(queueLength.Is(nullQueue))).Then(greenLightDurationVar.Is(nullGreen));
+        rule1 = Rule.If(carCount.Is(lowCount).And(queueLength.Is(smallQueue))).Then(greenLightDurationVar.Is(shortGreen));
+        rule2 = Rule.If(carCount.Is(lowCount).And(queueLength.Is(mediumQueue))).Then(greenLightDurationVar.Is(shortGreen));
+        rule3 = Rule.If(carCount.Is(lowCount).And(queueLength.Is(bigQueue))).Then(greenLightDurationVar.Is(mediumGreen));
+        rule4 = Rule.If(carCount.Is(mediumCount).And(queueLength.Is(smallQueue))).Then(greenLightDurationVar.Is(mediumGreen));
+        rule5 = Rule.If(carCount.Is(mediumCount).And(queueLength.Is(mediumQueue))).Then(greenLightDurationVar.Is(mediumGreen));
+        rule6 = Rule.If(carCount.Is(mediumCount).And(queueLength.Is(bigQueue))).Then(greenLightDurationVar.Is(longGreen));
+        rule7 = Rule.If(carCount.Is(HighCount).And(queueLength.Is(smallQueue))).Then(greenLightDurationVar.Is(mediumGreen));
+        rule8 = Rule.If(carCount.Is(HighCount).And(queueLength.Is(mediumCount))).Then(greenLightDurationVar.Is(longGreen));
+        rule9 = Rule.If(carCount.Is(HighCount).And(queueLength.Is(bigQueue))).Then(greenLightDurationVar.Is(longGreen));
+
         listToChangeColors.Add(Phase1);
         listToChangeColors.Add(Phase2);
         listToChangeColors.Add(Phase3);
@@ -49,14 +91,14 @@ public class MainTrafficController : MonoBehaviour
         while (true)
         {
             Dictionary<LineLightManager, int> updatedCarCount = new Dictionary<LineLightManager, int>();
-            Dictionary<LineLightManager, int> updatedCarQueue = new Dictionary<LineLightManager, int>();
+            Dictionary<LineLightManager, float> updatedCarQueue = new Dictionary<LineLightManager, float>();
             // tymczasowy s³ownik by nie edytowaæ przetwarzanego s³ownika
 
             foreach (var kvp in CarCountOnInlet) //przejdz sobie po ilosci aut
             {
                 LineLightManager LineController = kvp.Key; //lineManager
                 int countOfVehiclesOnLine = LineController.countOfVehicles; //tymczasowa zmienna, która wyra¿a iloœæ aut na danym pasie
-                int queueOfVehiclesOnLine = LineController.queueLength;
+                float queueOfVehiclesOnLine = LineController.queueLength;
                 updatedCarCount[LineController] = countOfVehiclesOnLine; //wartosc dla inta w slownika sterowników jest zapisana do tymczasowego s³ownika
                 updatedCarQueue[LineController] = queueOfVehiclesOnLine;
             }
@@ -65,7 +107,7 @@ public class MainTrafficController : MonoBehaviour
             {
                 LineLightManager LineController = kvp.Key; //lineManager
                 int countOfVehiclesOnLine = LineController.countOfVehicles; //tymczasowa zmienna, która wyra¿a iloœæ aut na danym pasie
-                int countOfQueueOnLine = LineController.queueLength; //tymczasowa zmienna, która wyra¿a iloœæ aut na danym pasie
+                float countOfQueueOnLine = LineController.queueLength; //tymczasowa zmienna, która wyra¿a iloœæ aut na danym pasie
                 CarCountOnInlet[LineController] = countOfVehiclesOnLine; // Przenieœ dane z tymczasowego s³ownika do g³ównego
                 CarQueueOnInlet[LineController] = countOfQueueOnLine; // Przenieœ dane z tymczasowego s³ownika do g³ównego
             }
@@ -126,7 +168,7 @@ public class MainTrafficController : MonoBehaviour
     private void manageTimeOfColors(List<LineLightManager> listOfPhase)
     {
         int carCountOnActivePhase = 0;
-        int carQueueOnActivePhase = 0;
+        float carQueueOnActivePhase = 0;
         foreach (var line in listOfPhase)
         {
             if (CarCountOnInlet.ContainsKey(line) && CarQueueOnInlet.ContainsKey(line))
@@ -134,40 +176,16 @@ public class MainTrafficController : MonoBehaviour
                 carCountOnActivePhase += CarCountOnInlet[line];
                 carQueueOnActivePhase += CarQueueOnInlet[line];
             }
+            if (carCountOnActivePhase > 0 && carQueueOnActivePhase >= 0)
+            {
+                // Uruchomienie silnika rozmytego i obliczenie wartoœci wyjœciowej
+                var fuzzyResult = fuzzyEngine.Defuzzify(new { carCount = carCountOnActivePhase, queueLength = carQueueOnActivePhase });
+
+                // Ustawienie wyniku jako czas trwania zielonego œwiat³a
+                greenLightDuration = (float)fuzzyResult;
+            }
+
         }
-        string sizeOfJam = null;
-        if (carCountOnActivePhase <= 10 && carQueueOnActivePhase<= 50)
-        {
-            sizeOfJam = "small";
-        }
-        else if ((carCountOnActivePhase > 10 && carCountOnActivePhase <= 15) && (carQueueOnActivePhase > 50 && carQueueOnActivePhase <= 70))
-        {
-            sizeOfJam = "medium";
-            if (wantWarning) print("medium ustawiono");
-        }
-        else if ((carCountOnActivePhase > 15 && carCountOnActivePhase <= 30) && (carQueueOnActivePhase > 70 && carQueueOnActivePhase <=200))
-        {
-            sizeOfJam = "big";
-        }
-        switch (sizeOfJam)
-        {
-            case "small":
-                if (wantWarning) print("small Jam");
-                greenLightDuration = 10;
-                yellowLightDuration = 5;
-                break;
-            case "medium":
-                if (wantWarning) print("medium Jam");
-                greenLightDuration = 15;
-                yellowLightDuration = 5;
-                break;
-            case "big":
-                if (wantWarning) print("big Jam");
-                greenLightDuration = 20;
-                yellowLightDuration = 5;
-                break;
-            case "nulls":
-                break;
-        }
+       
     }
 }

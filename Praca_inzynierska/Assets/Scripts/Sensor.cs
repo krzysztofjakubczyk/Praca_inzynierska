@@ -7,7 +7,7 @@ using UnityEngine.Events;
 public class Sensor : MonoBehaviour
 {
     [SerializeField] public int VehicleCount;
-    [SerializeField] public int QueueLength;
+    [SerializeField] public float QueueLength;
     private void OnTriggerEnter(Collider other)
     {
         if (!other.CompareTag("Car")) return;

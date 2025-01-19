@@ -13,7 +13,7 @@ public class LineLightManager : MonoBehaviour
 {
     [SerializeField] public TrafficLightColor currentColor;
     [SerializeField] public int countOfVehicles;
-    [SerializeField] public int queueLength;
+    [SerializeField] public float queueLength;
     [SerializeField] public int idAtDraw;
     public List<Sensor> sensors;
 

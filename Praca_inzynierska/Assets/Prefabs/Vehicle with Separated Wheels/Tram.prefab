@@ -99,10 +99,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c40128ded95e48846b3d38d8b11202b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  controller: {fileID: 0}
+  lineManager: {fileID: 0}
   detectionDistance: 30.3
   stopDistance: 11.8
   detectionInterval: 0.5
+  vehicleLength: 20
   WantWarnings: 1
   CurrentWaypoint: {fileID: 0}
   FullSpeed: 15

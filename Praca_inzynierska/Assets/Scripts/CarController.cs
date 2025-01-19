@@ -11,7 +11,7 @@ public class CarController : MonoBehaviour
     [SerializeField] float detectionDistance = 10f;
     [SerializeField] float stopDistance = 8f;
     [SerializeField] float detectionInterval = 0.5f;
-    public int vehicleLength;
+    public float vehicleLength;
     public bool WantWarnings;
     public Waypoint CurrentWaypoint;  // Aktualny waypoint, na który pojazd zmierza
     public int FullSpeed;
