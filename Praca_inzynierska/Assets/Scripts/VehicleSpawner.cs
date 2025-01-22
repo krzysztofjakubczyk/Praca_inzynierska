@@ -1,14 +1,15 @@
 using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class VehicleSpawner : MonoBehaviour
 {
     [SerializeField] GameObject[] CarPrefab;
-    [SerializeField] float spawnInterval = 2.0f; // Czas spawnowania pojazdów (w sekundach)
+    [SerializeField] public float spawnInterval = 0.5f; // Domyœlny czas spawnowania pojazdów
     [SerializeField] public int maxVehicles; // Maksymalna liczba pojazdów na drodze
-    [SerializeField] int currentVehicleCount = 0; // Liczba aktualnie spawnowanych pojazdów
+    [SerializeField] private int currentVehicleCount = 0; // Liczba aktualnie spawnowanych pojazdów
+
+    private const float realToSimRatio = 1f; // 15 sekund symulacji = 1 sekunda rzeczywista
+
     private void Start()
     {
         StartCoroutine(SpawnVehicles()); // Rozpocznij spawnowanie pojazdów
@@ -22,8 +23,15 @@ public class VehicleSpawner : MonoBehaviour
             {
                 SpawnVehicle(); // Spawnowanie pojazdu
             }
-            yield return new WaitForSeconds(spawnInterval); // Czekaj na kolejny cykl spawnowania
+
+            // Czas oczekiwania zale¿ny od skali symulacji
+            yield return new WaitForSeconds(spawnInterval / realToSimRatio);
         }
+    }
+
+    public void SetMaxVehicles(int max)
+    {
+        maxVehicles = max;
     }
 
     private void SpawnVehicle()
@@ -35,24 +43,9 @@ public class VehicleSpawner : MonoBehaviour
         Instantiate(vehiclePrefab, transform.position, transform.rotation);
 
         // Zwiêksz licznik aktualnych pojazdów
-        currentVehicleCount++;  
+        currentVehicleCount++;
     }
 
-    private void Update()
-    {
-        if(Input.GetKeyDown(KeyCode.S))
-        {
-            if (!gameObject.CompareTag("Spawner")) return;
-            maxVehicles++;
-            SpawnVehicle();
-        }
-        if (Input.GetKeyDown(KeyCode.T))
-        {
-            if (!gameObject.CompareTag("TramSpawner")) return;
-            maxVehicles++;
-            SpawnVehicle();
-        }
-    }
     public void ResetSpawner()
     {
         currentVehicleCount = 0;

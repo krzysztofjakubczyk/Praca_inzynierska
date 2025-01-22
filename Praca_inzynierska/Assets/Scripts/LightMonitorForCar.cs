@@ -18,10 +18,10 @@ public class LightMonitorForCar : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (wantWarning)
-        {
-            print("Wyjechano z triggera");
-        }
+        //if (wantWarning)
+        //{
+        //    print("Wyjechano z triggera");
+        //}
         // Pobierz komponent CarController i powiadom go o wyjœciu z triggera
         CarController carController = other.GetComponent<CarController>();
         if (carController != null)
