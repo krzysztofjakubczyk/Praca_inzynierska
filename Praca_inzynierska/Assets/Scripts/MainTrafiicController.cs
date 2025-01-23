@@ -53,23 +53,23 @@ public class MainTrafficController : MonoBehaviour
 
         var carCountMemberships = new Dictionary<string, (double a, double b, double c, double d)>
         {
-            { "Low", (0, 0, 7, 10) },
-            { "Medium", (8, 10, 20, 22) },
-            { "High", (20, 22, 30, 30) }
+            { "Low", (0,5,9,13) },
+            { "Medium", (9,13,17,21) },
+            { "High", (17,21,25,29) }
         };
 
         var queueLengthMemberships = new Dictionary<string, (double a, double b, double c, double d)>
         {
-            { "Small", (0, 0, 15, 45) },
-            { "Medium", (40, 50, 60, 70) },
-            { "Big", (60, 80, 90, 100) }
-        };
+            { "Small", (0,20,36,52) },
+            { "Medium", ( 36, 52, 68, 84) },
+            { "Big", (68, 84, 100, 116) }
+        };  
 
         var greenLightDurationMemberships = new Dictionary<string, (double a, double b, double c, double d)>
         {
-            { "Short", (0, 10, 20, 30) },
-            { "Medium", (20, 30, 50, 60) },
-            { "Long", (50, 60, 70, 80) }
+            { "Short", (0, 10, 25, 35) },
+            { "Medium", (30, 40, 50, 60) },
+            { "Long", (54.74, 64.74, 69.74, 74.74) }
         };
 
         fuzzyLogicHandler.InitializeTrapezoidalMembershipFunctions(carCountMemberships, queueLengthMemberships, greenLightDurationMemberships);
@@ -143,8 +143,8 @@ public class MainTrafficController : MonoBehaviour
 
     private void ManageGreenLightDuration(List<LineLightManager> phase)
     {
-        double carCount = 0;
-        double queueLength = 0;
+        double carCount = 15;
+        double queueLength = 60;
 
         foreach (var line in phase)
         {
@@ -154,7 +154,7 @@ public class MainTrafficController : MonoBehaviour
                 queueLength += CarQueueOnInlet[line];
             }
         }
-        print("car count: " + carCount + " queue length: " + queueLength);
+        //print("car count: " + carCount + " queue length: " + queueLength);
         var fuzzifiedInputs = fuzzyLogicHandler.Fuzzify(carCount, queueLength);
         var aggregatedOutputs = fuzzyLogicHandler.ApplyRules(fuzzifiedInputs);
 

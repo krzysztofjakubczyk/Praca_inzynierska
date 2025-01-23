@@ -51,8 +51,8 @@ public class FuzzyLogicHandler
         {
             { "CarCount", CalculateMemberships(carCount, "CarCount") },
             { "QueueLength", CalculateMemberships(queueLength, "QueueLength") }
-        };
 
+        };
         return fuzzifiedInputs;
     }
 
@@ -80,8 +80,10 @@ public class FuzzyLogicHandler
         double a = parameters.a, b = parameters.b, c = parameters.c, d = parameters.d;
 
         if (x < a || x > d)
+        {
+            //Debug.Log($"Value {x} is outside range ({a}, {d}) for this membership function.");
             return 0;
-
+        }
         if (x >= a && x < b)
             return (x - a) / (b - a);
 
@@ -100,13 +102,14 @@ public class FuzzyLogicHandler
 
         foreach (var rule in Rules)
         {
-            var conditions = rule.Condition.Split('.');
+            Debug.Log($"Evaluating rule: {rule.Condition}");
             double ruleStrength = double.MaxValue;
+
+            var conditions = rule.Condition.Split('.');
 
             foreach (var condition in conditions)
             {
                 var splitCondition = condition.Split(':');
-
                 if (splitCondition.Length != 2)
                 {
                     Debug.LogError($"Invalid condition format: {condition}");
@@ -131,11 +134,22 @@ public class FuzzyLogicHandler
                     break;
                 }
 
-                ruleStrength = Mathf.Min((float)ruleStrength, (float)fuzzifiedInputs[variableName][membershipName]);
+                var membershipValue = fuzzifiedInputs[variableName][membershipName];
+                Debug.Log($"Condition: {condition}, Membership Value: {membershipValue}");
+
+                if (membershipValue == 0)
+                {
+                    ruleStrength = 0; // Jeœli przynale¿noœæ = 0, regu³a nie powinna byæ aktywna
+                    break;
+                }
+
+                ruleStrength = Mathf.Min((float)ruleStrength, (float)membershipValue);
             }
 
             if (ruleStrength > 0)
             {
+                Debug.Log($"Rule: {rule.Condition}, Strength: {ruleStrength}");
+
                 if (!aggregatedOutputs.ContainsKey(rule.Output))
                 {
                     aggregatedOutputs[rule.Output] = ruleStrength;
@@ -149,6 +163,7 @@ public class FuzzyLogicHandler
 
         return aggregatedOutputs;
     }
+
 
     public double Defuzzify(Dictionary<string, double> aggregatedOutputs, string method = "centroid")
     {
@@ -171,15 +186,18 @@ public class FuzzyLogicHandler
                     denominator += Math.Min(membership, output.Value);
                 }
             }
+            Debug.Log($"Numerator: {numerator}, Denominator: {denominator}");
 
             if (denominator > 0)
             {
                 result = numerator / denominator;
             }
-            else
+            else if (denominator == 0)
             {
-                Debug.LogError("Denominator is zero during defuzzification.");
+                Debug.Log("Denominator is zero during defuzzification.");
+                return 10; // Zwróæ minimalny domyœlny czas zielonego œwiat³a
             }
+
         }
         else if (method == "bisector")
         {

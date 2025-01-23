@@ -3,51 +3,56 @@ using UnityEngine;
 
 public class VehicleSpawner : MonoBehaviour
 {
-    [SerializeField] GameObject[] CarPrefab;
-    [SerializeField] public float spawnInterval = 0.5f; // Domyœlny czas spawnowania pojazdów
-    [SerializeField] public int maxVehicles; // Maksymalna liczba pojazdów na drodze
-    [SerializeField] private int currentVehicleCount = 0; // Liczba aktualnie spawnowanych pojazdów
+    [SerializeField] private GameObject[] CarPrefab;
+    [SerializeField] public int MaxVehicles = 100; // Maksymalna liczba pojazdów na drodze
+    [SerializeField] private float spawnInterval; // Dynamicznie ustawiane w TimeManager
+    public int CurrentVehicleCount { get; private set; } = 0;
 
-    private const float realToSimRatio = 1f; // 15 sekund symulacji = 1 sekunda rzeczywista
+    public void SetSpawnInterval(float interval)
+    {
+        spawnInterval = interval; // Ustaw interwa³ spawnowania
+    }
 
     private void Start()
     {
-        StartCoroutine(SpawnVehicles()); // Rozpocznij spawnowanie pojazdów
+        StartCoroutine(SpawnVehicles());
     }
 
     private IEnumerator SpawnVehicles()
     {
         while (true)
         {
-            if (currentVehicleCount < maxVehicles)
+            if (CurrentVehicleCount < MaxVehicles)
             {
-                SpawnVehicle(); // Spawnowanie pojazdu
+                SpawnVehicle();
             }
 
-            // Czas oczekiwania zale¿ny od skali symulacji
-            yield return new WaitForSeconds(spawnInterval / realToSimRatio);
+            yield return new WaitForSeconds(spawnInterval);
         }
     }
 
-    public void SetMaxVehicles(int max)
+    public void SpawnVehicle()
     {
-        maxVehicles = max;
-    }
+        if (CarPrefab.Length > 0)
+        {
 
-    private void SpawnVehicle()
-    {
-        // Wybierz losowy prefab z tablicy
-        GameObject vehiclePrefab = CarPrefab[Random.Range(0, CarPrefab.Length)];
+            // Sprawdzanie, czy pojazd nie koliduje z innymi
+            Vector3 spawnPosition = transform.position;
 
-        // Tworzenie pojazdu w punkcie spawnowania
-        Instantiate(vehiclePrefab, transform.position, transform.rotation);
-
-        // Zwiêksz licznik aktualnych pojazdów
-        currentVehicleCount++;
+            Collider[] hitColliders = Physics.OverlapSphere(spawnPosition, 2f); // SprawdŸ, czy w promieniu 2m s¹ pojazdy
+            if (hitColliders.Length == 0)
+            {
+                // Spawnowanie pojazdu
+                GameObject vehiclePrefab = CarPrefab[Random.Range(0, CarPrefab.Length)];
+                print("spawnuje autko" + vehiclePrefab.name);
+                Instantiate(vehiclePrefab, spawnPosition, transform.rotation);
+                CurrentVehicleCount++;
+            }
+        }
     }
 
     public void ResetSpawner()
     {
-        currentVehicleCount = 0;
+        CurrentVehicleCount = 0;
     }
 }

@@ -8,7 +8,7 @@ public class TimeManager : MonoBehaviour
     [SerializeField] private TMP_Dropdown dropDownDay;
     [SerializeField] private TMP_Dropdown dropDownHour;
     [SerializeField] private List<VehicleSpawner> spawners;
-    [SerializeField] private Dictionary<VehicleSpawner, int> countForVehicles = new Dictionary<VehicleSpawner, int>();
+    [SerializeField] private List<VehicleSpawner> tramSpawners;
     [SerializeField] private int[] VehicleCountToSpawn;
     [SerializeField] private TMP_Text timeText;
 
@@ -16,37 +16,46 @@ public class TimeManager : MonoBehaviour
     private bool isSpeeded = false;
     private float simulationTime = 0f; // Time in seconds for simulation
     private const float realToSimRatio = 1f; // 15 seconds in simulation = 1 second in real-time
-
+    int choosedHour;
+    int totalVehicles;
+    float hourFactor;
+    int indexOfHour = 0;
     private void Start()
     {
-        // Initialize dictionary for tracking vehicle counts for each spawner
-        foreach (var spawner in spawners)
-        {
-            countForVehicles[spawner] = 0;
-        }
-
         // Set initial simulation speed
         Time.timeScale = realToSimRatio;
+        ChoosedDateAndHour();
+        foreach(var tramSpawner in tramSpawners)
+        {
+            tramSpawner.MaxVehicles = 1;
+            tramSpawner.SetSpawnInterval(720);
+        }
     }
 
     private void Update()
     {
-        // Update simulation time
+        // Aktualizuj czas symulacji
         simulationTime += Time.deltaTime * realToSimRatio;
-        timeText.text = FormatSimulationTime(simulationTime);
 
-        // Toggle pause on key press
+        // Oblicz dynamicznie zmieniaj¹c¹ siê godzinê symulacji
+        string currentSimulationTime = GetFormattedSimulationTime();
+
+        // Wyœwietl dynamiczny czas symulacji na ekranie
+        timeText.text = currentSimulationTime;
+
+        // Pauzowanie gry
         if (Input.GetKeyDown(KeyCode.P))
         {
             TogglePause();
         }
 
-        // Toggle speed-up on key press
+        // Przyspieszanie symulacji
         if (Input.GetKeyDown(KeyCode.Q))
         {
             ToggleSpeedUp();
         }
     }
+
 
     private void ToggleSpeedUp()
     {
@@ -69,45 +78,49 @@ public class TimeManager : MonoBehaviour
         string dayChoosedString = dropDownDay.options[dayChoosed].text;
 
         // Get selected hour
-        int indexOfHour = dropDownHour.value;
-        int choosedHour = 7;
+        indexOfHour = dropDownHour.value;
+        string hourChoosedString = dropDownHour.options[indexOfHour].text;
+
         switch (indexOfHour)
         {
             case 0:
                 choosedHour = 7;
+                totalVehicles = 3639;
+                hourFactor = 1.2f;
+
                 break;
             case 1:
                 choosedHour = 12;
+                totalVehicles = 2719;
+                hourFactor = 0.9f;
                 break;
             case 2:
                 choosedHour = 15;
+                totalVehicles = 3733;
+                hourFactor = 1.08f;
                 break;
+
             case 3:
                 choosedHour = 21;
+                totalVehicles = 1173;
+                hourFactor = 0.72f;
                 break;
         }
-        string hourChoosedString = dropDownHour.options[indexOfHour].text;
-        // Adjust vehicle counts based on the selected day and hour
-        AdjustVehicleCountsForDayAndHour(dayChoosedString, indexOfHour);
-
-        // Define vehicle counts per intersection
-        int[] totalVehicles = { 11879, 7629, 2599, 3924 };
-
-        // Define the hour factors (calculated earlier)
-        float[] hourFactors = { 1.2f, 0.9f, 1.08f, 0.72f }; // For 7, 12, 15, 21 hours
 
         for (int i = 0; i < spawners.Count; i++)
         {
-            float totalFactor = hourFactors[indexOfHour];
-            int vehiclesForThisSpawner = Mathf.RoundToInt(totalVehicles[i] * totalFactor / 15.6f); // Adjust by totalFactor
+            // Oblicz liczbê pojazdów na sekundê
+            float vehiclesPerSecond = (totalVehicles / 3600f)/4; // 3600 sekund w godzinie
+                                                             // Interwa³ spawnowania w sekundach (1 podzielone przez pojazdy na sekundê)
+            float spawnInterval = 1f / vehiclesPerSecond;
 
-            // Ustaw maksymaln¹ liczbê pojazdów w spawnerze
-            spawners[i].SetMaxVehicles(vehiclesForThisSpawner);
-            countForVehicles[spawners[i]] = vehiclesForThisSpawner;
+            print($"Total vehicles for hour {choosedHour}: {totalVehicles}");
+            spawners[i].SetSpawnInterval(spawnInterval); // Ustaw interwa³ dla ka¿dego spawnera
+            spawners[i].MaxVehicles = Mathf.CeilToInt(totalVehicles / 4f);
 
-            // Spawner automatycznie obs³uguje spawnowanie
-            Debug.Log($"Spawner {spawners[i].name} ustawiono na {vehiclesForThisSpawner} pojazdów.");
+            Debug.Log($"Spawner {spawners[i].name}: {vehiclesPerSecond:F2} pojazdów/sek., interwa³: {spawnInterval:F2} s.");
         }
+
         print($"Wybrany dzieñ: {dayChoosedString}, Wybrana godzina: {hourChoosedString}");
     }
 
@@ -117,43 +130,13 @@ public class TimeManager : MonoBehaviour
         VehicleSpawner[] Spawners = VehicleSpawner.FindObjectsOfType<VehicleSpawner>();
         foreach (GameObject Car in Cars)
         {
-            Destroy(Car);
+            Destroy(Car, 0.5f);
         }
         foreach (VehicleSpawner Spawner in Spawners)
         {
             Spawner.ResetSpawner();
         }
         print("reset simulation");
-    }
-
-    private void AdjustVehicleCountsForDayAndHour(string day, int hour)
-    {
-        // Day factor
-        float dayFactor = day switch
-        {
-            "Monday" or "Tuesday" or "Wednesday" or "Thursday" => 1.2f,
-            "Friday" => 1.5f,
-            "Saturday" => 0.8f,
-            "Sunday" => 0.6f,
-            _ => 1.0f
-        };
-
-        // Hour factor
-        float hourFactor = hour switch
-        {
-            7 => 2.0f, // Morning rush  
-            12 => 1.5f, // Lunch hours
-            15 => 1.8f, // Afternoon rush
-            21 => 1.2f, // Evening traffic
-            _ => 1.0f
-        };
-
-        // Adjust vehicle counts using the combined factor
-        float totalFactor = dayFactor * hourFactor;
-        for (int i = 0; i < VehicleCountToSpawn.Length; i++)
-        {
-            VehicleCountToSpawn[i] = Mathf.RoundToInt(VehicleCountToSpawn[i] * totalFactor);
-        }
     }
 
     private void SpeedUpSimulation()
@@ -192,12 +175,25 @@ public class TimeManager : MonoBehaviour
         isPaused = false;
     }
 
-    private string FormatSimulationTime(float timeInSeconds)
+    private string GetFormattedSimulationTime()
     {
-        int hours = Mathf.FloorToInt(timeInSeconds / 3600);
-        int minutes = Mathf.FloorToInt((timeInSeconds % 3600) / 60);
-        int seconds = Mathf.FloorToInt(timeInSeconds % 60);
+        // Oblicz aktualny czas w symulacji na podstawie wybranej godziny i postêpu symulacji
+        int baseHour = choosedHour; // Wybrana godzina
+        int baseMinute = 0;         // Minuty startowe (domyœlnie 0)
 
-        return $"{hours:D2}:{minutes:D2}:{seconds:D2}";
+        // Dodaj czas symulacji (w sekundach)
+        int elapsedSeconds = Mathf.FloorToInt(simulationTime);
+        int currentHour = baseHour + (elapsedSeconds / 3600); // Dodaj pe³ne godziny
+        int currentMinute = baseMinute + ((elapsedSeconds % 3600) / 60); // Dodaj minuty
+        int currentSecond = elapsedSeconds % 60; // Oblicz sekundy
+
+        // Jeœli godzina przekracza 23, zawijamy do 0
+        if (currentHour >= 24)
+        {
+            currentHour -= 24;
+        }
+
+        // Sformatuj godzinê
+        return $"{currentHour:D2}:{currentMinute:D2}:{currentSecond:D2}";
     }
 }

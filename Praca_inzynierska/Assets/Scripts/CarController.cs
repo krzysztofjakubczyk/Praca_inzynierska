@@ -29,6 +29,7 @@ public class CarController : MonoBehaviour
         StartCoroutine(MoveCoroutine());
     }
 
+
     private IEnumerator MoveCoroutine()
     {
         while (CurrentWaypoint == null)
