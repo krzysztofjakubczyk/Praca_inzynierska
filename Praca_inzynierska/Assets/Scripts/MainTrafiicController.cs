@@ -143,8 +143,8 @@ public class MainTrafficController : MonoBehaviour
 
     private void ManageGreenLightDuration(List<LineLightManager> phase)
     {
-        double carCount = 15;
-        double queueLength = 60;
+        double carCount = 0;
+        double queueLength = 0;
 
         foreach (var line in phase)
         {
@@ -154,12 +154,11 @@ public class MainTrafficController : MonoBehaviour
                 queueLength += CarQueueOnInlet[line];
             }
         }
-        //print("car count: " + carCount + " queue length: " + queueLength);
+        print("car count: " + carCount + " queue length: " + queueLength);
         var fuzzifiedInputs = fuzzyLogicHandler.Fuzzify(carCount, queueLength);
         var aggregatedOutputs = fuzzyLogicHandler.ApplyRules(fuzzifiedInputs);
 
         greenLightDuration = fuzzyLogicHandler.Defuzzify(aggregatedOutputs, "centroid");
-
         Debug.Log($"Calculated Green Light Duration: {greenLightDuration}");
     }
 }

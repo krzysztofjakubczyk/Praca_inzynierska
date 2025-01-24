@@ -114,11 +114,11 @@ public class TimeManager : MonoBehaviour
                                                              // Interwa³ spawnowania w sekundach (1 podzielone przez pojazdy na sekundê)
             float spawnInterval = 1f / vehiclesPerSecond;
 
-            print($"Total vehicles for hour {choosedHour}: {totalVehicles}");
+            //print($"Total vehicles for hour {choosedHour}: {totalVehicles}");
             spawners[i].SetSpawnInterval(spawnInterval); // Ustaw interwa³ dla ka¿dego spawnera
             spawners[i].MaxVehicles = Mathf.CeilToInt(totalVehicles / 4f);
 
-            Debug.Log($"Spawner {spawners[i].name}: {vehiclesPerSecond:F2} pojazdów/sek., interwa³: {spawnInterval:F2} s.");
+            //Debug.Log($"Spawner {spawners[i].name}: {vehiclesPerSecond:F2} pojazdów/sek., interwa³: {spawnInterval:F2} s.");
         }
 
         print($"Wybrany dzieñ: {dayChoosedString}, Wybrana godzina: {hourChoosedString}");
@@ -136,7 +136,7 @@ public class TimeManager : MonoBehaviour
         {
             Spawner.ResetSpawner();
         }
-        print("reset simulation");
+        //print("reset simulation");
     }
 
     private void SpeedUpSimulation()

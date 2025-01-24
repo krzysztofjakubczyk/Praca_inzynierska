@@ -44,7 +44,6 @@ public class VehicleSpawner : MonoBehaviour
             {
                 // Spawnowanie pojazdu
                 GameObject vehiclePrefab = CarPrefab[Random.Range(0, CarPrefab.Length)];
-                print("spawnuje autko" + vehiclePrefab.name);
                 Instantiate(vehiclePrefab, spawnPosition, transform.rotation);
                 CurrentVehicleCount++;
             }

@@ -102,7 +102,6 @@ public class FuzzyLogicHandler
 
         foreach (var rule in Rules)
         {
-            Debug.Log($"Evaluating rule: {rule.Condition}");
             double ruleStrength = double.MaxValue;
 
             var conditions = rule.Condition.Split('.');
@@ -135,7 +134,7 @@ public class FuzzyLogicHandler
                 }
 
                 var membershipValue = fuzzifiedInputs[variableName][membershipName];
-                Debug.Log($"Condition: {condition}, Membership Value: {membershipValue}");
+                //Debug.Log($"Condition: {condition}, Membership Value: {membershipValue}");
 
                 if (membershipValue == 0)
                 {
@@ -148,7 +147,7 @@ public class FuzzyLogicHandler
 
             if (ruleStrength > 0)
             {
-                Debug.Log($"Rule: {rule.Condition}, Strength: {ruleStrength}");
+                //Debug.Log($"Rule: {rule.Condition}, Strength: {ruleStrength}");
 
                 if (!aggregatedOutputs.ContainsKey(rule.Output))
                 {
@@ -186,7 +185,7 @@ public class FuzzyLogicHandler
                     denominator += Math.Min(membership, output.Value);
                 }
             }
-            Debug.Log($"Numerator: {numerator}, Denominator: {denominator}");
+            //Debug.Log($"Numerator: {numerator}, Denominator: {denominator}");
 
             if (denominator > 0)
             {
@@ -194,7 +193,7 @@ public class FuzzyLogicHandler
             }
             else if (denominator == 0)
             {
-                Debug.Log("Denominator is zero during defuzzification.");
+                //Debug.Log("Denominator is zero during defuzzification.");
                 return 10; // Zwróæ minimalny domyœlny czas zielonego œwiat³a
             }
 
@@ -321,7 +320,7 @@ public class FuzzyLogicHandler
         }
         else
         {
-            Debug.LogError($"Defuzzification method {method} is not supported.");
+            //Debug.LogError($"Defuzzification method {method} is not supported.");
         }
 
         return result;
