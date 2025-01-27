@@ -8,9 +8,9 @@ public class CarController : MonoBehaviour
 {
     private NavMeshAgent agent;
     public LineLightManager lineManager;
-    [SerializeField] float detectionDistance = 10f;
-    [SerializeField] float stopDistance = 8f;
-    [SerializeField] float detectionInterval = 0.5f;
+    [SerializeField] float detectionDistance;
+    [SerializeField] float stopDistance;
+    [SerializeField] float detectionInterval;
     public float vehicleLength;
     public bool WantWarnings;
     public Waypoint CurrentWaypoint;  // Aktualny waypoint, na który pojazd zmierza
@@ -19,16 +19,13 @@ public class CarController : MonoBehaviour
     {
         // Pobranie komponentu NavMeshAgent
         agent = GetComponent<NavMeshAgent>();
+        Rigidbody rb = GetComponent<Rigidbody>();
 
-        // Ustawienie celu jako miejsce, do którego pojazd ma siê udaæ
-        Transform nearestParkingSpot = FindLineChooser(agent.transform);
-        SetAgentDestination(nearestParkingSpot.position);
-
+        rb.constraints = RigidbodyConstraints.FreezePositionY | RigidbodyConstraints.FreezeRotation;
 
         StartCoroutine(DetectCarsCoroutine());
         StartCoroutine(MoveCoroutine());
     }
-
 
     private IEnumerator MoveCoroutine()
     {
@@ -88,24 +85,17 @@ public class CarController : MonoBehaviour
         }
     }
 
-    private Transform FindLineChooser(Transform carTransform)
+    public void SetFirstWaypoint(Waypoint waypoint)
     {
-        GameObject[] parkingSpots = GameObject.FindGameObjectsWithTag("StopPoint");
-
-        Transform nearestSpot = null;
-        float nearestDistance = Mathf.Infinity;
-
-        foreach (GameObject spot in parkingSpots)
+        if (waypoint != null)
         {
-            float distance = Vector3.Distance(carTransform.position, spot.transform.position);
-            if (distance < nearestDistance)
-            {
-                nearestDistance = distance;
-                nearestSpot = spot.transform;
-            }
+            CurrentWaypoint = waypoint;
+           
         }
-
-        return nearestSpot;
+        else
+        {
+            Debug.LogWarning("Przekazany waypoint jest null!");
+        }
     }
 
     private Coroutine trafficLightCoroutine; // Przechowuje referencjê do uruchomionej korutyny
@@ -155,12 +145,17 @@ public class CarController : MonoBehaviour
                 // Jeœli wykryto inne auto, zatrzymaj siê, jeœli jest za blisko
                 if (hit.distance < stopDistance)
                 {
-                    //print("Zatrzymano autko");
-                    agent.isStopped = true; // Zatrzymaj pojazd
+                    agent.isStopped = true;
+                    agent.velocity = Vector3.zero;
+                }
+                else if (hit.distance < stopDistance + 2f) // Minimalny odstêp
+                {
+                    agent.speed = FullSpeed * 0.5f; // Zwolnij, ale nie zatrzymuj ca³kowicie
                 }
                 else
                 {
-                    agent.isStopped = false; // Wznów jazdê
+                    agent.isStopped = false;
+                    agent.speed = FullSpeed; // Przywróæ pe³n¹ prêdkoœæ
                 }
             }
         }
@@ -174,7 +169,6 @@ public class CarController : MonoBehaviour
     {
         agent.SetDestination(destinationTransform); 
     }
-
     private void OnDrawGizmos()
     {
         Vector3 rayStartPosition = transform.position + Vector3.up;

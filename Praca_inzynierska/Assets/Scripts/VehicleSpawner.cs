@@ -3,55 +3,77 @@ using UnityEngine;
 
 public class VehicleSpawner : MonoBehaviour
 {
-    [SerializeField] private GameObject[] CarPrefab;
-    [SerializeField] public int MaxVehicles = 100; // Maksymalna liczba pojazdÛw na drodze
-    [SerializeField] private float spawnInterval; // Dynamicznie ustawiane w TimeManager
-    public int CurrentVehicleCount { get; private set; } = 0;
+    [SerializeField] private GameObject vehiclePrefab; // Prefab pojazdu
+    [SerializeField] private Waypoint firstWaypoint; // Pierwszy waypoint, do ktÛrego pojazd ma siÍ udaÊ
+    [SerializeField] private float spawnInterval = 5f; // Interwa≥ spawnowania
+    [SerializeField] private int maxVehicles = 10; // Maksymalna liczba pojazdÛw do spawnowania
+
+    [SerializeField]private int spawnedVehicles = 0; // Licznik spawnowanych pojazdÛw
+
+    private void Start()
+    {
+        //StartSpawning();
+    }
+
+    public int MaxVehicles
+    {
+        get => maxVehicles;
+        set => maxVehicles = value;
+    }
 
     public void SetSpawnInterval(float interval)
     {
-        spawnInterval = interval; // Ustaw interwa≥ spawnowania
+        spawnInterval = interval;
     }
 
-    private void Start()
+    public void ResetSpawner()
+    {
+        spawnedVehicles = 0;
+        StopAllCoroutines();
+        StartSpawning();
+    }
+
+    public void StartSpawning()
     {
         StartCoroutine(SpawnVehicles());
     }
 
     private IEnumerator SpawnVehicles()
     {
-        while (true)
+        while (spawnedVehicles < maxVehicles)   
         {
-            if (CurrentVehicleCount < MaxVehicles)
-            {
-                SpawnVehicle();
-            }
-
+            SpawnVehicle();
             yield return new WaitForSeconds(spawnInterval);
         }
     }
 
-    public void SpawnVehicle()
+    private void SpawnVehicle()
     {
-        if (CarPrefab.Length > 0)
+        if (vehiclePrefab == null || firstWaypoint == null)
         {
-
-            // Sprawdzanie, czy pojazd nie koliduje z innymi
-            Vector3 spawnPosition = transform.position;
-
-            Collider[] hitColliders = Physics.OverlapSphere(spawnPosition, 2f); // Sprawdü, czy w promieniu 2m sπ pojazdy
-            if (hitColliders.Length == 0)
-            {
-                // Spawnowanie pojazdu
-                GameObject vehiclePrefab = CarPrefab[Random.Range(0, CarPrefab.Length)];
-                Instantiate(vehiclePrefab, spawnPosition, transform.rotation);
-                CurrentVehicleCount++;
-            }
+            Debug.LogError($"Spawner {gameObject.name} ma brakujπce elementy: prefab lub pierwszy waypoint!");
+            return;
         }
+
+        GameObject vehicle = Instantiate(vehiclePrefab, transform.position, transform.rotation);
+        CarController carController = vehicle.GetComponent<CarController>();
+
+        if (carController != null)
+        {
+            carController.SetFirstWaypoint(firstWaypoint); // Przypisz pierwszy waypoint
+        }
+
+        spawnedVehicles++;
+        Debug.Log($"Pojazd zosta≥ zespawnowany i skierowany na pierwszy waypoint: {firstWaypoint.name}");
     }
 
-    public void ResetSpawner()
+    private void OnDrawGizmos()
     {
-        CurrentVehicleCount = 0;
+        // Wizualizacja po≥πczenia do firstWaypoint
+        if (firstWaypoint != null)
+        {
+            Gizmos.color = Color.blue;
+            Gizmos.DrawLine(transform.position, firstWaypoint.transform.position);
+        }
     }
 }

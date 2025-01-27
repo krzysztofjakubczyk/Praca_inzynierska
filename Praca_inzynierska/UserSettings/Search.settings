@@ -11,6 +11,9 @@ scopes = {
 	"last_search.310DEAF1" = "gizmos"
 	"OpenInspectorPreview.310DEAF1" = "0"
 	"currentGroup.310DEAF1" = "all"
+	"last_search.310DEAF3" = "h:#firstwaypoint="
+	"OpenInspectorPreview.310DEAF3" = "0"
+	"currentGroup.310DEAF3" = "all"
 }
 providers = {
 	adb = {

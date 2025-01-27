@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -20,7 +19,14 @@ public class MainTrafficController : MonoBehaviour
     [SerializeField] private double greenLightDuration;
     [SerializeField] private float yellowLightDuration;
 
-    private float timeBeforeGreenLights = 5f;
+    [Header("Count of vehicles to spawn in cycle")]
+    [SerializeField] private List<int> timeForFirstPhase = new List<int>();
+    [SerializeField] private List<int> timeForSecondPhase = new List<int>();
+    [SerializeField] private List<int> timeForThirdPhase = new List<int>();
+    [SerializeField] private List<int> timeForFourthPhase = new List<int>();
+    [SerializeField] private List<int> timeForFivethPhase = new List<int>();
+
+    private float timeBeforeGreenLights = 10f;
 
     private FuzzyLogicHandler fuzzyLogicHandler;
 
@@ -63,14 +69,14 @@ public class MainTrafficController : MonoBehaviour
             { "Small", (0,20,36,52) },
             { "Medium", ( 36, 52, 68, 84) },
             { "Big", (68, 84, 100, 116) }
-        };  
+        };
 
         var greenLightDurationMemberships = new Dictionary<string, (double a, double b, double c, double d)>
-        {
-            { "Short", (0, 10, 25, 35) },
-            { "Medium", (30, 40, 50, 60) },
-            { "Long", (54.74, 64.74, 69.74, 74.74) }
-        };
+{
+    { "Short", (0, 5, 10, 15) },  // Dla ma³ych kolejek
+    { "Medium", (15, 20, 25, 30) }, // Dla œrednich czasów
+    { "Long", (25, 30, 35, 40) }    // Dla d³ugich czasów
+};
 
         fuzzyLogicHandler.InitializeTrapezoidalMembershipFunctions(carCountMemberships, queueLengthMemberships, greenLightDurationMemberships);
 
@@ -113,32 +119,73 @@ public class MainTrafficController : MonoBehaviour
     {
         while (true)
         {
-            foreach (var phase in listToChangeColors)
+            // Iteracja przez fazy
+            for (int phaseIndex = 0; phaseIndex < listToChangeColors.Count; phaseIndex++)
             {
-                ManageGreenLightDuration(phase);
+                var phase = listToChangeColors[phaseIndex]; // Lista pasów w danej fazie
+                List<int> timesForPhase = GetPhaseTimes(phaseIndex); // Pobranie czasów dla fazy
 
-                foreach (var line in phase)
+                if (phase.Count != timesForPhase.Count)
                 {
-                    line.ChangeColor(TrafficLightColor.green);
+                    Debug.LogError($"Niezgodnoœæ liczby pasów i czasów w fazie {phaseIndex + 1}: Pasy={phase.Count}, Czasy={timesForPhase.Count}");
+                    yield break; // Zatrzymanie, jeœli dane s¹ niezgodne
                 }
 
-                yield return new WaitForSeconds((float)greenLightDuration);
+                List<Coroutine> activeCoroutines = new List<Coroutine>();
 
-                foreach (var line in phase)
+                // Rozpoczêcie zielonych œwiate³ jednoczeœnie dla wszystkich pasów w fazie
+                for (int i = 0; i < phase.Count; i++)
                 {
-                    line.ChangeColor(TrafficLightColor.yellow);
+                    var line = phase[i];
+                    int greenTime = timesForPhase[i];
+
+                    // Rozpocznij korutynê dla ka¿dego pasa
+                    Coroutine coroutine = StartCoroutine(HandleLaneCycle(line, greenTime));
+                    activeCoroutines.Add(coroutine);
                 }
 
-                yield return new WaitForSeconds(yellowLightDuration);
-
-                foreach (var line in phase)
+                // Poczekaj, a¿ wszystkie pasy w tej fazie zakoñcz¹ swój cykl
+                foreach (var coroutine in activeCoroutines)
                 {
-                    line.ChangeColor(TrafficLightColor.red);
+                    yield return coroutine;
                 }
 
+                // Przerwa miêdzy fazami
                 yield return new WaitForSeconds(timeBeforeGreenLights);
             }
         }
+    }
+    private List<int> GetPhaseTimes(int phaseIndex)
+    {
+        switch (phaseIndex)
+        {
+            case 0:
+                return timeForFirstPhase;
+            case 1:
+                return timeForSecondPhase;
+            case 2:
+                return timeForThirdPhase;
+            case 3:
+                return timeForFourthPhase;
+            case 4:
+                return timeForFivethPhase;
+            default:
+                Debug.LogError($"Niepoprawny indeks fazy: {phaseIndex}");
+                return new List<int>(); // Zwraca pust¹ listê, aby unikn¹æ b³êdów
+        }
+    }
+    private IEnumerator HandleLaneCycle(LineLightManager line, int greenTime)
+    {
+        // Zielone œwiat³o
+        line.ChangeColor(TrafficLightColor.green);
+        yield return new WaitForSeconds(greenTime);
+
+        // ¯ó³te œwiat³o
+        line.ChangeColor(TrafficLightColor.yellow);
+        yield return new WaitForSeconds(yellowLightDuration);
+
+        // Czerwone œwiat³o
+        line.ChangeColor(TrafficLightColor.red);
     }
 
     private void ManageGreenLightDuration(List<LineLightManager> phase)
