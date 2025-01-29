@@ -19,7 +19,7 @@ MonoBehaviour:
     width: 1280
     height: 629.3334
   m_ShowMode: 4
-  m_Title: Hierarchy
+  m_Title: Scene
   m_RootView: {fileID: 4}
   m_MinSize: {x: 875, y: 300}
   m_MaxSize: {x: 10000, y: 10000}
@@ -170,7 +170,7 @@ MonoBehaviour:
   m_MinSize: {x: 300, y: 100}
   m_MaxSize: {x: 24288, y: 16192}
   vertical: 0
-  controlID: 94
+  controlID: 42
 --- !u!114 &8
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -460,10 +460,10 @@ MonoBehaviour:
     m_OverlaysVisible: 1
   m_SceneHierarchy:
     m_TreeViewState:
-      scrollPos: {x: 0, y: 0}
-      m_SelectedIDs: d45c0000
-      m_LastClickedID: 23764
-      m_ExpandedIDs: 14fbffff
+      scrollPos: {x: 0, y: 112}
+      m_SelectedIDs: eecdfeff
+      m_LastClickedID: -78354
+      m_ExpandedIDs: 86cefeffbacefeffbccefeffa8d8feff34ddfeffceebfeffe8fbfeff9609fffffaf3ffff14fbffffa45f00001460000018620000feaf0000feb5000058b60000a6b60000b0b60000bcb6000040b800007ab80000eab8000072b9000090b90000feb900004cba0000eeba000028bb0000a2bc000018bd0000a4bd0000c6bd0000dabd000044be0000
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
@@ -843,9 +843,9 @@ MonoBehaviour:
   m_PlayAudio: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: -220.4, y: 4.5, z: 202.3}
+    m_Target: {x: -45.333893, y: -18.26175, z: 193.86684}
     speed: 2
-    m_Value: {x: -149.56178, y: 170.02257, z: 0.3556475}
+    m_Value: {x: -45.333893, y: -18.26175, z: 193.86684}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -891,13 +891,13 @@ MonoBehaviour:
     m_GridAxis: 1
     m_gridOpacity: 0.5
   m_Rotation:
-    m_Target: {x: 0.34977335, y: 0.36416745, z: -0.17260364, w: 0.8481707}
+    m_Target: {x: -0.01340694, y: 0.87657577, z: -0.48521966, w: 0.013140628}
     speed: 2
-    m_Value: {x: 0.3490507, y: 0.36341506, z: -0.17224704, w: 0.8464184}
+    m_Value: {x: -0.0128948055, y: 0.87473786, z: -0.48422292, w: 0.013988051}
   m_Size:
-    m_Target: 15.917946
+    m_Target: 130.48967
     speed: 2
-    m_Value: 15.91794
+    m_Value: 130.48967
   m_Ortho:
     m_Target: 0
     speed: 2
@@ -967,7 +967,7 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/Prefabs/Vehicle with Separated Wheels
+    - Assets/Scenes
     m_Globs: []
     m_OriginalText: 
     m_ImportLogFlags: 0
@@ -975,15 +975,15 @@ MonoBehaviour:
   m_ViewMode: 1
   m_StartGridSize: 64
   m_LastFolders:
-  - Assets/Prefabs/Vehicle with Separated Wheels
+  - Assets/Scenes
   m_LastFoldersGridSize: 64
   m_LastProjectPath: C:\Users\najno\OneDrive\Dokumenty\GitHub\Praca_inzynierka\Praca_inzynierska
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
-    scrollPos: {x: 0, y: 175}
-    m_SelectedIDs: fe6a0000
-    m_LastClickedID: 27390
+    scrollPos: {x: 0, y: 228.33334}
+    m_SelectedIDs: f66a0000
+    m_LastClickedID: 27382
     m_ExpandedIDs: 00000000e26a0000e46a0000e66a0000f46a000000ca9a3b
     m_RenameOverlay:
       m_UserAcceptedRename: 0
@@ -1039,7 +1039,7 @@ MonoBehaviour:
   m_ListAreaState:
     m_SelectedInstanceIDs: 
     m_LastClickedInstanceID: 0
-    m_HadKeyboardFocusLastEvent: 0
+    m_HadKeyboardFocusLastEvent: 1
     m_ExpandedInstanceIDs: c6230000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
@@ -1143,7 +1143,7 @@ MonoBehaviour:
     m_ControlHash: -371814159
     m_PrefName: Preview_InspectorPreview
   m_LastInspectedObjectInstanceID: -1
-  m_LastVerticalScrollValue: 2080.6667
+  m_LastVerticalScrollValue: 0
   m_GlobalObjectId: 
   m_InspectorMode: 0
   m_LockTracker:
