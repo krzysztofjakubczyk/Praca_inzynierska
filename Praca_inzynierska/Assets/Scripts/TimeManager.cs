@@ -93,12 +93,13 @@ public class TimeManager : MonoBehaviour
             spawners[i].SetSpawnInterval(spawnInterval);
             spawners[i].MaxVehicles = totalVehiclesForSpawner;
 
-            Debug.Log($"Spawner {spawners[i].name}: {totalVehiclesForSpawner} pojazdów, interwa³: {spawnInterval:F2} s.");
+            //Debug.Log($"Spawner {spawners[i].name}: {totalVehiclesForSpawner} pojazdów, interwa³: {spawnInterval:F2} s.");
         }
     }
 
     private void ResetSimulation()
     {
+        simulationTime = 0f;
         GameObject[] Cars = GameObject.FindGameObjectsWithTag("Car");
         foreach (GameObject Car in Cars)
         {
@@ -109,6 +110,7 @@ public class TimeManager : MonoBehaviour
         {
             Spawner.ResetSpawner();
         }
+
     }
 
     private void ToggleSpeedUp()
@@ -119,7 +121,7 @@ public class TimeManager : MonoBehaviour
 
     private void SpeedUpSimulation()
     {
-        Time.timeScale = 3f;
+        Time.timeScale = 10f;
         isSpeeded = true;
     }
 
@@ -149,16 +151,21 @@ public class TimeManager : MonoBehaviour
 
     private string GetFormattedSimulationTime()
     {
-        int baseHour = choosedHour;
+        int baseHour = choosedHour; // Nowa wybrana godzina
         int baseMinute = 0;
+        int baseSecond = 0;
 
-        int elapsedSeconds = Mathf.FloorToInt(simulationTime);
+        int elapsedSeconds = Mathf.FloorToInt(simulationTime); // Czas od pocz¹tku symulacji
         int currentHour = baseHour + (elapsedSeconds / 3600);
         int currentMinute = baseMinute + ((elapsedSeconds % 3600) / 60);
-        int currentSecond = elapsedSeconds % 60;
+        int currentSecond = baseSecond + (elapsedSeconds % 60);
 
-        if (currentHour >= 24) currentHour -= 24;
+        if (currentHour >= 24)
+        {
+            currentHour %= 24; // Reset do 00:00 po pó³nocy
+        }
 
         return $"{currentHour:D2}:{currentMinute:D2}:{currentSecond:D2}";
     }
+
 }

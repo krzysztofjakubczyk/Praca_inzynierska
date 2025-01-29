@@ -1,4 +1,4 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -18,8 +18,16 @@ public class MainTrafficController : MonoBehaviour
     [Header("Floats and ints")]
     [SerializeField] private double greenLightDuration;
     [SerializeField] private float yellowLightDuration;
+    [SerializeField] private float currentCycleTime = 0f; // Aktualny czas w cyklu
 
-    [Header("Count of vehicles to spawn in cycle")]
+    [Header("Green Light Start Times (in seconds) for each lane")]
+    [SerializeField] private List<int> startTimesForFirstPhase = new List<int>();
+    [SerializeField] private List<int> startTimesForSecondPhase = new List<int>();
+    [SerializeField] private List<int> startTimesForThirdPhase = new List<int>();
+    [SerializeField] private List<int> startTimesForFourthPhase = new List<int>();
+    [SerializeField] private List<int> startTimesForFivethPhase = new List<int>();
+
+    [Header("Green Light Durations (in seconds) for each lane")]
     [SerializeField] private List<int> timeForFirstPhase = new List<int>();
     [SerializeField] private List<int> timeForSecondPhase = new List<int>();
     [SerializeField] private List<int> timeForThirdPhase = new List<int>();
@@ -27,6 +35,8 @@ public class MainTrafficController : MonoBehaviour
     [SerializeField] private List<int> timeForFivethPhase = new List<int>();
 
     private float timeBeforeGreenLights = 10f;
+    private int fullCycleTime = 110;
+    [SerializeField] private float timeBeforeNextPhase = 2f;
 
     private FuzzyLogicHandler fuzzyLogicHandler;
 
@@ -50,7 +60,7 @@ public class MainTrafficController : MonoBehaviour
         }
 
         StartCoroutine(GetVehicleCountOnEntrance());
-        StartCoroutine(CycleTrafficLights());
+        StartCoroutine(GlobalTrafficCycle());
     }
 
     private void InitializeFuzzyLogic()
@@ -73,9 +83,9 @@ public class MainTrafficController : MonoBehaviour
 
         var greenLightDurationMemberships = new Dictionary<string, (double a, double b, double c, double d)>
 {
-    { "Short", (0, 5, 10, 15) },  // Dla ma³ych kolejek
-    { "Medium", (15, 20, 25, 30) }, // Dla œrednich czasów
-    { "Long", (25, 30, 35, 40) }    // Dla d³ugich czasów
+    { "Short", (0, 5, 10, 15) },  // Dla maÅ‚ych kolejek
+    { "Medium", (15, 20, 25, 30) }, // Dla Å›rednich czasÃ³w
+    { "Long", (25, 30, 35, 40) }    // Dla dÅ‚ugich czasÃ³w
 };
 
         fuzzyLogicHandler.InitializeTrapezoidalMembershipFunctions(carCountMemberships, queueLengthMemberships, greenLightDurationMemberships);
@@ -95,66 +105,68 @@ public class MainTrafficController : MonoBehaviour
     {
         while (true)
         {
-            Dictionary<LineLightManager, int> updatedCarCount = new Dictionary<LineLightManager, int>(CarCountOnInlet);
-            Dictionary<LineLightManager, float> updatedCarQueue = new Dictionary<LineLightManager, float>(CarQueueOnInlet);
+            float elapsedTime = 0f;
 
-            foreach (var kvp in CarCountOnInlet)
-            {
-                var lineManager = kvp.Key;
-                updatedCarCount[lineManager] = lineManager.countOfVehicles;
-                updatedCarQueue[lineManager] = lineManager.queueLength;
-            }
-
-            foreach (var kvp in updatedCarCount)
-            {
-                CarCountOnInlet[kvp.Key] = kvp.Value;
-                CarQueueOnInlet[kvp.Key] = updatedCarQueue[kvp.Key];
-            }
-
-            yield return new WaitForSeconds(5f);
-        }
-    }
-
-    private IEnumerator CycleTrafficLights()
-    {
-        while (true)
-        {
-            // Iteracja przez fazy
             for (int phaseIndex = 0; phaseIndex < listToChangeColors.Count; phaseIndex++)
             {
-                var phase = listToChangeColors[phaseIndex]; // Lista pasów w danej fazie
-                List<int> timesForPhase = GetPhaseTimes(phaseIndex); // Pobranie czasów dla fazy
+                var phase = listToChangeColors[phaseIndex];
+                List<int> laneTimes = GetPhaseTimes(phaseIndex);
+                List<int> startTimes = GetPhaseStartTimes(phaseIndex);
 
-                if (phase.Count != timesForPhase.Count)
+                if (phase.Count != laneTimes.Count || phase.Count != startTimes.Count)
                 {
-                    Debug.LogError($"Niezgodnoœæ liczby pasów i czasów w fazie {phaseIndex + 1}: Pasy={phase.Count}, Czasy={timesForPhase.Count}");
-                    yield break; // Zatrzymanie, jeœli dane s¹ niezgodne
+                    Debug.LogError($"Mismatch in phase {phaseIndex + 1}: Lanes={phase.Count}, Times={laneTimes.Count}, StartTimes={startTimes.Count}");
+                    yield break;
                 }
 
-                List<Coroutine> activeCoroutines = new List<Coroutine>();
-
-                // Rozpoczêcie zielonych œwiate³ jednoczeœnie dla wszystkich pasów w fazie
                 for (int i = 0; i < phase.Count; i++)
                 {
                     var line = phase[i];
-                    int greenTime = timesForPhase[i];
+                    int startTime = startTimes[i];  // Kiedy dany pas ma siÄ™ wÅ‚Ä…czyÄ‡ w globalnym cyklu
+                    int greenTime = laneTimes[i];  // Jak dÅ‚ugo ma trwaÄ‡ zielone Å›wiatÅ‚o
 
-                    // Rozpocznij korutynê dla ka¿dego pasa
-                    Coroutine coroutine = StartCoroutine(HandleLaneCycle(line, greenTime));
-                    activeCoroutines.Add(coroutine);
+                    StartCoroutine(HandleLaneCycle(line, startTime, greenTime));
                 }
+            }
 
-                // Poczekaj, a¿ wszystkie pasy w tej fazie zakoñcz¹ swój cykl
-                foreach (var coroutine in activeCoroutines)
+            yield return new WaitForSeconds(fullCycleTime);
+        }
+    }
+    private IEnumerator GlobalTrafficCycle()
+    {
+        while (true)
+        {
+            currentCycleTime = 0f; // Resetujemy czas na poczÄ…tku nowego cyklu
+
+            for (int phaseIndex = 0; phaseIndex < listToChangeColors.Count; phaseIndex++)
+            {
+                var phase = listToChangeColors[phaseIndex];
+                List<int> laneTimes = GetPhaseTimes(phaseIndex);
+                List<int> startTimes = GetPhaseStartTimes(phaseIndex);
+
+                if (phase.Count != laneTimes.Count || phase.Count != startTimes.Count)
                 {
-                    yield return coroutine;
+                    Debug.LogError($"Mismatch in phase {phaseIndex + 1}: Lanes={phase.Count}, Times={laneTimes.Count}, StartTimes={startTimes.Count}");
+                    yield break;
                 }
 
-                // Przerwa miêdzy fazami
-                yield return new WaitForSeconds(timeBeforeGreenLights);
+                for (int i = 0; i < phase.Count; i++)
+                {
+                    var line = phase[i];
+                    int startTime = startTimes[i];
+                    int greenTime = laneTimes[i];
+
+                    StartCoroutine(HandleLaneCycle(line, startTime, greenTime));
+                }
+            }
+
+            while (currentCycleTime < fullCycleTime) // Czekamy, aÅ¼ cykl siÄ™ zakoÅ„czy
+            {
+                yield return null; // Kontynuujemy pÄ™tlÄ™, aby aktualizowaÄ‡ currentCycleTime
             }
         }
     }
+
     private List<int> GetPhaseTimes(int phaseIndex)
     {
         switch (phaseIndex)
@@ -171,21 +183,89 @@ public class MainTrafficController : MonoBehaviour
                 return timeForFivethPhase;
             default:
                 Debug.LogError($"Niepoprawny indeks fazy: {phaseIndex}");
-                return new List<int>(); // Zwraca pust¹ listê, aby unikn¹æ b³êdów
+                return new List<int>(); // Zwraca pustÄ… listÄ™, aby uniknÄ…Ä‡ bÅ‚Ä™dÃ³w
         }
     }
-    private IEnumerator HandleLaneCycle(LineLightManager line, int greenTime)
+    private List<int> GetPhaseStartTimes(int phaseIndex)
     {
-        // Zielone œwiat³o
-        line.ChangeColor(TrafficLightColor.green);
-        yield return new WaitForSeconds(greenTime);
+        switch (phaseIndex)
+        {
+            case 0:
+                return startTimesForFirstPhase;
+            case 1:
+                return startTimesForSecondPhase;
+            case 2:
+                return startTimesForThirdPhase;
+            case 3:
+                return startTimesForFourthPhase;
+            case 4:
+                return startTimesForFivethPhase;
+            default:
+                Debug.LogError($"Invalid phase index: {phaseIndex}");
+                return new List<int>();
+        }
+    }
+    private IEnumerator HandleLaneCycle(LineLightManager line, int startTime, int greenTime)
+    {
+        while (currentCycleTime < startTime) // Czekamy na moment startu
+        {
+            yield return null;
+        }
 
-        // ¯ó³te œwiat³o
+        int timeLeftInCycle = (int)(fullCycleTime - currentCycleTime);
+        int timeInNextCycle = greenTime - timeLeftInCycle;
+
+        //Debug.Log($"PAS {line.name} WÅÄ„CZA ZIELONE: Start = {startTime}s, GreenTime = {greenTime}s, LeftInCycle = {timeLeftInCycle}s, NextCycle = {timeInNextCycle}s");
+
+        line.ChangeColor(TrafficLightColor.green);
+
+        if (timeInNextCycle > 0)
+        {
+            yield return new WaitForSeconds(timeLeftInCycle);
+
+            //Debug.Log($"PAS {line.name} KOÅƒCZY BIEÅ»Ä„CY CYKL, CZEKA NA NOWY");
+
+            // *** Zamiast `WaitUntil`, czekamy rÄ™cznie ***
+            float waitTime = 0f;
+            while (currentCycleTime >= fullCycleTime)
+            {
+                waitTime += Time.deltaTime;
+                yield return null;
+                if (waitTime > 2f) // JeÅ›li po 2 sekundach nadal nic siÄ™ nie zmienia, wymuszamy reset
+                {
+                    //Debug.LogWarning($"PAS {line.name} UTKNÄ„Å NA ZIELONYM! RESETUJEMY ÅšWIATÅO.");
+                    break;
+                }
+            }
+
+            //Debug.Log($"PAS {line.name} KONTYNUUJE W NOWYM CYKLU: {timeInNextCycle}s");
+
+            line.ChangeColor(TrafficLightColor.green);
+            yield return new WaitForSeconds(timeInNextCycle);
+        }
+        else
+        {
+            yield return new WaitForSeconds(greenTime);
+        }
+
+        // **Wymuszone Å¼Ã³Å‚te Å›wiatÅ‚o przed czerwonym**
+       // Debug.Log($"PAS {line.name} PRZECHODZI NA Å»Ã“ÅTE!");
         line.ChangeColor(TrafficLightColor.yellow);
         yield return new WaitForSeconds(yellowLightDuration);
 
-        // Czerwone œwiat³o
+       // // **Wymuszone czerwone Å›wiatÅ‚o**
+       // Debug.Log($"PAS {line.name} PRZECHODZI NA CZERWONE!");
         line.ChangeColor(TrafficLightColor.red);
+    }
+
+
+    private void Update()
+    {
+        currentCycleTime += Time.deltaTime;
+        if (currentCycleTime >= fullCycleTime)
+        {
+            currentCycleTime = 0f; // Reset cyklu
+        }
     }
 
     private void ManageGreenLightDuration(List<LineLightManager> phase)

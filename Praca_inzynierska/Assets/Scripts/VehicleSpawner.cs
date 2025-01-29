@@ -6,7 +6,7 @@ public class VehicleSpawner : MonoBehaviour
     [SerializeField] private GameObject vehiclePrefab; // Prefab pojazdu
     [SerializeField] private Waypoint firstWaypoint; // Pierwszy waypoint, do którego pojazd ma siê udaæ
     [SerializeField] private float spawnInterval = 5f; // Interwa³ spawnowania
-    [SerializeField] private int maxVehicles = 10; // Maksymalna liczba pojazdów do spawnowania
+    [SerializeField] private int maxVehicles; // Maksymalna liczba pojazdów do spawnowania
 
     [SerializeField]private int spawnedVehicles = 0; // Licznik spawnowanych pojazdów
 
@@ -49,6 +49,7 @@ public class VehicleSpawner : MonoBehaviour
 
     private void SpawnVehicle()
     {
+        if (vehiclePrefab.name == "Tram") print("ITS TRAM!");
         if (vehiclePrefab == null || firstWaypoint == null)
         {
             Debug.LogError($"Spawner {gameObject.name} ma brakuj¹ce elementy: prefab lub pierwszy waypoint!");
@@ -63,9 +64,7 @@ public class VehicleSpawner : MonoBehaviour
             carController.SetFirstWaypoint(firstWaypoint); // Przypisz pierwszy waypoint
         }
 
-        spawnedVehicles++;
-        Debug.Log($"Pojazd zosta³ zespawnowany i skierowany na pierwszy waypoint: {firstWaypoint.name}");
-    }
+        spawnedVehicles++;    }
 
     private void OnDrawGizmos()
     {

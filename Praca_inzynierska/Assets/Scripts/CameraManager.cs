@@ -6,6 +6,7 @@ public class CameraSwitcher : MonoBehaviour
 {
     public TMP_Dropdown cameraDropdown; // Dropdown do wyboru kamery
     public CinemachineVirtualCamera[] cameras;        // Tablica kamer, które bêd¹ prze³¹czane
+    public CinemachineFreeLook freeLookCamera; // FreeLook Camera dla dynamicznej kontroli
 
     void Start()
     {
@@ -26,9 +27,34 @@ public class CameraSwitcher : MonoBehaviour
     // Funkcja aktywuj¹ca wybran¹ kamerê i dezaktywuj¹ca pozosta³e
     private void SetActiveCamera(int index)
     {
-        for (int i = 0; i < cameras.Length; i++)
+        // Wy³¹cz wszystkie zwyk³e kamery
+        foreach (CinemachineVirtualCamera cam in cameras)
         {
-            cameras[i].gameObject.SetActive(i == index);
+            cam.gameObject.SetActive(false);
+        }
+
+        // Wy³¹cz FreeLook kamerê
+        if (freeLookCamera != null)
+        {
+            freeLookCamera.gameObject.SetActive(false);
+        }
+
+        // Jeœli index to ostatnia pozycja, aktywuj FreeLook Camera
+        if (index == cameras.Length)
+        {
+            if (freeLookCamera != null)
+            {
+                freeLookCamera.gameObject.SetActive(true);
+            }
+        }
+        else
+        {
+            // Aktywuj jedn¹ z normalnych kamer
+            if (index >= 0 && index < cameras.Length)
+            {
+                cameras[index].gameObject.SetActive(true);
+            }
         }
     }
 }
+

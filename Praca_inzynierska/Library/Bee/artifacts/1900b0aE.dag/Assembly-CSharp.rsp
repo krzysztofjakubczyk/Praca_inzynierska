@@ -362,6 +362,8 @@
 "Assets/Counter.cs"
 "Assets/EntryTrigger.cs"
 "Assets/ExitTrigger.cs"
+"Assets/FlyCamera.cs"
+"Assets/FreeLookCameraController.cs"
 "Assets/Fuzzy logic.cs"
 "Assets/LineLightManager.cs"
 "Assets/Scripts/CameraManager.cs"

@@ -12,11 +12,12 @@ TagManager:
   - TramLoop
   - TramMonitor
   - CarMonitor
+  - Obstacle
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - ObstacleWalls
   - Water
   - UI
   - 
