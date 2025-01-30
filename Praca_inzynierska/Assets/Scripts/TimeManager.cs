@@ -121,7 +121,7 @@ public class TimeManager : MonoBehaviour
 
     private void SpeedUpSimulation()
     {
-        Time.timeScale = 10f;
+        Time.timeScale = 4f;
         isSpeeded = true;
     }
 

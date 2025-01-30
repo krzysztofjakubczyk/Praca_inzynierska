@@ -1,18 +1,15 @@
-using UnityEngine;
+Ôªøusing UnityEngine;
 
 public class LightMonitorForCar : MonoBehaviour
 {
     public bool wantWarning;
     private void OnTriggerEnter(Collider other)
     {
-        //if (wantWarning)
-        //{
-        //    print("Wjechano w trigger");
-        //}
         CarController carController = other.GetComponent<CarController>();
         if (carController != null)
         {
-            carController.StartTrafficLightMonitoring(); // Uruchom monitorowanie úwiate≥
+
+            carController.StartTrafficLightMonitoring(); // Uruchom monitorowanie ≈õwiate≈Ç
         }
     }   
 
@@ -21,7 +18,7 @@ public class LightMonitorForCar : MonoBehaviour
         CarController carController = other.GetComponent<CarController>();
         if (carController != null)
         {
-            carController.StopTrafficLightMonitoring(); // Zatrzymaj monitorowanie úwiate≥
+            carController.StopTrafficLightMonitoring(); // Zatrzymaj monitorowanie ≈õwiate≈Ç
         }
     }
 }

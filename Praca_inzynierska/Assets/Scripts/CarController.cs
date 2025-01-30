@@ -1,131 +1,206 @@
-using System.Collections;
+ï»¿using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
-
 
 public class CarController : MonoBehaviour
 {
     private NavMeshAgent agent;
-    public LineLightManager lineManager;
-    [SerializeField] float detectionDistance;
-    [SerializeField] float stopDistance;
-    [SerializeField] float detectionInterval;
-    [SerializeField] float stuckTimeThreshold = 5f; // Czas w sekundach do uznania pojazdu za zablokowany
-    [SerializeField] float obstacleCheckRadius = 1.5f; // Promieñ sprawdzania kolizji
-    public float vehicleLength;
-    public bool WantWarnings;
-    public Waypoint CurrentWaypoint;  // Aktualny waypoint, na który pojazd zmierza
-    public int FullSpeed;
+
+    [Header("Car Detection & Obstacle")]
+    [SerializeField] private float detectionDistance = 10f;
+    [SerializeField] private float stopDistance = 2f;
+    [SerializeField] private float obstacleCheckRadius = 1.5f;
+
+    [Header("General")]
+    [SerializeField] private float stuckTimeThreshold = 10f;
+    public Waypoint CurrentWaypoint;
+    public int FullSpeed = 10;
+    public int vehicleLength;
+
+    public LineLightManager lineManager;    // Aktualny sygnalizator, pod ktÃ³ry podlega auto
+
+    private bool stopForCar = false;        // Czy musimy siÄ™ zatrzymaÄ‡ z powodu innego auta
+    private bool stopForLight = false;      // Czy musimy siÄ™ zatrzymaÄ‡ z powodu czerwonego/Å¼Ã³Å‚tego Å›wiatÅ‚a
+    private bool isOnTrafficLight = false;  // Czy znajdujemy siÄ™ w obszarze skrzyÅ¼owania ze Å›wiatÅ‚ami
+    private bool isAfterCar = false;        // Flaga uÅ¼ywana przy detekcji innego samochodu
 
     private Vector3 lastPosition;
     private float stuckTimer;
 
-    private bool isOnTrafficLight;
-    private bool isAfterCar;
+    private Coroutine trafficLightCoroutine;
+
     void Start()
     {
-        // Pobranie komponentu NavMeshAgent
         agent = GetComponent<NavMeshAgent>();
         Rigidbody rb = GetComponent<Rigidbody>();
-
         rb.constraints = RigidbodyConstraints.FreezePositionY | RigidbodyConstraints.FreezeRotation;
-
-        StartCoroutine(DetectCarsCoroutine());
+        if (agent == null)
+        {
+            Debug.LogError($"ðŸš— {gameObject.name} nie ma przypisanego `NavMeshAgent`! SprawdÅº prefab.");
+            return;
+        }
         StartCoroutine(MoveCoroutine());
         StartCoroutine(CheckIfStuck());
-
     }
 
     private IEnumerator MoveCoroutine()
     {
+        // Czekaj na wybranie waypointu startowego
         while (CurrentWaypoint == null)
         {
-            if (WantWarnings)
-            {
-                Debug.LogWarning("Waiting to have currentWaypoint...");
-            }
             yield return null;
         }
 
+        // GÅ‚Ã³wna pÄ™tla
         while (true)
         {
-            if (CurrentWaypoint.isFirstWaypoint)
+            // JeÅ¼eli dany waypoint to "pierwszy" â€“Â ustaw lineManager, jeÅ›li jest tam przypisany
+            if (CurrentWaypoint.isFirstWaypoint && CurrentWaypoint.linkedController != null)
             {
                 lineManager = CurrentWaypoint.linkedController;
             }
-            if(CurrentWaypoint.name == "CarDestroyer")
+
+            // Specjalny waypoint o nazwie "CarDestroyer"
+            if (CurrentWaypoint.name == "CarDestroyer")
             {
                 Destroy(gameObject, 0.5f);
             }
+
+            // Gdy dotarliÅ›my do waypointu, wyznacz kolejny cel (o ile agent nie jest zatrzymany)
             if (!agent.pathPending && agent.remainingDistance < 2f)
             {
-                
-                if (CurrentWaypoint.isBeforeTrafiicLight)
+                if (!agent.isStopped)
                 {
-                    agent.SetDestination(CurrentWaypoint.laneChooser.transform.position);
-                }
-                else
-                {
-                    CurrentWaypoint = CurrentWaypoint.NextWaypoint;
-                    agent.SetDestination(CurrentWaypoint.transform.position);
+                    if (CurrentWaypoint.isBeforeTrafiicLight)
+                    {
+                        // Kierujemy siÄ™ do "laneChooser"
+                        agent.SetDestination(CurrentWaypoint.laneChooser.transform.position);
+                    }
+                    else
+                    {
+                        // NastÄ™pny waypoint
+                        CurrentWaypoint = CurrentWaypoint.NextWaypoint;
+                        if (CurrentWaypoint != null)
+                            agent.SetDestination(CurrentWaypoint.transform.position);
+                    }
                 }
             }
+
+            // Sprawdzenie, czy przed nami jest inne auto lub przeszkoda
+            CheckCarInFront();
+
+            // **Tu Å‚Ä…czymy stany**: finalna decyzja o zatrzymaniu
+            agent.isStopped = stopForCar || stopForLight;
 
             yield return null;
         }
     }
 
-    public IEnumerator MonitorTrafficLightForVehicle()
+    /// <summary>
+    /// Sprawdza Raycastem, czy przed nami jest auto lub przeszkoda i ustawia "stopForCar".
+    /// </summary>
+    private void CheckCarInFront()
+    {
+        RaycastHit hit;
+        Vector3 rayStartPosition = transform.position + Vector3.up;
+        Vector3 forwardDirection = transform.forward;
+
+        // Zresetuj wartoÅ›Ä‡ na poczÄ…tku kaÅ¼dej klatki â€“Â zaraz sprawdzimy, czy mamy siÄ™ zatrzymaÄ‡
+        stopForCar = false;
+
+        if (Physics.Raycast(rayStartPosition, forwardDirection, out hit, detectionDistance))
+        {
+            // 1) Wykryto inny samochÃ³d
+            if (hit.collider.CompareTag("Car"))
+            {
+                isAfterCar = true;
+                // JeÅ›li jest bardzo blisko
+                if (hit.distance < stopDistance)
+                {
+                    stopForCar = true;
+                }
+            }
+            // 2) Przeszkoda
+            else if (hit.collider.CompareTag("Obstacle"))
+            {
+                // Obracanie siÄ™ w stronÄ™ celu (jeÅ›li tak ma dziaÅ‚aÄ‡ logika)
+                Vector3 directionToTarget = (agent.destination - transform.position).normalized;
+                directionToTarget.y = 0;
+                transform.rotation = Quaternion.LookRotation(directionToTarget);
+                stopForCar = false;
+            }
+        }
+        else
+        {
+            // Nic nie wykryto
+            if (isAfterCar)
+            {
+                // Dla czytelnoÅ›ci logÃ³w:
+                Debug.Log($"[DetectCars] SamochÃ³d przed nami odjechaÅ‚. Wznawiamy ruch.");
+                isAfterCar = false;
+            }
+        }
+    }
+
+    /// <summary>
+    /// Korutyna ciÄ…gle monitorujÄ…ca kolor Å›wiatÅ‚a i ustawiajÄ…ca "stopForLight".
+    /// </summary>
+    private IEnumerator MonitorTrafficLightForVehicle()
     {
         while (true)
         {
             if (lineManager != null)
             {
                 isOnTrafficLight = true;
-                var currentColor = lineManager.currentColor;
-                switch (currentColor)
+
+                switch (lineManager.currentColor)
                 {
                     case TrafficLightColor.green:
-                        agent.speed = FullSpeed; // Pe³na prêdkoœæ
+                        stopForLight = false;
                         break;
+
                     case TrafficLightColor.red:
-                        agent.speed = 0f; // Zatrzymanie pojazdu
+                        stopForLight = true;
                         break;
+
                     case TrafficLightColor.yellow:
-                        agent.speed = FullSpeed; // Zwolnienie przed œwiat³em
+                        stopForLight = true;
                         break;
                 }
             }
-            yield return new WaitForSeconds(1f); // Regularne sprawdzanie stanu sygnalizacji
+            yield return null;
         }
     }
+
+    /// <summary>
+    /// Sprawdza, czy pojazd siÄ™ nie "zawiesiÅ‚" w miejscu (poza Å›wiatÅ‚ami i bez auta z przodu).
+    /// JeÅ›li tak â€“ usuwa go.
+    /// </summary>
     private IEnumerator CheckIfStuck()
     {
         while (true)
         {
-            // Sprawdzenie, czy pojazd siê porusza (minimalna prêdkoœæ)
+            // JeÅ›li jedziemy albo jesteÅ›my tuÅ¼ przy celu, reset timera
             if (agent.velocity.magnitude > 0.1f || agent.remainingDistance < 0.5f)
             {
-                stuckTimer = 0f; // Reset timera jeœli pojazd siê rusza lub jest blisko celu
+                stuckTimer = 0f;
             }
             else
             {
-                stuckTimer += 1f; // Jeœli nie porusza siê, licz czas blokady
+                stuckTimer += 1f;
             }
 
             lastPosition = transform.position;
 
-            // Usuwanie tylko, jeœli samochód siê nie porusza, nie stoi na œwiat³ach i nie czeka w korku
-            if (stuckTimer >= stuckTimeThreshold && !isOnTrafficLight && !isAfterCar)
+            // JeÅ›li zbyt dÅ‚ugo stoimy, a nie mamy czerwonego Å›wiatÅ‚a ani nie ma auta z przodu
+            if (stuckTimer >= stuckTimeThreshold && !stopForLight && !isAfterCar)
             {
-                //print("Pojazd zablokowany! Resetowanie pozycji...");
                 Destroy(gameObject, 0.5f);
             }
 
-            // Usuniêcie jeœli pojazd jest wewn¹trz przeszkody (ale nie na œwiat³ach)
-            if (IsInObstacle() && !isOnTrafficLight && !isAfterCar)
+            // Sprawdzenie, czy pojazd nie jest "w Å›rodku" przeszkody
+            if (IsInObstacle() && !stopForLight && !isAfterCar)
             {
-                //print("Pojazd w przeszkodzie! Usuwanie...");
                 Destroy(gameObject, 0.5f);
             }
 
@@ -133,13 +208,15 @@ public class CarController : MonoBehaviour
         }
     }
 
-
+    /// <summary>
+    /// Sprawdza, czy samochÃ³d znajduje siÄ™ wewnÄ…trz colidera z tagiem "Obstacle".
+    /// </summary>
     private bool IsInObstacle()
     {
         Collider[] colliders = Physics.OverlapSphere(transform.position, obstacleCheckRadius);
-        foreach (var collider in colliders)
+        foreach (var col in colliders)
         {
-            if (collider.CompareTag("Obstacle"))
+            if (col.CompareTag("Obstacle"))
             {
                 return true;
             }
@@ -147,21 +224,28 @@ public class CarController : MonoBehaviour
         return false;
     }
 
+    /// <summary>
+    /// Ustawienie waypointu startowego.
+    /// </summary>
     public void SetFirstWaypoint(Waypoint waypoint)
     {
-        if (waypoint != null)
+        if (waypoint == null)
         {
-            CurrentWaypoint = waypoint;
-
+            Debug.LogError($"ðŸš— {gameObject.name} otrzymaÅ‚ `null` jako pierwszy waypoint! SprawdÅº `VehicleSpawner`.");
+            return;
         }
-        else
+
+        CurrentWaypoint = waypoint;
+
+        if (agent != null)
         {
-            Debug.LogWarning("Przekazany waypoint jest null!");
+            agent.SetDestination(CurrentWaypoint.transform.position);
         }
     }
 
-    private Coroutine trafficLightCoroutine; // Przechowuje referencjê do uruchomionej korutyny
-
+    /// <summary>
+    /// RozpoczÄ™cie korutyny monitorujÄ…cej Å›wiatÅ‚a.
+    /// </summary>
     public void StartTrafficLightMonitoring()
     {
         if (trafficLightCoroutine == null)
@@ -170,83 +254,31 @@ public class CarController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Zatrzymanie korutyny monitorujÄ…cej Å›wiatÅ‚a.
+    /// </summary>
     public void StopTrafficLightMonitoring()
     {
         if (trafficLightCoroutine != null)
         {
             StopCoroutine(trafficLightCoroutine);
-            isOnTrafficLight = false;
-            trafficLightCoroutine = null; // Resetuj referencjê
+            trafficLightCoroutine = null;
         }
-
-        // Przywróæ pe³n¹ prêdkoœæ, gdy opuszczamy trigger
-        agent.speed = FullSpeed;
+        isOnTrafficLight = false;
+        stopForLight = false;         // skoro wyjeÅ¼dÅ¼amy z obszaru sygnalizacji, nie musimy staÄ‡
     }
-
-    private IEnumerator DetectCarsCoroutine()
+    private void OnDrawGizmos()
     {
-        while (true)
-        {
-            DetectCars();
-            yield return new WaitForSeconds(detectionInterval); // Czekaj przez okreœlony czas
-        }
-    }
+        // Wizualizacja promienia do wykrywania samochodu z przodu
+        Gizmos.color = Color.green;
+        Gizmos.DrawRay(transform.position + Vector3.up, transform.forward * detectionDistance);
 
-    private void DetectCars()
-    {
-        RaycastHit hit;
-        // Ustawienie wektora kierunku do przodu
-        Vector3 rayStartPosition = transform.position + Vector3.up;
-        Vector3 forwardDirection = transform.TransformDirection(Vector3.forward) * detectionDistance;
-
-        // Sprawdzenie, czy raycast trafia w inne auto
-        if (Physics.Raycast(rayStartPosition, forwardDirection, out hit, detectionDistance))
-        {
-
-            if (hit.collider.CompareTag("Car")) // Zak³adamy, ¿e inne samochody maj¹ tag "Car"
-            {
-                isAfterCar = true;
-                // Jeœli wykryto inne auto, zatrzymaj siê, jeœli jest za blisko
-                if (hit.distance < stopDistance)
-                {
-                    agent.isStopped = true;
-                    agent.velocity = Vector3.zero;
-                }
-               
-                else
-                {
-                    agent.isStopped = false;
-                    agent.speed = FullSpeed; // Przywróæ pe³n¹ prêdkoœæ
-                }
-            }
-            else if (hit.collider.CompareTag("Obstacle"))
-            {
-                Vector3 directionToTarget = (agent.destination - transform.position).normalized;
-                directionToTarget.y = 0; // Upewniamy siê, ¿e auto nie obraca siê w pionie
-                transform.rotation = Quaternion.LookRotation(directionToTarget);
-
-                // Kontynuowanie jazdy
-                agent.isStopped = false;
-                agent.speed = FullSpeed;
-            }
-
-        }
-        else
-        {
-            isAfterCar = false;
-            // Nie wykryto przeszkód, kontynuuj jazdê
-            agent.isStopped = false;
-        }
+        // Wizualizacja sfery do wykrywania przeszkÃ³d "od Å›rodka"
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position, obstacleCheckRadius);
     }
     public void SetAgentDestination(Vector3 destinationTransform)
     {
         agent.SetDestination(destinationTransform);
-    }
-    private void OnDrawGizmos()
-    {
-        Vector3 rayStartPosition = transform.position + Vector3.up;
-
-        Vector3 forwardDirection = transform.TransformDirection(Vector3.forward) * detectionDistance;
-        Debug.DrawRay(rayStartPosition, forwardDirection, Color.green); // Rysuje czerwony promieñ
     }
 }

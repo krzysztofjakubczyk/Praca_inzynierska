@@ -10,11 +10,6 @@ public class VehicleSpawner : MonoBehaviour
 
     [SerializeField]private int spawnedVehicles = 0; // Licznik spawnowanych pojazdów
 
-    private void Start()
-    {
-        //StartSpawning();
-    }
-
     public int MaxVehicles
     {
         get => maxVehicles;
