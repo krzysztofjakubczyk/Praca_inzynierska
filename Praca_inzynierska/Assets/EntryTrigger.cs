@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class EntryTrigger : MonoBehaviour
 {
+    public int count;
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Car"))
@@ -10,7 +12,7 @@ public class EntryTrigger : MonoBehaviour
             if (timer != null)
             {
                 timer.StartTimer(); // Rozpocznij stoper przy wjeüdzie na skrzyøowanie
-                Debug.Log($"Pojazd {other.name} rozpoczπ≥ przejazd.");
+                count++;
             }
         }
     }

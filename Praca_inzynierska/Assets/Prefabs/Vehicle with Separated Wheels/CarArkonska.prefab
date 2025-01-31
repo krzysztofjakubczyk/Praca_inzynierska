@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: -566944232893335450}
   - component: {fileID: 4319532575485604089}
   - component: {fileID: 4411577094623702775}
+  - component: {fileID: 2332695602404989996}
   m_Layer: 0
   m_Name: CarArkonska
   m_TagString: Car
@@ -99,16 +100,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c40128ded95e48846b3d38d8b11202b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lineManager: {fileID: 0}
   detectionDistance: 25
   stopDistance: 11.8
-  detectionInterval: 0.5
-  stuckTimeThreshold: 10
   obstacleCheckRadius: 1.5
-  vehicleLength: 4.5
-  WantWarnings: 0
+  stuckTimeThreshold: 10
   CurrentWaypoint: {fileID: 0}
   FullSpeed: 15
+  vehicleLength: 4
+  lineManager: {fileID: 0}
 --- !u!54 &-566944232893335450
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -180,3 +179,15 @@ NavMeshAgent:
   m_BaseOffset: 0.5
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!114 &2332695602404989996
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5505025493778204093}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dea0ef07fd8a8cc4fb67ff27773ae2b1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

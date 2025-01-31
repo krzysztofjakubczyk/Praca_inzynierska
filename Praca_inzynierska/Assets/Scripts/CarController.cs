@@ -136,7 +136,7 @@ public class CarController : MonoBehaviour
             if (isAfterCar)
             {
                 // Dla czytelności logów:
-                Debug.Log($"[DetectCars] Samochód przed nami odjechał. Wznawiamy ruch.");
+                //Debug.Log($"[DetectCars] Samochód przed nami odjechał. Wznawiamy ruch.");
                 isAfterCar = false;
             }
         }

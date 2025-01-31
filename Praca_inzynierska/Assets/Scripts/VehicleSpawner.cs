@@ -1,14 +1,15 @@
-using System.Collections;
+ï»¿using System.Collections;
 using UnityEngine;
 
 public class VehicleSpawner : MonoBehaviour
 {
     [SerializeField] private GameObject vehiclePrefab; // Prefab pojazdu
-    [SerializeField] private Waypoint firstWaypoint; // Pierwszy waypoint, do którego pojazd ma siê udaæ
-    [SerializeField] private float spawnInterval = 5f; // Interwa³ spawnowania
-    [SerializeField] private int maxVehicles; // Maksymalna liczba pojazdów do spawnowania
+    [SerializeField] private Waypoint firstWaypoint; // Pierwszy waypoint, do ktÃ³rego pojazd ma siÄ™ udaÄ‡
+    [SerializeField] private float spawnInterval = 5f; // InterwaÅ‚ spawnowania
+    [SerializeField] private int maxVehicles; // Maksymalna liczba pojazdÃ³w do spawnowania
 
-    [SerializeField]private int spawnedVehicles = 0; // Licznik spawnowanych pojazdów
+    [SerializeField]private int spawnedVehicles = 0; // Licznik spawnowanych pojazdÃ³w
+    [SerializeField]private bool wantToSpawn; // Licznik spawnowanych pojazdÃ³w
 
     public int MaxVehicles
     {
@@ -25,7 +26,7 @@ public class VehicleSpawner : MonoBehaviour
     {
         spawnedVehicles = 0;
         StopAllCoroutines();
-        StartSpawning();
+        Invoke(nameof(StartSpawning),2f);
     }
 
     public void StartSpawning()
@@ -33,21 +34,21 @@ public class VehicleSpawner : MonoBehaviour
         StartCoroutine(SpawnVehicles());
     }
 
+
     private IEnumerator SpawnVehicles()
     {
         while (spawnedVehicles < maxVehicles)   
         {
+ 
             SpawnVehicle();
             yield return new WaitForSeconds(spawnInterval);
         }
     }
-
     private void SpawnVehicle()
     {
-        if (vehiclePrefab.name == "Tram") print("ITS TRAM!");
         if (vehiclePrefab == null || firstWaypoint == null)
         {
-            Debug.LogError($"Spawner {gameObject.name} ma brakuj¹ce elementy: prefab lub pierwszy waypoint!");
+            Debug.LogError($"Spawner {gameObject.name} ma brakujÄ…ce elementy: prefab lub pierwszy waypoint!");
             return;
         }
 
@@ -63,7 +64,7 @@ public class VehicleSpawner : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        // Wizualizacja po³¹czenia do firstWaypoint
+        // Wizualizacja poÅ‚Ä…czenia do firstWaypoint
         if (firstWaypoint != null)
         {
             Gizmos.color = Color.blue;

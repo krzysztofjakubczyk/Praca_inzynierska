@@ -67,6 +67,7 @@
     <Compile Include="Assets\Scripts\MainTrafiicController.cs" />
     <Compile Include="Assets\Scripts\CarDestroyer.cs" />
     <Compile Include="Assets\Scripts\TimeManager.cs" />
+    <Compile Include="Assets\StatisticManager.cs" />
     <Compile Include="Assets\ExitTrigger.cs" />
     <Compile Include="Assets\Scripts\MainTrafiicControllerForSczanieckiej.cs" />
     <Compile Include="Assets\FreeLookCameraController.cs" />

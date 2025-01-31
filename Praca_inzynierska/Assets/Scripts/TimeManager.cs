@@ -13,7 +13,9 @@ public class TimeManager : MonoBehaviour
     [SerializeField] private List<int> countOfVehiclesForTwelve;
     [SerializeField] private List<int> countOfVehiclesForFifteen;
     [SerializeField] private List<int> countOfVehiclesForNinePM;
+    [SerializeField] private List<Counter> Counters;
     [SerializeField] private TMP_Text timeText;
+    [SerializeField] private int simulationSpeedUpValue;
 
     private bool isPaused = false; // Game pause flag
     private bool isSpeeded = false;
@@ -28,7 +30,7 @@ public class TimeManager : MonoBehaviour
 
         foreach (var tramSpawner in tramSpawners)
         {
-            tramSpawner.MaxVehicles = 1;
+            tramSpawner.MaxVehicles = 5;
             tramSpawner.SetSpawnInterval(720); // Tramwaje co 12 minut
         }
     }
@@ -73,7 +75,6 @@ public class TimeManager : MonoBehaviour
                 break;
         }
 
-        Debug.Log($"Wybrano godzinê: {hourChoosedString}");
     }
 
     private void AssignVehicleCountsToSpawners(List<int> vehicleCounts)
@@ -101,6 +102,10 @@ public class TimeManager : MonoBehaviour
     {
         simulationTime = 0f;
         GameObject[] Cars = GameObject.FindGameObjectsWithTag("Car");
+        foreach( Counter counter in Counters)
+        {
+            counter.ResetCounter();
+        }
         foreach (GameObject Car in Cars)
         {
             Destroy(Car, 0.5f);
@@ -109,6 +114,10 @@ public class TimeManager : MonoBehaviour
         foreach (VehicleSpawner Spawner in spawners)
         {
             Spawner.ResetSpawner();
+        }
+        foreach (VehicleSpawner TramSpawner in tramSpawners)
+        {
+            TramSpawner.ResetSpawner();
         }
 
     }
@@ -121,7 +130,7 @@ public class TimeManager : MonoBehaviour
 
     private void SpeedUpSimulation()
     {
-        Time.timeScale = 4f;
+        Time.timeScale = simulationSpeedUpValue;
         isSpeeded = true;
     }
 

@@ -3,28 +3,32 @@
   "WorkspaceRootPath": "C:\\Users\\najno\\OneDrive\\Dokumenty\\GitHub\\Praca_inzynierka\\Praca_inzynierska\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{D703AD2D-4937-F035-ABBD-14C6AB2C3953}|Assembly-CSharp.csproj|C:\\Users\\najno\\OneDrive\\Dokumenty\\GitHub\\Praca_inzynierka\\Praca_inzynierska\\assets\\scripts\\carcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D703AD2D-4937-F035-ABBD-14C6AB2C3953}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\carcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{D703AD2D-4937-F035-ABBD-14C6AB2C3953}|Assembly-CSharp.csproj|c:\\users\\najno\\onedrive\\dokumenty\\github\\praca_inzynierka\\praca_inzynierska\\assets\\scripts\\vehiclespawner.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D703AD2D-4937-F035-ABBD-14C6AB2C3953}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\vehiclespawner.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{D703AD2D-4937-F035-ABBD-14C6AB2C3953}|Assembly-CSharp.csproj|c:\\users\\najno\\onedrive\\dokumenty\\github\\praca_inzynierka\\praca_inzynierska\\assets\\scripts\\timemanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{D703AD2D-4937-F035-ABBD-14C6AB2C3953}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\timemanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{D703AD2D-4937-F035-ABBD-14C6AB2C3953}|Assembly-CSharp.csproj|c:\\users\\najno\\onedrive\\dokumenty\\github\\praca_inzynierka\\praca_inzynierska\\assets\\scripts\\chooselane.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D703AD2D-4937-F035-ABBD-14C6AB2C3953}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\chooselane.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{D703AD2D-4937-F035-ABBD-14C6AB2C3953}|Assembly-CSharp.csproj|c:\\users\\najno\\onedrive\\dokumenty\\github\\praca_inzynierka\\praca_inzynierska\\assets\\statisticmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D703AD2D-4937-F035-ABBD-14C6AB2C3953}|Assembly-CSharp.csproj|solutionrelative:assets\\statisticmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{D703AD2D-4937-F035-ABBD-14C6AB2C3953}|Assembly-CSharp.csproj|c:\\users\\najno\\onedrive\\dokumenty\\github\\praca_inzynierka\\praca_inzynierska\\assets\\scripts\\sensor.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D703AD2D-4937-F035-ABBD-14C6AB2C3953}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\sensor.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{D703AD2D-4937-F035-ABBD-14C6AB2C3953}|Assembly-CSharp.csproj|c:\\users\\najno\\onedrive\\dokumenty\\github\\praca_inzynierka\\praca_inzynierska\\assets\\scripts\\maintrafiiccontrollerforsczanieckiej.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D703AD2D-4937-F035-ABBD-14C6AB2C3953}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\maintrafiiccontrollerforsczanieckiej.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{D703AD2D-4937-F035-ABBD-14C6AB2C3953}|Assembly-CSharp.csproj|c:\\users\\najno\\onedrive\\dokumenty\\github\\praca_inzynierka\\praca_inzynierska\\assets\\scripts\\lightmonitorforcar.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D703AD2D-4937-F035-ABBD-14C6AB2C3953}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\lightmonitorforcar.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{D703AD2D-4937-F035-ABBD-14C6AB2C3953}|Assembly-CSharp.csproj|c:\\users\\najno\\onedrive\\dokumenty\\github\\praca_inzynierka\\praca_inzynierska\\assets\\scripts\\maintrafiiccontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D703AD2D-4937-F035-ABBD-14C6AB2C3953}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\maintrafiiccontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D703AD2D-4937-F035-ABBD-14C6AB2C3953}|Assembly-CSharp.csproj|c:\\users\\najno\\onedrive\\dokumenty\\github\\praca_inzynierka\\praca_inzynierska\\assets\\entrytrigger.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D703AD2D-4937-F035-ABBD-14C6AB2C3953}|Assembly-CSharp.csproj|solutionrelative:assets\\entrytrigger.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D703AD2D-4937-F035-ABBD-14C6AB2C3953}|Assembly-CSharp.csproj|C:\\Users\\najno\\OneDrive\\Dokumenty\\GitHub\\Praca_inzynierka\\Praca_inzynierska\\assets\\exittrigger.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D703AD2D-4937-F035-ABBD-14C6AB2C3953}|Assembly-CSharp.csproj|solutionrelative:assets\\exittrigger.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D703AD2D-4937-F035-ABBD-14C6AB2C3953}|Assembly-CSharp.csproj|C:\\Users\\najno\\OneDrive\\Dokumenty\\GitHub\\Praca_inzynierka\\Praca_inzynierska\\assets\\timers.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D703AD2D-4937-F035-ABBD-14C6AB2C3953}|Assembly-CSharp.csproj|solutionrelative:assets\\timers.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -34,84 +38,96 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 5,
+          "SelectedChildIndex": 1,
           "Children": [
             {
               "$type": "Document",
               "DocumentIndex": 2,
-              "Title": "TimeManager.cs",
-              "DocumentMoniker": "C:\\Users\\najno\\OneDrive\\Dokumenty\\GitHub\\Praca_inzynierka\\Praca_inzynierska\\Assets\\Scripts\\TimeManager.cs",
-              "RelativeDocumentMoniker": "Assets\\Scripts\\TimeManager.cs",
-              "ToolTip": "C:\\Users\\najno\\OneDrive\\Dokumenty\\GitHub\\Praca_inzynierka\\Praca_inzynierska\\Assets\\Scripts\\TimeManager.cs",
-              "RelativeToolTip": "Assets\\Scripts\\TimeManager.cs",
-              "ViewState": "AQIAAA4AAAAAAAAAAAAAwG4AAAAUAAAA",
+              "Title": "MainTrafiicControllerForSczanieckiej.cs",
+              "DocumentMoniker": "C:\\Users\\najno\\OneDrive\\Dokumenty\\GitHub\\Praca_inzynierka\\Praca_inzynierska\\Assets\\Scripts\\MainTrafiicControllerForSczanieckiej.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\MainTrafiicControllerForSczanieckiej.cs",
+              "ToolTip": "C:\\Users\\najno\\OneDrive\\Dokumenty\\GitHub\\Praca_inzynierka\\Praca_inzynierska\\Assets\\Scripts\\MainTrafiicControllerForSczanieckiej.cs",
+              "RelativeToolTip": "Assets\\Scripts\\MainTrafiicControllerForSczanieckiej.cs",
+              "ViewState": "AQIAAFsAAAAAAAAAAAAowG4AAACXAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-30T11:25:14.009Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "VehicleSpawner.cs",
-              "DocumentMoniker": "C:\\Users\\najno\\OneDrive\\Dokumenty\\GitHub\\Praca_inzynierka\\Praca_inzynierska\\Assets\\Scripts\\VehicleSpawner.cs",
-              "RelativeDocumentMoniker": "Assets\\Scripts\\VehicleSpawner.cs",
-              "ToolTip": "C:\\Users\\najno\\OneDrive\\Dokumenty\\GitHub\\Praca_inzynierka\\Praca_inzynierska\\Assets\\Scripts\\VehicleSpawner.cs",
-              "RelativeToolTip": "Assets\\Scripts\\VehicleSpawner.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAADkAAAAJAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-30T11:14:08.237Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "Sensor.cs",
-              "DocumentMoniker": "C:\\Users\\najno\\OneDrive\\Dokumenty\\GitHub\\Praca_inzynierka\\Praca_inzynierska\\Assets\\Scripts\\Sensor.cs",
-              "RelativeDocumentMoniker": "Assets\\Scripts\\Sensor.cs",
-              "ToolTip": "C:\\Users\\najno\\OneDrive\\Dokumenty\\GitHub\\Praca_inzynierka\\Praca_inzynierska\\Assets\\Scripts\\Sensor.cs",
-              "RelativeToolTip": "Assets\\Scripts\\Sensor.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAA4AAAAYAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-30T11:12:19.666Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "ChooseLane.cs",
-              "DocumentMoniker": "C:\\Users\\najno\\OneDrive\\Dokumenty\\GitHub\\Praca_inzynierka\\Praca_inzynierska\\Assets\\Scripts\\ChooseLane.cs",
-              "RelativeDocumentMoniker": "Assets\\Scripts\\ChooseLane.cs",
-              "ToolTip": "C:\\Users\\najno\\OneDrive\\Dokumenty\\GitHub\\Praca_inzynierka\\Praca_inzynierska\\Assets\\Scripts\\ChooseLane.cs",
-              "RelativeToolTip": "Assets\\Scripts\\ChooseLane.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAABsAAAAFAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-30T11:12:10.78Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "LightMonitorForCar.cs",
-              "DocumentMoniker": "C:\\Users\\najno\\OneDrive\\Dokumenty\\GitHub\\Praca_inzynierka\\Praca_inzynierska\\Assets\\Scripts\\LightMonitorForCar.cs",
-              "RelativeDocumentMoniker": "Assets\\Scripts\\LightMonitorForCar.cs",
-              "ToolTip": "C:\\Users\\najno\\OneDrive\\Dokumenty\\GitHub\\Praca_inzynierka\\Praca_inzynierska\\Assets\\Scripts\\LightMonitorForCar.cs",
-              "RelativeToolTip": "Assets\\Scripts\\LightMonitorForCar.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAABQAAAA0AAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-30T10:06:11.08Z",
+              "WhenOpened": "2025-01-31T12:43:11.174Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "CarController.cs",
-              "DocumentMoniker": "C:\\Users\\najno\\OneDrive\\Dokumenty\\GitHub\\Praca_inzynierka\\Praca_inzynierska\\Assets\\Scripts\\CarController.cs",
-              "RelativeDocumentMoniker": "Assets\\Scripts\\CarController.cs",
-              "ToolTip": "C:\\Users\\najno\\OneDrive\\Dokumenty\\GitHub\\Praca_inzynierka\\Praca_inzynierska\\Assets\\Scripts\\CarController.cs",
-              "RelativeToolTip": "Assets\\Scripts\\CarController.cs",
-              "ViewState": "AQIAAGoAAAAAAAAAAAAqwIEAAAAjAAAA",
+              "Title": "TimeManager.cs",
+              "DocumentMoniker": "C:\\Users\\najno\\OneDrive\\Dokumenty\\GitHub\\Praca_inzynierka\\Praca_inzynierska\\Assets\\Scripts\\TimeManager.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\TimeManager.cs",
+              "ToolTip": "C:\\Users\\najno\\OneDrive\\Dokumenty\\GitHub\\Praca_inzynierka\\Praca_inzynierska\\Assets\\Scripts\\TimeManager.cs",
+              "RelativeToolTip": "Assets\\Scripts\\TimeManager.cs",
+              "ViewState": "AQIAAEAAAAAAAAAAAAAmwFMAAABPAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-27T11:10:57.357Z",
+              "WhenOpened": "2025-01-31T12:17:27.666Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "MainTrafiicController.cs",
+              "DocumentMoniker": "C:\\Users\\najno\\OneDrive\\Dokumenty\\GitHub\\Praca_inzynierka\\Praca_inzynierska\\Assets\\Scripts\\MainTrafiicController.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\MainTrafiicController.cs",
+              "ToolTip": "C:\\Users\\najno\\OneDrive\\Dokumenty\\GitHub\\Praca_inzynierka\\Praca_inzynierska\\Assets\\Scripts\\MainTrafiicController.cs",
+              "RelativeToolTip": "Assets\\Scripts\\MainTrafiicController.cs",
+              "ViewState": "AQIAAAABAAAAAAAAAAAUwCUBAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-01-31T11:27:16.647Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "StatisticManager.cs",
+              "DocumentMoniker": "C:\\Users\\najno\\OneDrive\\Dokumenty\\GitHub\\Praca_inzynierka\\Praca_inzynierska\\Assets\\StatisticManager.cs",
+              "RelativeDocumentMoniker": "Assets\\StatisticManager.cs",
+              "ToolTip": "C:\\Users\\najno\\OneDrive\\Dokumenty\\GitHub\\Praca_inzynierka\\Praca_inzynierska\\Assets\\StatisticManager.cs",
+              "RelativeToolTip": "Assets\\StatisticManager.cs",
+              "ViewState": "AQIAABAAAAAAAAAAAAAqwCEAAAAFAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-01-31T08:59:58.743Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "ExitTrigger.cs",
+              "DocumentMoniker": "C:\\Users\\najno\\OneDrive\\Dokumenty\\GitHub\\Praca_inzynierka\\Praca_inzynierska\\Assets\\ExitTrigger.cs",
+              "RelativeDocumentMoniker": "Assets\\ExitTrigger.cs",
+              "ToolTip": "C:\\Users\\najno\\OneDrive\\Dokumenty\\GitHub\\Praca_inzynierka\\Praca_inzynierska\\Assets\\ExitTrigger.cs",
+              "RelativeToolTip": "Assets\\ExitTrigger.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAsAAAAtAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-01-30T18:33:46.444Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "Timers.cs",
+              "DocumentMoniker": "C:\\Users\\najno\\OneDrive\\Dokumenty\\GitHub\\Praca_inzynierka\\Praca_inzynierska\\Assets\\Timers.cs",
+              "RelativeDocumentMoniker": "Assets\\Timers.cs",
+              "ToolTip": "C:\\Users\\najno\\OneDrive\\Dokumenty\\GitHub\\Praca_inzynierka\\Praca_inzynierska\\Assets\\Timers.cs",
+              "RelativeToolTip": "Assets\\Timers.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABIAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-01-30T18:29:54.066Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "EntryTrigger.cs",
+              "DocumentMoniker": "C:\\Users\\najno\\OneDrive\\Dokumenty\\GitHub\\Praca_inzynierka\\Praca_inzynierska\\Assets\\EntryTrigger.cs",
+              "RelativeDocumentMoniker": "Assets\\EntryTrigger.cs",
+              "ToolTip": "C:\\Users\\najno\\OneDrive\\Dokumenty\\GitHub\\Praca_inzynierka\\Praca_inzynierska\\Assets\\EntryTrigger.cs",
+              "RelativeToolTip": "Assets\\EntryTrigger.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABAAAAAJAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-01-30T18:29:20.998Z",
               "EditorCaption": ""
             }
           ]

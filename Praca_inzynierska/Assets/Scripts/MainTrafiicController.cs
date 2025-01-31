@@ -39,6 +39,7 @@ public class MainTrafficController : MonoBehaviour
     [SerializeField] private float timeBeforeNextPhase = 2f;
 
     private FuzzyLogicHandler fuzzyLogicHandler;
+    public int activePhase;
 
     private void Start()
     {
@@ -141,6 +142,7 @@ public class MainTrafficController : MonoBehaviour
             for (int phaseIndex = 0; phaseIndex < listToChangeColors.Count; phaseIndex++)
             {
                 var phase = listToChangeColors[phaseIndex];
+                activePhase = phaseIndex;
                 List<int> laneTimes = GetPhaseTimes(phaseIndex);
                 List<int> startTimes = GetPhaseStartTimes(phaseIndex);
 

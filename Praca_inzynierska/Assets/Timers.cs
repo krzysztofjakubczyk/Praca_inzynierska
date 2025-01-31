@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Timers : MonoBehaviour
 {
-    private float entryTime;
+    [SerializeField]private float entryTime;
     private bool isTracking = false;
 
     public void StartTimer()

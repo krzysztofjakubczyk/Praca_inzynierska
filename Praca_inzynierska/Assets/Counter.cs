@@ -9,4 +9,8 @@ public class Counter : MonoBehaviour
     {
         countOfVehicles++;
     }
+    public void ResetCounter()
+    {
+        countOfVehicles = 0;
+    }
 }
