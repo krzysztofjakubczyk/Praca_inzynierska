@@ -78,6 +78,7 @@
     <Compile Include="Assets\Scripts\ChooseLane.cs" />
     <Compile Include="Assets\Scripts\LightMonitorForCar.cs" />
     <Compile Include="Assets\Counter.cs" />
+    <Compile Include="Assets\CollisionDetector.cs" />
     <Compile Include="Assets\EntryTrigger.cs" />
     <Compile Include="Assets\FlyCamera.cs" />
   </ItemGroup>

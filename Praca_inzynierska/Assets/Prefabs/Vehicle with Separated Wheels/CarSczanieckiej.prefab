@@ -31,8 +31,8 @@ Transform:
   m_GameObject: {fileID: 5505025493778204093}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.2607, y: 1.53, z: 1.8666}
-  m_LocalScale: {x: 3.6035275, y: 4, z: 7.1017094}
+  m_LocalPosition: {x: -0.5784, y: 1.4914, z: 1.8666}
+  m_LocalScale: {x: 2.22941, y: 2.1314564, z: 3.0808482}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -99,14 +99,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c40128ded95e48846b3d38d8b11202b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lineManager: {fileID: 0}
   detectionDistance: 12.6
   stopDistance: 11.8
-  detectionInterval: 0.5
-  vehicleLength: 4.5
-  WantWarnings: 1
+  obstacleCheckRadius: 1.5
+  stuckTimeThreshold: 10
   CurrentWaypoint: {fileID: 0}
   FullSpeed: 15
+  vehicleLength: 4
+  lineManager: {fileID: 0}
 --- !u!54 &-566944232893335450
 Rigidbody:
   m_ObjectHideFlags: 0

@@ -80,8 +80,17 @@ public class CarController : MonoBehaviour
                     {
                         // Następny waypoint
                         CurrentWaypoint = CurrentWaypoint.NextWaypoint;
+
                         if (CurrentWaypoint != null)
+                        {
                             agent.SetDestination(CurrentWaypoint.transform.position);
+                        }
+
+                        // NOWE: Sprawdzenie, czy auto jest na środku skrzyżowania według czujnika
+                        if (IsInMiddleOfIntersection() && (CurrentWaypoint.name.Contains("5K") || CurrentWaypoint.name.Contains("6K")))
+                        {
+                            yield return StartCoroutine(CheckLeftTurnConditions());
+                        }
                     }
                 }
             }
@@ -93,6 +102,41 @@ public class CarController : MonoBehaviour
             agent.isStopped = stopForCar || stopForLight;
 
             yield return null;
+        }
+    }
+
+    // NOWA FUNKCJA: Sprawdza, czy auto znajduje się na środku skrzyżowania
+    private bool IsInMiddleOfIntersection()
+    {
+        foreach (var sensor in lineManager.sensors)
+        {
+            if (sensor.isInMiddleOfIntersection && sensor.VehicleCount > 0)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // NOWA FUNKCJA: Sprawdza, czy można skręcić w lewo na środku skrzyżowania
+
+
+    // NOWA FUNKCJA: Sprawdza, czy można skręcić w lewo na środku skrzyżowania
+    private IEnumerator CheckLeftTurnConditions()
+    {
+        while (true)
+        {
+            if (!lineManager.leftTurnAllowed) // Jeśli skręt w lewo jest zablokowany, czekamy
+            {
+                agent.isStopped = true;
+            }
+            else // Gdy można skręcić, ruszamy
+            {
+                agent.isStopped = false;
+                break;
+            }
+
+            yield return null; // Sprawdzamy co klatkę
         }
     }
 
