@@ -9,7 +9,6 @@ public class Sensor : MonoBehaviour
     [SerializeField] public float QueueLength;
     public bool isForCollision;
     public bool isForLeftTurnCheck;
-    public bool isInMiddleOfIntersection; // NOWE: Czy sensor jest na œrodku skrzy¿owania?
     public bool isBlockingTraffic = false;
 
 
@@ -22,7 +21,10 @@ public class Sensor : MonoBehaviour
             QueueLength += car.vehicleLength;
         }
         VehicleCount++;
-
+        if(isForCollision)
+        {
+            car.SetMiddleIntersectionState(true);
+        }
         CheckIfBlocking();
     }
 
@@ -35,7 +37,10 @@ public class Sensor : MonoBehaviour
             QueueLength -= car.vehicleLength;
         }
         VehicleCount--;
-
+        if(isForCollision)
+        {
+            car.SetMiddleIntersectionState(false);
+        }
         CheckIfBlocking();
     }
 

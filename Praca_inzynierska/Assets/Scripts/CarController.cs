@@ -10,6 +10,7 @@ public class CarController : MonoBehaviour
     [SerializeField] private float detectionDistance = 10f;
     [SerializeField] private float stopDistance = 2f;
     [SerializeField] private float obstacleCheckRadius = 1.5f;
+    private bool isAtMiddleOfIntersection = false; // NOWE: Czy auto faktycznie jest na środku?
 
     [Header("General")]
     [SerializeField] private float stuckTimeThreshold = 10f;
@@ -23,6 +24,8 @@ public class CarController : MonoBehaviour
     private bool stopForLight = false;      // Czy musimy się zatrzymać z powodu czerwonego/żółtego światła
     private bool isOnTrafficLight = false;  // Czy znajdujemy się w obszarze skrzyżowania ze światłami
     private bool isAfterCar = false;        // Flaga używana przy detekcji innego samochodu
+    private bool stopForCollision = false;        // Flaga używana przy detekcji innego samochodu
+    private bool isLaneBlocked = false;        // Flaga używana przy detekcji innego samochodu
 
     private Vector3 lastPosition;
     private float stuckTimer;
@@ -40,109 +43,62 @@ public class CarController : MonoBehaviour
             return;
         }
         StartCoroutine(MoveCoroutine());
-        StartCoroutine(CheckIfStuck());
+        //StartCoroutine(CheckIfStuck());
     }
 
     private IEnumerator MoveCoroutine()
     {
-        // Czekaj na wybranie waypointu startowego
+        // Czekaj, aż zostanie ustawiony pierwszy waypoint
         while (CurrentWaypoint == null)
         {
             yield return null;
         }
 
-        // Główna pętla
         while (true)
         {
-            // Jeżeli dany waypoint to "pierwszy" – ustaw lineManager, jeśli jest tam przypisany
+            // Uaktualnij lineManager, jeśli jesteśmy przy pierwszym waypoint'cie
             if (CurrentWaypoint.isFirstWaypoint && CurrentWaypoint.linkedController != null)
             {
                 lineManager = CurrentWaypoint.linkedController;
             }
 
-            // Specjalny waypoint o nazwie "CarDestroyer"
+            // Jeśli dotarliśmy do specjalnego waypointa "CarDestroyer", usuń auto
             if (CurrentWaypoint.name == "CarDestroyer")
             {
                 Destroy(gameObject, 0.5f);
             }
 
-            // Gdy dotarliśmy do waypointu, wyznacz kolejny cel (o ile agent nie jest zatrzymany)
-            if (!agent.pathPending && agent.remainingDistance < 2f)
+            // Sprawdź, czy przed autem znajduje się inny pojazd lub przeszkoda
+            CheckCarInFront();
+
+            // Oblicz łączny stan zatrzymania
+            bool shouldStop = stopForCar || stopForLight || stopForCollision || isLaneBlocked;
+            print("STOP FOR CAR: " + stopForCar + " STOP FOR LIGHT: " + stopForLight + " STOP FOR COLLISION: " + stopForCollision) ;
+            agent.isStopped = shouldStop;
+
+            // Tylko jeśli auto ma się poruszać, sprawdzaj dotarcie do celu
+            if (!shouldStop && !agent.pathPending && agent.remainingDistance < 2f)
             {
-                if (!agent.isStopped)
+                if (CurrentWaypoint.isBeforeTrafiicLight)
                 {
-                    if (CurrentWaypoint.isBeforeTrafiicLight)
+                    // Kierujemy się do laneChooser – może to być obszar przed skrzyżowaniem
+                    agent.SetDestination(CurrentWaypoint.laneChooser.transform.position);
+                }
+                else
+                {
+                    // Aktualizacja na następny waypoint
+                    CurrentWaypoint = CurrentWaypoint.NextWaypoint;
+                    if (CurrentWaypoint != null)
                     {
-                        // Kierujemy się do "laneChooser"
-                        agent.SetDestination(CurrentWaypoint.laneChooser.transform.position);
-                    }
-                    else
-                    {
-                        // Następny waypoint
-                        CurrentWaypoint = CurrentWaypoint.NextWaypoint;
-
-                        if (CurrentWaypoint != null)
-                        {
-                            agent.SetDestination(CurrentWaypoint.transform.position);
-                        }
-
-                        // NOWE: Sprawdzenie, czy auto jest na środku skrzyżowania według czujnika
-                        if (IsInMiddleOfIntersection() && (CurrentWaypoint.name.Contains("5K") || CurrentWaypoint.name.Contains("6K")))
-                        {
-                            yield return StartCoroutine(CheckLeftTurnConditions());
-                        }
+                        agent.SetDestination(CurrentWaypoint.transform.position);
                     }
                 }
             }
-
-            // Sprawdzenie, czy przed nami jest inne auto lub przeszkoda
-            CheckCarInFront();
-
-            // **Tu łączymy stany**: finalna decyzja o zatrzymaniu
-            agent.isStopped = stopForCar || stopForLight;
 
             yield return null;
         }
     }
 
-    // NOWA FUNKCJA: Sprawdza, czy auto znajduje się na środku skrzyżowania
-    private bool IsInMiddleOfIntersection()
-    {
-        foreach (var sensor in lineManager.sensors)
-        {
-            if (sensor.isInMiddleOfIntersection && sensor.VehicleCount > 0)
-            {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    // NOWA FUNKCJA: Sprawdza, czy można skręcić w lewo na środku skrzyżowania
-
-
-    // NOWA FUNKCJA: Sprawdza, czy można skręcić w lewo na środku skrzyżowania
-    private IEnumerator CheckLeftTurnConditions()
-    {
-        while (true)
-        {
-            if (!lineManager.leftTurnAllowed) // Jeśli skręt w lewo jest zablokowany, czekamy
-            {
-                agent.isStopped = true;
-            }
-            else // Gdy można skręcić, ruszamy
-            {
-                agent.isStopped = false;
-                break;
-            }
-
-            yield return null; // Sprawdzamy co klatkę
-        }
-    }
-
-    /// <summary>
-    /// Sprawdza Raycastem, czy przed nami jest auto lub przeszkoda i ustawia "stopForCar".
-    /// </summary>
     private void CheckCarInFront()
     {
         RaycastHit hit;
@@ -185,6 +141,43 @@ public class CarController : MonoBehaviour
             }
         }
     }
+    public void SetMiddleIntersectionState(bool state)
+    {
+        isAtMiddleOfIntersection = state;
+
+        if (isAtMiddleOfIntersection)
+        {
+            StartCoroutine(CheckCollisionLaneState());
+        }
+        else
+        {
+            // Jeśli wychodzimy ze strefy kolizyjnej, upewnij się, że przestajemy blokować
+            stopForCollision = false;
+        }
+    }
+
+    private IEnumerator CheckCollisionLaneState()
+    {
+        // Dopóki auto jest w strefie kolizyjnej...
+        while (isAtMiddleOfIntersection)
+        {
+            // Jeśli na pasie przeciwnym nie ma pojazdów i światło jest zielone,
+            // można kontynuować jazdę
+            if (lineManager.leftTurnAllowed)
+            {
+                stopForCollision = false;
+                isAtMiddleOfIntersection = false; // kończymy oczekiwanie
+                break;
+            }
+            else
+            {
+                // W przeciwnym wypadku blokujemy ruch
+                stopForCollision = true;
+            }
+            yield return null;
+        }
+    }
+
 
     /// <summary>
     /// Korutyna ciągle monitorująca kolor światła i ustawiająca "stopForLight".
@@ -196,7 +189,7 @@ public class CarController : MonoBehaviour
             if (lineManager != null)
             {
                 isOnTrafficLight = true;
-
+                isLaneBlocked = lineManager.isBlocked;
                 switch (lineManager.currentColor)
                 {
                     case TrafficLightColor.green:
@@ -217,60 +210,47 @@ public class CarController : MonoBehaviour
     }
 
     /// <summary>
-    /// Sprawdza, czy pojazd się nie "zawiesił" w miejscu (poza światłami i bez auta z przodu).
+    /// Sprawdza, czy pojazd się nie "zawiesił" w miejscu(poza światłami i bez auta z przodu).
     /// Jeśli tak – usuwa go.
     /// </summary>
-    private IEnumerator CheckIfStuck()
-    {
-        while (true)
-        {
-            // Jeśli jedziemy albo jesteśmy tuż przy celu, reset timera
-            if (agent.velocity.magnitude > 0.1f || agent.remainingDistance < 0.5f)
-            {
-                stuckTimer = 0f;
-            }
-            else
-            {
-                stuckTimer += 1f;
-            }
+    //private IEnumerator CheckIfStuck()
+    //{
+    //    while (true)
+    //    {
+    //        Jeśli jedziemy albo jesteśmy tuż przy celu, reset timera
+    //        if (agent.velocity.magnitude > 0.1f || agent.remainingDistance < 0.5f)
+    //        {
+    //            stuckTimer = 0f;
+    //        }
+    //        else
+    //        {
+    //            stuckTimer += 1f;
+    //        }
 
-            lastPosition = transform.position;
+    //        lastPosition = transform.position;
 
-            // Jeśli zbyt długo stoimy, a nie mamy czerwonego światła ani nie ma auta z przodu
-            if (stuckTimer >= stuckTimeThreshold && !stopForLight && !isAfterCar)
-            {
-                Destroy(gameObject, 0.5f);
-            }
+    //        Jeśli zbyt długo stoimy, a nie mamy czerwonego światła ani nie ma auta z przodu
+    //        if (stuckTimer >= stuckTimeThreshold && !stopForLight && !isAfterCar)
+    //        {
+    //            lineManager.countOfVehicles--;
+    //            foreach (var sensor in lineManager.sensors)
+    //            {
+    //                if (sensor.isForLeftTurnCheck)
+    //                {
+    //                    sensor.VehicleCount--;
+    //                }
+    //            }
+    //            Destroy(gameObject, 0.5f);
+    //            print("DESTROY STANIE W MIEJSCU");
+    //        }
 
-            // Sprawdzenie, czy pojazd nie jest "w środku" przeszkody
-            if (IsInObstacle() && !stopForLight && !isAfterCar)
-            {
-                Destroy(gameObject, 0.5f);
-            }
+    //        Sprawdzenie, czy pojazd nie jest "w środku" przeszkody
 
-            yield return new WaitForSeconds(1f);
-        }
-    }
+    //       yield return new WaitForSeconds(1f);
+    //    }
+    //}
 
-    /// <summary>
-    /// Sprawdza, czy samochód znajduje się wewnątrz colidera z tagiem "Obstacle".
-    /// </summary>
-    private bool IsInObstacle()
-    {
-        Collider[] colliders = Physics.OverlapSphere(transform.position, obstacleCheckRadius);
-        foreach (var col in colliders)
-        {
-            if (col.CompareTag("Obstacle"))
-            {
-                return true;
-            }
-        }
-        return false;
-    }
 
-    /// <summary>
-    /// Ustawienie waypointu startowego.
-    /// </summary>
     public void SetFirstWaypoint(Waypoint waypoint)
     {
         if (waypoint == null)

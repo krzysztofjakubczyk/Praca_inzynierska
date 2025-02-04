@@ -24,7 +24,7 @@ MonoBehaviour:
   m_MinSize: {x: 300, y: 100}
   m_MaxSize: {x: 24288, y: 16192}
   vertical: 0
-  controlID: 96
+  controlID: 94
 --- !u!114 &2
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -147,7 +147,7 @@ MonoBehaviour:
   m_MinSize: {x: 200, y: 100}
   m_MaxSize: {x: 16192, y: 16192}
   vertical: 1
-  controlID: 43
+  controlID: 51
 --- !u!114 &4
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -172,7 +172,7 @@ MonoBehaviour:
   m_MinSize: {x: 200, y: 50}
   m_MaxSize: {x: 16192, y: 8096}
   vertical: 0
-  controlID: 44
+  controlID: 52
 --- !u!114 &5
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -192,8 +192,8 @@ MonoBehaviour:
     y: 0
     width: 300.66666
     height: 373.33334
-  m_MinSize: {x: 200, y: 200}
-  m_MaxSize: {x: 4000, y: 4000}
+  m_MinSize: {x: 201, y: 221}
+  m_MaxSize: {x: 4001, y: 4021}
   m_ActualView: {fileID: 6}
   m_Panes:
   - {fileID: 6}
@@ -235,26 +235,26 @@ MonoBehaviour:
     m_OverlaysVisible: 1
   m_SceneHierarchy:
     m_TreeViewState:
-      scrollPos: {x: 0, y: 148.66666}
-      m_SelectedIDs: 
-      m_LastClickedID: 0
-      m_ExpandedIDs: fcdcffff24ddffff4eddffff50ddffffd8ddffffb8deffff76dfffff6ce0ffff7ce2ffff0ae3ffff12e3ffffd4e3ffff14e5ffffdae6ffffa8e7ffffaae7ffff4ae8fffffee8ffffe2e9ffffece9ffff14fbfffffc6c0000186d0000226d0000e66d00007c6e0000086f00007a6f0000d66f0000207000003870000064700000ea700000d471000060720000b472000036730000b6730000127500001e75000080750000
+      scrollPos: {x: 0, y: 672}
+      m_SelectedIDs: 2a79fcff
+      m_LastClickedID: -231126
+      m_ExpandedIDs: e2edffffe2efffffd8f0ffff82f1ffff40f2ffff6cf2ffffecf2fffffaf2ffff96f3ffff3af4ffff62f4ffff8ef4ffff20f6ffff48f7ffff7ef8fffffcf8ffff90f9ffffb4f9ffffacfaffffd8faffffe8faffff14fbffff345d00003e5d0000025e00009c5e0000d05e0000285f00009a5f0000e05f0000f65f00004060000058600000846000000a6100002c6100007c610000f461000080620000d462000056630000ce6400004065000096650000a2650000
       m_RenameOverlay:
         m_UserAcceptedRename: 0
-        m_Name: Sczanieckiej-Gontyny
-        m_OriginalName: Sczanieckiej-Gontyny
+        m_Name: 
+        m_OriginalName: 
         m_EditFieldRect:
           serializedVersion: 2
           x: 0
           y: 0
           width: 0
           height: 0
-        m_UserData: 27928
+        m_UserData: 0
         m_IsWaitingForDelay: 0
         m_IsRenaming: 0
-        m_OriginalEventType: 0
+        m_OriginalEventType: 11
         m_IsRenamingFilename: 0
-        m_ClientGUIView: {fileID: 5}
+        m_ClientGUIView: {fileID: 0}
       m_SearchString: 
     m_ExpandedScenes: []
     m_CurrenRootInstanceID: 0
@@ -586,7 +586,7 @@ MonoBehaviour:
       floating: 0
       collapsed: 0
       displayed: 1
-      snapOffset: {x: -184.66669, y: -149.33333}
+      snapOffset: {x: -217.33334, y: -160.00002}
       snapOffsetDelta: {x: 0, y: 0}
       snapCorner: 3
       id: AINavigationOverlay
@@ -644,9 +644,9 @@ MonoBehaviour:
   m_PlayAudio: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: -9.935696, y: 2.836999, z: 175.37363}
+    m_Target: {x: -21.204926, y: 60.412342, z: 166.70642}
     speed: 2
-    m_Value: {x: -9.935696, y: 2.836999, z: 175.37363}
+    m_Value: {x: -21.204926, y: 60.412342, z: 166.70642}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -692,13 +692,13 @@ MonoBehaviour:
     m_GridAxis: 1
     m_gridOpacity: 0.5
   m_Rotation:
-    m_Target: {x: 0.07535013, y: 0.91646916, z: -0.20386183, w: 0.33710527}
+    m_Target: {x: 0.2997261, y: 0.6998544, z: -0.47368684, w: 0.44286522}
     speed: 2
-    m_Value: {x: 0.07498373, y: 0.9163094, z: -0.20286468, w: 0.33704674}
+    m_Value: {x: 0.29970503, y: 0.69980514, z: -0.47365353, w: 0.44283408}
   m_Size:
-    m_Target: 11.577561
+    m_Target: 7.8093376
     speed: 2
-    m_Value: 11.577561
+    m_Value: 7.8093376
   m_Ortho:
     m_Target: 0
     speed: 2
@@ -733,7 +733,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 1
   m_Script: {fileID: 12006, guid: 0000000000000000e000000000000000, type: 0}
-  m_Name: ProjectBrowser
+  m_Name: ConsoleWindow
   m_EditorClassIdentifier: 
   m_Children: []
   m_Position:
@@ -742,14 +742,14 @@ MonoBehaviour:
     y: 373.33334
     width: 950
     height: 205.99997
-  m_MinSize: {x: 231, y: 271}
-  m_MaxSize: {x: 10001, y: 10021}
-  m_ActualView: {fileID: 10}
+  m_MinSize: {x: 100, y: 100}
+  m_MaxSize: {x: 4000, y: 4000}
+  m_ActualView: {fileID: 11}
   m_Panes:
   - {fileID: 10}
   - {fileID: 11}
-  m_Selected: 0
-  m_LastSelected: 1
+  m_Selected: 1
+  m_LastSelected: 0
 --- !u!114 &10
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -795,7 +795,7 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/Scenes
+    - Assets/Prefabs/Vehicle with Separated Wheels
     m_Globs: []
     m_OriginalText: 
     m_ImportLogFlags: 0
@@ -803,16 +803,16 @@ MonoBehaviour:
   m_ViewMode: 1
   m_StartGridSize: 64
   m_LastFolders:
-  - Assets/Scenes
+  - Assets/Prefabs/Vehicle with Separated Wheels
   m_LastFoldersGridSize: 64
   m_LastProjectPath: C:\Users\najno\OneDrive\Dokumenty\GitHub\Praca_inzynierka\Praca_inzynierska
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
-    scrollPos: {x: 0, y: 111.00003}
-    m_SelectedIDs: 706c0000
-    m_LastClickedID: 27760
-    m_ExpandedIDs: 000000005e6c0000606c0000626c000000ca9a3b
+    scrollPos: {x: 0, y: 167.00003}
+    m_SelectedIDs: 20850000
+    m_LastClickedID: 34080
+    m_ExpandedIDs: 00000000d2680000d4680000d66800000485000000ca9a3b
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -840,7 +840,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 000000005e6c0000606c0000626c0000
+    m_ExpandedIDs: 00000000d2680000d4680000d6680000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -865,9 +865,9 @@ MonoBehaviour:
       m_Icon: {fileID: 0}
       m_ResourceFile: 
   m_ListAreaState:
-    m_SelectedInstanceIDs: 
-    m_LastClickedInstanceID: 0
-    m_HadKeyboardFocusLastEvent: 1
+    m_SelectedInstanceIDs: 2a79fcff
+    m_LastClickedInstanceID: -231126
+    m_HadKeyboardFocusLastEvent: 0
     m_ExpandedInstanceIDs: c623000000000000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
@@ -954,7 +954,7 @@ MonoBehaviour:
   m_MinSize: {x: 100, y: 100}
   m_MaxSize: {x: 8096, y: 16192}
   vertical: 1
-  controlID: 97
+  controlID: 95
 --- !u!114 &13
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -974,8 +974,8 @@ MonoBehaviour:
     y: 0
     width: 330
     height: 192
-  m_MinSize: {x: 200, y: 200}
-  m_MaxSize: {x: 4000, y: 4000}
+  m_MinSize: {x: 201, y: 221}
+  m_MaxSize: {x: 4001, y: 4021}
   m_ActualView: {fileID: 2}
   m_Panes:
   - {fileID: 2}
@@ -1000,8 +1000,8 @@ MonoBehaviour:
     y: 192
     width: 330
     height: 387.3333
-  m_MinSize: {x: 275, y: 50}
-  m_MaxSize: {x: 4000, y: 4000}
+  m_MinSize: {x: 276, y: 71}
+  m_MaxSize: {x: 4001, y: 4021}
   m_ActualView: {fileID: 15}
   m_Panes:
   - {fileID: 15}

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -16,6 +15,9 @@ public class LineLightManager : MonoBehaviour
     [SerializeField] public int countOfVehicles;
     [SerializeField] public float queueLength;
     [SerializeField] public int idAtDraw;
+    [SerializeField] bool hasCollisionLine;
+    [SerializeField] Sensor sensorToHide;
+    [SerializeField] GameObject[] laneChooserToHide;
     public List<Sensor> sensors;
     public bool isBlocked = false; // Czy pas jest zablokowany?
     public bool leftTurnAllowed = false; // Czy można skręcać w lewo?
@@ -23,7 +25,10 @@ public class LineLightManager : MonoBehaviour
 
     private void Start()
     {
-        StartCoroutine(UpdateTrafficStateRoutine());
+        if (hasCollisionLine)
+        {
+            StartCoroutine(UpdateTrafficStateRoutine());
+        }
     }
 
     private IEnumerator UpdateTrafficStateRoutine()
@@ -31,7 +36,24 @@ public class LineLightManager : MonoBehaviour
         while (true)
         {
             UpdateTrafficState();
-            yield return new WaitForSeconds(3f); // Sprawdzamy co 3 sekundy
+            if(currentColor == TrafficLightColor.red)
+            {
+                sensorToHide.gameObject.SetActive(false);
+                foreach(GameObject lanechooser in laneChooserToHide)
+                {
+                    lanechooser.SetActive(false);
+
+                }
+            }
+            else if(currentColor == TrafficLightColor.green)
+            {
+                sensorToHide.gameObject.SetActive(true);
+                foreach (GameObject lanechooser in laneChooserToHide)
+                {
+                    lanechooser.SetActive(true);
+                }
+            }
+            yield return new WaitForSeconds(1f); // Sprawdzamy co 3 sekundy
         }
     }
 
@@ -59,13 +81,6 @@ public class LineLightManager : MonoBehaviour
                     leftTurnBlocked = true; // Jeśli na wprost są auta, skręt w lewo jest zablokowany
                 }
             }
-            else if (sensor.isInMiddleOfIntersection)
-            {
-                if (sensor.VehicleCount > 0)
-                {
-                    leftTurnWaiting = true; // Auta czekają na środku skrzyżowania
-                }
-            }
             else
             {
                 countOfVehicles += sensor.VehicleCount;
@@ -78,38 +93,14 @@ public class LineLightManager : MonoBehaviour
 
         if (shouldBlock)
         {
-            BlockLane();
+            isBlocked = true;
         }
         else
         {
-            UnblockLane();
-        }
-    }
-
-    private void BlockLane()
-    {
-        if (!isBlocked) // Jeśli pas NIE był zablokowany, to go blokujemy
-        {
-            isBlocked = true;
-            if (currentColor != TrafficLightColor.red)
-            {
-                ChangeColor(TrafficLightColor.red);
-                Debug.Log($"🚦 {gameObject.name} ZABLOKOWANY – czerwone światło!");
-            }
-        }
-    }
-
-    private void UnblockLane()
-    {
-        if (isBlocked) // Jeśli pas BYŁ zablokowany, to go odblokowujemy
-        {
             isBlocked = false;
-            if (currentColor != TrafficLightColor.green)
-            {
-                ChangeColor(TrafficLightColor.green);
-                Debug.Log($"✅ {gameObject.name} ODBLOKOWANY – zielone światło!");
-            }
         }
+
+
     }
 
     public void ChangeColor(TrafficLightColor color)

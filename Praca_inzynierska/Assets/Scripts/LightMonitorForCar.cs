@@ -8,7 +8,6 @@ public class LightMonitorForCar : MonoBehaviour
         CarController carController = other.GetComponent<CarController>();
         if (carController != null)
         {
-
             carController.StartTrafficLightMonitoring(); // Uruchom monitorowanie świateł
         }
     }   
