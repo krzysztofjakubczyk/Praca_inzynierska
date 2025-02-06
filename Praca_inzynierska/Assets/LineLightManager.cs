@@ -60,7 +60,7 @@ public class LineLightManager : MonoBehaviour
                leftTurnAllowed = false; // Zatrzymujemy ruch na przeciwnym pasie
                 print("NA PRZECIW JADA PROSTO");
             }
-            yield return new WaitForSeconds(1f); // Sprawdzamy co 3 sekundy
+            yield return new WaitForSeconds(0.5f); // Sprawdzamy co 3 sekundy
         }
     }
 

@@ -4,11 +4,13 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Linq;
 
 public class StatisticManager : MonoBehaviour
 {
     [SerializeField] private float waitingTime;
     [SerializeField] List<EntryTrigger> entryTriggers;
+    [SerializeField] List<Counter> counters;
     [SerializeField] List<ExitTrigger> exitTriggers;
     [SerializeField] TMP_Text gestoscText;
     [SerializeField] TMP_Text natezenieText;
@@ -21,7 +23,6 @@ public class StatisticManager : MonoBehaviour
     [SerializeField] GameObject cameraDropDownMenu;
     [SerializeField] TMP_Text activePhaseText;
     [SerializeField] private MainTrafficController MainController;
-    [SerializeField] private MainTrafficControllerForSczanieckiej MainControllerForSczanieckiej;
     private bool isShown;
     [SerializeField] private GameObject panel;
     private void Start()
@@ -33,14 +34,20 @@ public class StatisticManager : MonoBehaviour
     private void Update()
     {
         iloscText.text = count.ToString();
-        if(gameObject.name == "StatisticsManager")
+        naczjestszyKierunekText.text = GetMostFrequentExit();
+        if (gameObject.name == "StatisticsManager")
         {
             activePhaseText.text = MainController.activePhase.ToString();
         }
-        else if(gameObject.name == "StatisticsManagerSczanieckiej")
-        {
-            activePhaseText.text = MainControllerForSczanieckiej.activePhase.ToString();
-        }
+    }
+    private string GetMostFrequentExit()
+    {
+        if (counters.Count == 0) return "Brak danych";
+
+        var mostFrequent = counters.OrderByDescending(c => c.countOfVehicles).FirstOrDefault();
+        if (mostFrequent == null || mostFrequent.countOfVehicles == 0) return "Brak ruchu";
+
+        return $"{mostFrequent.name} ({mostFrequent.countOfVehicles} aut)";
     }
     public void OnButtonClick()
     {
@@ -64,8 +71,6 @@ public class StatisticManager : MonoBehaviour
     {
         while (true)
         {
-
-
             foreach (EntryTrigger trigger in entryTriggers)
             {
                 count += trigger.count;

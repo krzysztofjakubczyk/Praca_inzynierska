@@ -11,6 +11,7 @@ public class EntryTrigger : MonoBehaviour
             Timers timer = other.GetComponent<Timers>();
             if (timer != null)
             {
+                timer.SetCameFrom(gameObject.name);
                 timer.StartTimer(); // Rozpocznij stoper przy wjeüdzie na skrzyøowanie
                 count++;
             }

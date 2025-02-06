@@ -379,6 +379,7 @@
 "Assets/Scripts/VehicleSpawner.cs"
 "Assets/Scripts/Waypoint.cs"
 "Assets/StatisticManager.cs"
+"Assets/StatisticManagerForSczanieckiej.cs"
 "Assets/Timers.cs"
 -langversion:9.0
 

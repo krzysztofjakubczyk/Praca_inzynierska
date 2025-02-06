@@ -29,11 +29,10 @@ public class MainTrafficControllerForSczanieckiej : MonoBehaviour
     [SerializeField] private List<int> timeForThirdPhase = new List<int>();
 
     private float timeBeforeGreenLights = 10f;
-    private int fullCycleTime = 110;
+    private int fullCycleTime = 120;
     [SerializeField] private float timeBeforeNextPhase = 2f;
 
     private FuzzyLogicHandler fuzzyLogicHandler;
-    public int activePhase;
 
     private void Start()
     {
@@ -134,7 +133,7 @@ public class MainTrafficControllerForSczanieckiej : MonoBehaviour
             for (int phaseIndex = 0; phaseIndex < listToChangeColors.Count; phaseIndex++)
             {
                 var phase = listToChangeColors[phaseIndex];
-                activePhase = phaseIndex;
+                
                 List<int> laneTimes = GetPhaseTimes(phaseIndex);
                 List<int> startTimes = GetPhaseStartTimes(phaseIndex);
 
@@ -146,6 +145,7 @@ public class MainTrafficControllerForSczanieckiej : MonoBehaviour
 
                 for (int i = 0; i < phase.Count; i++)
                 {
+                   
                     var line = phase[i];
                     int startTime = startTimes[i];
                     int greenTime = laneTimes[i];

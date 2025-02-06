@@ -8,7 +8,7 @@ public class ChooseLane : MonoBehaviour
     [SerializeField] Waypoint[] wayPointForLane;
     [SerializeField] float firstLaneProbability = 20f; // 20% dla pierwszego pasa (na wprost), 80% dla skrętu
     public bool isDrivingStraight; // Czy pojazd jedzie na wprost?
-    private int resetStraightTime = 2;
+    private int resetStraightTime = 4;
 
     public int choosedLane;
     public bool wantWarnings;

@@ -26,6 +26,7 @@ public class CarController : MonoBehaviour
     private bool isAfterCar = false;        // Flaga używana przy detekcji innego samochodu
     private bool stopForCollision = false;        // Flaga używana przy detekcji innego samochodu
     private bool isLaneBlocked = false;        // Flaga używana przy detekcji innego samochodu
+    private Waypoint previousWaypoint;
 
     private Vector3 lastPosition;
     private float stuckTimer;
@@ -83,19 +84,25 @@ public class CarController : MonoBehaviour
                 {
                     if (CurrentWaypoint.isBeforeTrafiicLight)
                     {
-                        // Kierujemy się do laneChooser – może to być obszar przed skrzyżowaniem
+                        // Zachowujemy poprzedni waypoint przed zmianą
+                        previousWaypoint = CurrentWaypoint;
+
+                        // Kierujemy się do laneChooser
                         agent.SetDestination(CurrentWaypoint.laneChooser.transform.position);
                     }
                     else
                     {
                         // Aktualizacja na następny waypoint
+                        previousWaypoint = CurrentWaypoint; // Zapisz poprzedni waypoint
                         CurrentWaypoint = CurrentWaypoint.NextWaypoint;
+
                         if (CurrentWaypoint != null)
                         {
                             agent.SetDestination(CurrentWaypoint.transform.position);
                         }
                     }
                 }
+
             }
             yield return null;
         }
@@ -160,25 +167,31 @@ public class CarController : MonoBehaviour
 
     private IEnumerator CheckCollisionLaneState()
     {
-        // Dopóki auto jest w strefie kolizyjnej...
         while (isAtMiddleOfIntersection)
         {
-            // Jeśli na pasie przeciwnym nie ma pojazdów i światło jest zielone,
-            // można kontynuować jazdę
-            if (lineManager.leftTurnAllowed)
+            // Auto jedzie prosto – nie musi czekać
+            if (previousWaypoint.laneChooser != null && previousWaypoint.laneChooser.isDrivingStraight)
+            {
+                print("XD");
+                stopForCollision = false;
+                break;
+            }
+            // Auto skręca w lewo – sprawdzamy, czy droga jest wolna
+            else if (lineManager != null && lineManager.leftTurnAllowed)
             {
                 stopForCollision = false;
-                isAtMiddleOfIntersection = false; // kończymy oczekiwanie
+                isAtMiddleOfIntersection = false; // Kończymy oczekiwanie
                 break;
             }
             else
             {
-                // W przeciwnym wypadku blokujemy ruch
-                stopForCollision = true;
+                stopForCollision = true; // Musi czekać
             }
+
             yield return null;
         }
     }
+
 
 
     /// <summary>
