@@ -56,45 +56,47 @@ public class CarController : MonoBehaviour
 
         while (true)
         {
-            // Uaktualnij lineManager, jeśli jesteśmy przy pierwszym waypoint'cie
-            if (CurrentWaypoint.isFirstWaypoint && CurrentWaypoint.linkedController != null)
+            if (CurrentWaypoint != null)
             {
-                lineManager = CurrentWaypoint.linkedController;
-            }
-
-            // Jeśli dotarliśmy do specjalnego waypointa "CarDestroyer", usuń auto
-            if (CurrentWaypoint.name == "CarDestroyer")
-            {
-                Destroy(gameObject, 0.5f);
-            }
-
-            // Sprawdź, czy przed autem znajduje się inny pojazd lub przeszkoda
-            CheckCarInFront();
-
-            // Oblicz łączny stan zatrzymania
-            bool shouldStop = stopForCar || stopForLight || stopForCollision || isLaneBlocked;
-            print("STOP FOR CAR: " + stopForCar + " STOP FOR LIGHT: " + stopForLight + " STOP FOR COLLISION: " + stopForCollision) ;
-            agent.isStopped = shouldStop;
-
-            // Tylko jeśli auto ma się poruszać, sprawdzaj dotarcie do celu
-            if (!shouldStop && !agent.pathPending && agent.remainingDistance < 2f)
-            {
-                if (CurrentWaypoint.isBeforeTrafiicLight)
+                if (CurrentWaypoint.name == "CarDestroyer")
                 {
-                    // Kierujemy się do laneChooser – może to być obszar przed skrzyżowaniem
-                    agent.SetDestination(CurrentWaypoint.laneChooser.transform.position);
+                    Destroy(gameObject, 0.5f);
                 }
-                else
+                // Uaktualnij lineManager, jeśli jesteśmy przy pierwszym waypoint'cie
+                if (CurrentWaypoint.isFirstWaypoint && CurrentWaypoint.linkedController != null)
                 {
-                    // Aktualizacja na następny waypoint
-                    CurrentWaypoint = CurrentWaypoint.NextWaypoint;
-                    if (CurrentWaypoint != null)
+                    lineManager = CurrentWaypoint.linkedController;
+                }
+
+                // Jeśli dotarliśmy do specjalnego waypointa "CarDestroyer", usuń auto
+
+
+                // Sprawdź, czy przed autem znajduje się inny pojazd lub przeszkoda
+                CheckCarInFront();
+
+                // Oblicz łączny stan zatrzymania
+                bool shouldStop = stopForCar || stopForLight || stopForCollision || isLaneBlocked;
+                agent.isStopped = shouldStop;
+
+                // Tylko jeśli auto ma się poruszać, sprawdzaj dotarcie do celu
+                if (!shouldStop && !agent.pathPending && agent.remainingDistance < 2f)
+                {
+                    if (CurrentWaypoint.isBeforeTrafiicLight)
                     {
-                        agent.SetDestination(CurrentWaypoint.transform.position);
+                        // Kierujemy się do laneChooser – może to być obszar przed skrzyżowaniem
+                        agent.SetDestination(CurrentWaypoint.laneChooser.transform.position);
+                    }
+                    else
+                    {
+                        // Aktualizacja na następny waypoint
+                        CurrentWaypoint = CurrentWaypoint.NextWaypoint;
+                        if (CurrentWaypoint != null)
+                        {
+                            agent.SetDestination(CurrentWaypoint.transform.position);
+                        }
                     }
                 }
             }
-
             yield return null;
         }
     }

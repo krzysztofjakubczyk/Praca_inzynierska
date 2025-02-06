@@ -18,10 +18,12 @@ public class LineLightManager : MonoBehaviour
     [SerializeField] bool hasCollisionLine;
     [SerializeField] Sensor sensorToHide;
     [SerializeField] GameObject[] laneChooserToHide;
+    [SerializeField] ChooseLane laneChooserToCollision;
     public List<Sensor> sensors;
     public bool isBlocked = false; // Czy pas jest zablokowany?
     public bool leftTurnAllowed = false; // Czy można skręcać w lewo?
     public bool leftTurnWaiting = false; // Czy są auta na środku skrzyżowania?
+    public bool hasToWait; // Czy są auta na środku skrzyżowania?
 
     private void Start()
     {
@@ -53,6 +55,11 @@ public class LineLightManager : MonoBehaviour
                     lanechooser.SetActive(true);
                 }
             }
+            if (hasToWait && laneChooserToCollision.isDrivingStraight)
+            {
+               leftTurnAllowed = false; // Zatrzymujemy ruch na przeciwnym pasie
+                print("NA PRZECIW JADA PROSTO");
+            }
             yield return new WaitForSeconds(1f); // Sprawdzamy co 3 sekundy
         }
     }
@@ -79,6 +86,7 @@ public class LineLightManager : MonoBehaviour
                 if (sensor.VehicleCount > 0)
                 {
                     leftTurnBlocked = true; // Jeśli na wprost są auta, skręt w lewo jest zablokowany
+                    print("NAPRZECIW SOBIE SA AUTKA");
                 }
             }
             else
