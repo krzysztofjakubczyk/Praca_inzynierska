@@ -1,14 +1,11 @@
-using JetBrains.Annotations;
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
-using System.Linq; // Dodaj to!
 
 public class ExitTrigger : MonoBehaviour
 {
-    public List<float> timeForRiding = new List<float>();
-    public float meanOfComingTimes;
-    public List<string> whereCameFrom = new List<string>();
+    public delegate void VehicleExitEvent(string cameFrom, float travelTime);
+    public static event VehicleExitEvent OnVehicleExit;
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Car"))
@@ -16,15 +13,14 @@ public class ExitTrigger : MonoBehaviour
             Timers timer = other.GetComponent<Timers>();
             if (timer != null)
             {
-                timer.StopTimer(other.gameObject); // Zatrzymaj stoper przy wyjeŸdzie
-                timeForRiding.Add(timer.timeSpent);
-                whereCameFrom.Add(timer.cameFrom);
+                timer.StopTimer(other.gameObject);
+
+                string cameFrom = timer.cameFrom;
+                float travelTime = timer.timeSpent;
+
+                // Przekazanie danych do StatisticManager
+                OnVehicleExit?.Invoke(cameFrom, travelTime);
             }
         }
-    }
-    private void Update()
-    {
-        if(timeForRiding.Count > 0)
-        meanOfComingTimes = timeForRiding.Average();        
     }
 }

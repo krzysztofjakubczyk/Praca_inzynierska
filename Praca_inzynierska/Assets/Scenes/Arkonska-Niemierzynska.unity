@@ -377,7 +377,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 13132966}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.25851434, y: 0.7188256, z: -0.33804074, w: 0.54971695}
+  m_LocalRotation: {x: 0.25851434, y: 0.7188255, z: -0.33804077, w: 0.5497169}
   m_LocalPosition: {x: -195.8, y: 162.3, z: 50.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -6145,8 +6145,16 @@ MonoBehaviour:
   countOfVehicles: 0
   queueLength: 0
   idAtDraw: 15
+  hasCollisionLine: 0
+  sensorToHide: {fileID: 0}
+  laneChooserToHide: []
+  laneChooserToCollision: {fileID: 0}
   sensors:
   - {fileID: 1054413288}
+  isBlocked: 0
+  leftTurnAllowed: 0
+  leftTurnWaiting: 0
+  hasToWait: 0
 --- !u!1 &306199287
 GameObject:
   m_ObjectHideFlags: 0
@@ -12731,9 +12739,17 @@ MonoBehaviour:
   countOfVehicles: 0
   queueLength: 0
   idAtDraw: 9
+  hasCollisionLine: 0
+  sensorToHide: {fileID: 0}
+  laneChooserToHide: []
+  laneChooserToCollision: {fileID: 0}
   sensors:
   - {fileID: 1240040500}
   - {fileID: 327024555}
+  isBlocked: 0
+  leftTurnAllowed: 0
+  leftTurnWaiting: 0
+  hasToWait: 0
 --- !u!1 &623826299
 GameObject:
   m_ObjectHideFlags: 3
@@ -19208,8 +19224,16 @@ MonoBehaviour:
   countOfVehicles: 0
   queueLength: 0
   idAtDraw: 12
+  hasCollisionLine: 0
+  sensorToHide: {fileID: 0}
+  laneChooserToHide: []
+  laneChooserToCollision: {fileID: 0}
   sensors:
   - {fileID: 382538317}
+  isBlocked: 0
+  leftTurnAllowed: 0
+  leftTurnWaiting: 0
+  hasToWait: 0
 --- !u!1 &947129155
 GameObject:
   m_ObjectHideFlags: 0
@@ -19371,10 +19395,18 @@ MonoBehaviour:
   countOfVehicles: 0
   queueLength: 0
   idAtDraw: 8
+  hasCollisionLine: 0
+  sensorToHide: {fileID: 0}
+  laneChooserToHide: []
+  laneChooserToCollision: {fileID: 0}
   sensors:
   - {fileID: 373028786}
   - {fileID: 1278657046}
   - {fileID: 1588121848}
+  isBlocked: 0
+  leftTurnAllowed: 0
+  leftTurnWaiting: 0
+  hasToWait: 0
 --- !u!1001 &958798857
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -21493,10 +21525,18 @@ MonoBehaviour:
   countOfVehicles: 0
   queueLength: 0
   idAtDraw: 7
+  hasCollisionLine: 0
+  sensorToHide: {fileID: 0}
+  laneChooserToHide: []
+  laneChooserToCollision: {fileID: 0}
   sensors:
   - {fileID: 773378848}
   - {fileID: 2039204471}
   - {fileID: 2004878049}
+  isBlocked: 0
+  leftTurnAllowed: 0
+  leftTurnWaiting: 0
+  hasToWait: 0
 --- !u!1001 &1075570142
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -23631,9 +23671,17 @@ MonoBehaviour:
   countOfVehicles: 0
   queueLength: 0
   idAtDraw: 11
+  hasCollisionLine: 0
+  sensorToHide: {fileID: 0}
+  laneChooserToHide: []
+  laneChooserToCollision: {fileID: 0}
   sensors:
   - {fileID: 528319328}
   - {fileID: 410663150}
+  isBlocked: 0
+  leftTurnAllowed: 0
+  leftTurnWaiting: 0
+  hasToWait: 0
 --- !u!114 &1154398543 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2995807084350110660, guid: 4f6b1d4db16533f4ea319993b21c7a51, type: 3}
@@ -25749,6 +25797,11 @@ MonoBehaviour:
   - {fileID: 1415072321}
   - {fileID: 7274051359766120801}
   - {fileID: 1473285019}
+  counters:
+  - {fileID: 1384557981}
+  - {fileID: 773337482}
+  - {fileID: 1810549008}
+  - {fileID: 60367256}
   exitTriggers:
   - {fileID: 2140607418}
   - {fileID: 1180219420202261352}
@@ -25759,14 +25812,13 @@ MonoBehaviour:
   natezenieText: {fileID: 0}
   sredniaText: {fileID: 0}
   iloscText: {fileID: 130580770}
-  naczjestszyKierunekText: {fileID: 0}
+  naczjestszyKierunekText: {fileID: 1683645381}
   choosedDayPanel: {fileID: 2048067597}
   count: 0
   statisticButton: {fileID: 255524203}
   cameraDropDownMenu: {fileID: 1668103812}
   activePhaseText: {fileID: 1776232145}
   MainController: {fileID: 237393542}
-  MainControllerForSczanieckiej: {fileID: 0}
   panel: {fileID: 1723335737}
 --- !u!4 &1282736026
 Transform:
@@ -28989,9 +29041,17 @@ MonoBehaviour:
   countOfVehicles: 0
   queueLength: 0
   idAtDraw: 0
+  hasCollisionLine: 0
+  sensorToHide: {fileID: 0}
+  laneChooserToHide: []
+  laneChooserToCollision: {fileID: 0}
   sensors:
   - {fileID: 2110224400}
   - {fileID: 1204560779}
+  isBlocked: 0
+  leftTurnAllowed: 0
+  leftTurnWaiting: 0
+  hasToWait: 0
 --- !u!1001 &1423756611
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -29182,7 +29242,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1429556932}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.0073416685, y: 0.77447635, z: -0.6309516, w: 0.045085076}
+  m_LocalRotation: {x: 0.0073416983, y: 0.77447635, z: -0.6309516, w: 0.045085076}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -30762,7 +30822,15 @@ MonoBehaviour:
   countOfVehicles: 0
   queueLength: 0
   idAtDraw: 0
+  hasCollisionLine: 0
+  sensorToHide: {fileID: 0}
+  laneChooserToHide: []
+  laneChooserToCollision: {fileID: 0}
   sensors: []
+  isBlocked: 0
+  leftTurnAllowed: 0
+  leftTurnWaiting: 0
+  hasToWait: 0
 --- !u!1 &1493289581
 GameObject:
   m_ObjectHideFlags: 0
@@ -33230,8 +33298,16 @@ MonoBehaviour:
   countOfVehicles: 0
   queueLength: 0
   idAtDraw: 14
+  hasCollisionLine: 0
+  sensorToHide: {fileID: 0}
+  laneChooserToHide: []
+  laneChooserToCollision: {fileID: 0}
   sensors:
   - {fileID: 28201401}
+  isBlocked: 0
+  leftTurnAllowed: 0
+  leftTurnWaiting: 0
+  hasToWait: 0
 --- !u!1001 &1590947620
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -34270,8 +34346,16 @@ MonoBehaviour:
   countOfVehicles: 0
   queueLength: 0
   idAtDraw: 13
+  hasCollisionLine: 0
+  sensorToHide: {fileID: 0}
+  laneChooserToHide: []
+  laneChooserToCollision: {fileID: 0}
   sensors:
   - {fileID: 1964899113}
+  isBlocked: 0
+  leftTurnAllowed: 0
+  leftTurnWaiting: 0
+  hasToWait: 0
 --- !u!1 &1615087248
 GameObject:
   m_ObjectHideFlags: 0
@@ -36551,10 +36635,18 @@ MonoBehaviour:
   countOfVehicles: 0
   queueLength: 0
   idAtDraw: 6
+  hasCollisionLine: 0
+  sensorToHide: {fileID: 0}
+  laneChooserToHide: []
+  laneChooserToCollision: {fileID: 0}
   sensors:
   - {fileID: 1564917145}
   - {fileID: 2050560212}
   - {fileID: 232359051}
+  isBlocked: 0
+  leftTurnAllowed: 0
+  leftTurnWaiting: 0
+  hasToWait: 0
 --- !u!1001 &1706023357
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -38257,10 +38349,18 @@ MonoBehaviour:
   countOfVehicles: 0
   queueLength: 0
   idAtDraw: 5
+  hasCollisionLine: 0
+  sensorToHide: {fileID: 0}
+  laneChooserToHide: []
+  laneChooserToCollision: {fileID: 0}
   sensors:
   - {fileID: 297140219}
   - {fileID: 1965552574}
   - {fileID: 803311735}
+  isBlocked: 0
+  leftTurnAllowed: 0
+  leftTurnWaiting: 0
+  hasToWait: 0
 --- !u!1 &1783922107
 GameObject:
   m_ObjectHideFlags: 0
@@ -43907,9 +44007,17 @@ MonoBehaviour:
   countOfVehicles: 0
   queueLength: 0
   idAtDraw: 10
+  hasCollisionLine: 0
+  sensorToHide: {fileID: 0}
+  laneChooserToHide: []
+  laneChooserToCollision: {fileID: 0}
   sensors:
   - {fileID: 52188933}
   - {fileID: 1125552972}
+  isBlocked: 0
+  leftTurnAllowed: 0
+  leftTurnWaiting: 0
+  hasToWait: 0
 --- !u!114 &2018890797 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2995807084350110660, guid: 4f6b1d4db16533f4ea319993b21c7a51, type: 3}
