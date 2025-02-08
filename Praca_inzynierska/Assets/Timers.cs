@@ -5,6 +5,7 @@
     public class Timers : MonoBehaviour
     {
         [SerializeField]private float entryTime;
+        [SerializeField]private float waitningTime;
         public float timeSpent;
         private bool isTracking = false;
         public string cameFrom;

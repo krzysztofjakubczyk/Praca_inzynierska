@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6480486569988738562}
   - component: {fileID: 3579224946685606511}
   - component: {fileID: 4405891911106111649}
-  - component: {fileID: 7251882367281429942}
+  - component: {fileID: 2008912574818056109}
   m_Layer: 0
   m_Name: MovementSensor
   m_TagString: Untagged
@@ -28,9 +28,9 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2070766340502620726}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -39.07156, y: -18.46, z: 38.4}
-  m_LocalScale: {x: 4.8962765, y: 1, z: 17.529863}
+  m_LocalScale: {x: 3.1208537, y: 1, z: 43.769604}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -106,7 +106,7 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &7251882367281429942
+--- !u!114 &2008912574818056109
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -115,6 +115,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 2070766340502620726}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0f3cedb7cb247a644ade35a3d74cd3aa, type: 3}
+  m_Script: {fileID: 11500000, guid: dcf4993541797364c8a04e9ef129f592, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  vehicleCount: 0
+  laneLength: 0.5

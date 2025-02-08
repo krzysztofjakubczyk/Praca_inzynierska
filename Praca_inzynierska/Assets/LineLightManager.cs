@@ -41,10 +41,12 @@ public class LineLightManager : MonoBehaviour
             if(currentColor == TrafficLightColor.red)
             {
                 sensorToHide.gameObject.SetActive(false);
-                foreach(GameObject lanechooser in laneChooserToHide)
+                sensorToHide.VehicleCount = 0;
+                sensorToHide.QueueLength = 0;
+                foreach (GameObject lanechooser in laneChooserToHide)
                 {
                     lanechooser.SetActive(false);
-
+                    
                 }
             }
             else if(currentColor == TrafficLightColor.green)

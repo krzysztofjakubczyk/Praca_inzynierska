@@ -76,6 +76,7 @@
     <Compile Include="Assets\Scripts\CameraManager.cs" />
     <Compile Include="Assets\Scripts\Sensor.cs" />
     <Compile Include="Assets\Timers.cs" />
+    <Compile Include="Assets\DensitySensor.cs" />
     <Compile Include="Assets\Scripts\ChooseLane.cs" />
     <Compile Include="Assets\Scripts\LightMonitorForCar.cs" />
     <Compile Include="Assets\Counter.cs" />

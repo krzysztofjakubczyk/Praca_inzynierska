@@ -9,14 +9,23 @@ public class StatisticManagerForSczanieckiej : MonoBehaviour
 {
     [SerializeField] private float waitingTime = 1f;
     [SerializeField] private List<EntryTrigger> entryTriggers;
+    [SerializeField] private List<DensitySensor> densitySensors;
     [SerializeField] private List<TMP_Text> sredniaText;
     [SerializeField] private List<TMP_Text> iloscText;
     [SerializeField] private List<TMP_Text> nazwaPasaText;
+    [SerializeField] private List<TMP_Text> przepustowoscText;
+    [SerializeField] private List<TMP_Text> obciazenieText;
+    [SerializeField] private List<TMP_Text> gestoscText;
+    [SerializeField] private List<TMP_Text> oczekiwanieText;
     [SerializeField] private TMP_Dropdown phaseDropdown;
-    [SerializeField] private GameObject statisticsPanel; // Panel statystyk
-    [SerializeField] private Button toggleButton; // Przycisk do otwierania/zamykania panelu
+    [SerializeField] private GameObject statisticsPanel;
+    [SerializeField] private GameObject hourPanel;
+    [SerializeField] private GameObject cameraPanel;
+    [SerializeField] private Button toggleButton;
+    [SerializeField] private Button exitButton;
 
-    private bool isPanelVisible = false; // Czy panel jest widoczny?
+    private bool isPanelVisible = false;
+    private static List<float> waitingTimes = new List<float>(); // Lista czasów oczekiwania
 
     private Dictionary<int, List<int>> phaseToLanes = new Dictionary<int, List<int>>
     {
@@ -25,35 +34,40 @@ public class StatisticManagerForSczanieckiej : MonoBehaviour
         { 3, new List<int> { 8, 9 } }
     };
 
-    private void OnEnable()
+    private Dictionary<int, int> natezenieNasycenia = new Dictionary<int, int>
     {
-        ExitTrigger.OnVehicleExit += AddTravelTimeToEntry;
-    }
-
-    private void OnDisable()
-    {
-        ExitTrigger.OnVehicleExit -= AddTravelTimeToEntry;
-    }
+        { 1, 1850 }, { 2, 1850 }, { 6, 1850 }, { 7, 1850 },
+        { 3, 1700 }, { 4, 2000 }, { 5, 2000 },
+        { 8, 1850 }, { 9, 1850 }
+    };
 
     private void Start()
     {
         phaseDropdown.onValueChanged.AddListener(delegate { UpdateLanesUI(); });
-        toggleButton.onClick.AddListener(ToggleStatisticsPanel); // Obs³uga przycisku
-        statisticsPanel.SetActive(isPanelVisible); // Ukryj panel na start
+        statisticsPanel.SetActive(isPanelVisible);
         StartCoroutine(UpdateUIRoutine());
     }
 
-    private void ToggleStatisticsPanel()
+    public void ToggleStatisticsPanel()
     {
         isPanelVisible = !isPanelVisible;
+        toggleButton.gameObject.SetActive(!isPanelVisible);
         statisticsPanel.SetActive(isPanelVisible);
+        cameraPanel.SetActive(!isPanelVisible);
+        hourPanel.SetActive(!isPanelVisible);
+    }
+
+
+    public static void RecordWaitingTime(float waitingTime)
+    {
+        waitingTimes.Add(waitingTime);
     }
 
     private IEnumerator UpdateUIRoutine()
     {
         while (true)
         {
-            if (isPanelVisible) // Aktualizujemy tylko gdy panel jest widoczny
+            if (isPanelVisible)
             {
                 UpdateLanesUI();
             }
@@ -61,18 +75,9 @@ public class StatisticManagerForSczanieckiej : MonoBehaviour
         }
     }
 
-    private void AddTravelTimeToEntry(string cameFrom, float travelTime)
-    {
-        EntryTrigger entry = entryTriggers.FirstOrDefault(e => e.gameObject.name == cameFrom);
-        if (entry != null)
-        {
-            entry.AddTravelTime(travelTime);
-        }
-    }
-
     private void UpdateLanesUI()
     {
-        if (!isPanelVisible) return; // Nie aktualizuj, jeœli panel jest zamkniêty
+        if (!isPanelVisible) return;
 
         int selectedPhase = phaseDropdown.value + 1;
         if (!phaseToLanes.ContainsKey(selectedPhase)) return;
@@ -84,19 +89,34 @@ public class StatisticManagerForSczanieckiej : MonoBehaviour
             if (i < lanes.Count)
             {
                 EntryTrigger entry = FindEntryTrigger(lanes[i]);
+                DensitySensor sensor = densitySensors[i];
 
-                if (entry != null)
+                if (entry != null && sensor != null)
                 {
                     float avgTime = entry.GetAverageTravelTime();
-                    sredniaText[i].text = $"Œredni czas: {avgTime:F2} s";
-                    iloscText[i].text = $"Iloœæ pojazdów: {entry.count}";
+                    float natezenie = entry.count / (waitingTime / 3600f);
+                    float przepustowosc = natezenieNasycenia.ContainsKey(lanes[i]) ? natezenieNasycenia[lanes[i]] * 0.4f : 0;
+                    float stopienObciazenia = (przepustowosc > 0) ? natezenie / przepustowosc : 0;
+                    float gestosc = sensor.GetDensity();
+                    float avgWaitingTime = waitingTimes.Count > 0 ? waitingTimes.Average() : 0;
+
+                    sredniaText[i].text = $"{avgTime:F2} s";
+                    iloscText[i].text = $"{entry.count}";
                     nazwaPasaText[i].text = $"Pas: {lanes[i]}";
+                    przepustowoscText[i].text = $"{przepustowosc:F0} poj/h";
+                    obciazenieText[i].text = $"{stopienObciazenia:F2}";
+                    gestoscText[i].text = $"{gestosc:F1} poj/km";
+                    oczekiwanieText[i].text = $"{avgWaitingTime:F2} s";
                 }
                 else
                 {
                     sredniaText[i].text = "Brak danych";
                     iloscText[i].text = "Brak danych";
                     nazwaPasaText[i].text = $"Pas: {lanes[i]}";
+                    przepustowoscText[i].text = "Brak danych";
+                    obciazenieText[i].text = "Brak danych";
+                    gestoscText[i].text = "Brak danych";
+                    oczekiwanieText[i].text = "Brak danych";
                 }
             }
             else
@@ -104,6 +124,10 @@ public class StatisticManagerForSczanieckiej : MonoBehaviour
                 sredniaText[i].text = "";
                 iloscText[i].text = "";
                 nazwaPasaText[i].text = "";
+                przepustowoscText[i].text = "";
+                obciazenieText[i].text = "";
+                gestoscText[i].text = "";
+                oczekiwanieText[i].text = "";
             }
         }
     }
