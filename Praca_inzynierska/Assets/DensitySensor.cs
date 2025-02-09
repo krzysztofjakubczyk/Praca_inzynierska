@@ -1,12 +1,27 @@
-using UnityEngine;
+Ôªøusing UnityEngine;
 using System.Collections.Generic;
+using System.Linq;
 
 public class DensitySensor : MonoBehaviour
 {
-    public int vehicleCount = 0; // Liczba pojazdÛw na pasie
-    public float laneLength = 0.5f; // D≥ugoúÊ pasa w km
+    public int vehicleCount = 0;
+    public float laneLength = 0.5f;
 
     private Dictionary<GameObject, float> waitingTimers = new Dictionary<GameObject, float>();
+
+    private int GetLaneID()
+    {
+        // Pobieramy pierwszy znak nazwy i konwertujemy na int
+        if (char.IsDigit(gameObject.name[0]))
+        {
+            return int.Parse(gameObject.name[0].ToString());
+        }
+        else
+        {
+            Debug.LogError($"‚ùå DensitySensor {gameObject.name} ma niepoprawnƒÖ nazwƒô! Pierwszy znak nie jest liczbƒÖ.");
+            return -1; // Zwracamy -1, je≈õli nie uda≈Ço siƒô odczytaƒá numeru pasa
+        }
+    }
 
     private void OnTriggerEnter(Collider other)
     {
@@ -14,13 +29,18 @@ public class DensitySensor : MonoBehaviour
         {
             vehicleCount++;
 
-            // Rozpocznij timer dla pojazdu
-            if (!waitingTimers.ContainsKey(other.gameObject))
+            int laneID = GetLaneID();
+            if (laneID != -1)
             {
-                waitingTimers[other.gameObject] = Time.time;
+                if (!StatisticManagerForSczanieckiej.vehicleCountPerLane.ContainsKey(laneID))
+                {
+                    StatisticManagerForSczanieckiej.vehicleCountPerLane[laneID] = 0;
+                }
+                StatisticManagerForSczanieckiej.vehicleCountPerLane[laneID]++;
             }
         }
     }
+
 
     private void OnTriggerExit(Collider other)
     {
@@ -28,18 +48,27 @@ public class DensitySensor : MonoBehaviour
         {
             vehicleCount = Mathf.Max(0, vehicleCount - 1);
 
-            // Jeúli auto czeka≥o na úwiat≥o, zapisz jego czas
-            if (waitingTimers.ContainsKey(other.gameObject))
+            Timers timer = other.GetComponent<Timers>();
+            if (timer != null)
             {
-                float waitingTime = Time.time - waitingTimers[other.gameObject];
-                StatisticManagerForSczanieckiej.RecordWaitingTime(waitingTime);
-                waitingTimers.Remove(other.gameObject);
+                timer.StopWaitingTimer(); // Koniec liczenia czasu oczekiwania
+                float waitingTime = timer.waitingTime;
+
+                int laneID = GetLaneID();
+                if (laneID != -1)
+                {
+                    StatisticManagerForSczanieckiej.RecordWaitingTime(laneID, waitingTime);
+                }
             }
         }
+    }
+    public void ResetCounter()
+    {
+        vehicleCount = 0;
     }
 
     public float GetDensity()
     {
-        return vehicleCount / laneLength; // pojazdy/km
+        return vehicleCount / laneLength;
     }
 }

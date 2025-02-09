@@ -1,11 +1,10 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
 public class TimeManager : MonoBehaviour
 {
-    [SerializeField] private TMP_Dropdown dropDownDay;
     [SerializeField] private TMP_Dropdown dropDownHour;
     [SerializeField] private List<VehicleSpawner> spawners;
     [SerializeField] private List<VehicleSpawner> tramSpawners;
@@ -16,17 +15,18 @@ public class TimeManager : MonoBehaviour
     [SerializeField] private List<Counter> Counters;
     [SerializeField] private TMP_Text timeText;
     [SerializeField] private int simulationSpeedUpValue;
+    [SerializeField] private bool isAfternoonPeakOnly; // Czy symulacja działa tylko w szczycie popołudniowym?
 
-    private bool isPaused = false; // Game pause flag
+    private bool isPaused = false;
     private bool isSpeeded = false;
-    private float simulationTime = 0f; // Time in seconds for simulation
-    private const float realToSimRatio = 1f; // 15 seconds in simulation = 1 second in real-time
+    private float simulationTime = 0f;
+    private const float realToSimRatio = 1f;
     private int choosedHour;
 
     private void Start()
     {
         Time.timeScale = realToSimRatio;
-        ChoosedDateAndHour();
+        ChoosedDateAndHour(); // Ustawienie godziny
 
         foreach (var tramSpawner in tramSpawners)
         {
@@ -38,8 +38,7 @@ public class TimeManager : MonoBehaviour
     private void Update()
     {
         simulationTime += Time.deltaTime * realToSimRatio;
-        string currentSimulationTime = GetFormattedSimulationTime();
-        timeText.text = currentSimulationTime;
+        timeText.text = GetFormattedSimulationTime();
 
         if (Input.GetKeyDown(KeyCode.P)) TogglePause();
         if (Input.GetKeyDown(KeyCode.Q)) ToggleSpeedUp();
@@ -48,78 +47,101 @@ public class TimeManager : MonoBehaviour
     public void ChoosedDateAndHour()
     {
         ResetSimulation();
+        ResetAllSensors();
+        ResetTrafficLights(); // Reset świateł
+        ResetStatistics(); // Reset statystyk
 
-        int indexOfHour = dropDownHour.value;
-        string hourChoosedString = dropDownHour.options[indexOfHour].text;
-
-        switch (indexOfHour)
+        if (isAfternoonPeakOnly)
         {
-            case 0:
-                choosedHour = 7;
-                AssignVehicleCountsToSpawners(countOfVehiclesForSeven);
-                break;
-            case 1:
-                choosedHour = 12;
-                AssignVehicleCountsToSpawners(countOfVehiclesForTwelve);
-                break;
-            case 2:
-                choosedHour = 15;
-                AssignVehicleCountsToSpawners(countOfVehiclesForFifteen);
-                break;
-            case 3:
-                choosedHour = 21;
-                AssignVehicleCountsToSpawners(countOfVehiclesForNinePM);
-                break;
-            default:
-                Debug.LogError("Niepoprawny wyb�r godziny!");
-                break;
+            choosedHour = 15;
+            AssignVehicleCountsToSpawners(countOfVehiclesForFifteen);
+            Debug.Log("⏰ Tryb szczytu popołudniowego: ustawiono godzinę 15:00.");
+        }
+        else
+        {
+            int indexOfHour = dropDownHour.value;
+            switch (indexOfHour)
+            {
+                case 0:
+                    choosedHour = 7;
+                    AssignVehicleCountsToSpawners(countOfVehiclesForSeven);
+                    break;
+                case 1:
+                    choosedHour = 12;
+                    AssignVehicleCountsToSpawners(countOfVehiclesForTwelve);
+                    break;
+                case 2:
+                    choosedHour = 15;
+                    AssignVehicleCountsToSpawners(countOfVehiclesForFifteen);
+                    break;
+                case 3:
+                    choosedHour = 21;
+                    AssignVehicleCountsToSpawners(countOfVehiclesForNinePM);
+                    break;
+                default:
+                    Debug.LogError("❌ Niepoprawny wybór godziny!");
+                    break;
+            }
+        }
+    }
+    private void ResetTrafficLights()
+    {
+        MainTrafficControllerForSczanieckiej trafficController = FindObjectOfType<MainTrafficControllerForSczanieckiej>();
+
+        if (trafficController != null)
+        {
+            trafficController.ResetTrafficCycle();
         }
 
+        Debug.Log("🔄 Wszystkie światła zostały wyzerowane po zmianie godziny.");
     }
-
     private void AssignVehicleCountsToSpawners(List<int> vehicleCounts)
     {
         if (vehicleCounts.Count != spawners.Count)
         {
-            Debug.LogError("Liczba pojazd�w nie odpowiada liczbie spawner�w!");
+            Debug.LogError("❌ Liczba pojazdów nie odpowiada liczbie spawnerów!");
             return;
         }
 
         for (int i = 0; i < spawners.Count; i++)
         {
-            int totalVehiclesForSpawner = vehicleCounts[i];
-            float vehiclesPerSecond = (float)totalVehiclesForSpawner / 3600f; // 3600 sekund w godzinie
-            float spawnInterval = 1f / vehiclesPerSecond; // Interwa� spawnowania
+            float vehiclesPerSecond = (float)vehicleCounts[i] / 3600f;
+            float spawnInterval = 1f / vehiclesPerSecond;
 
             spawners[i].SetSpawnInterval(spawnInterval);
-            spawners[i].MaxVehicles = totalVehiclesForSpawner;
-
-            //Debug.Log($"Spawner {spawners[i].name}: {totalVehiclesForSpawner} pojazd�w, interwa�: {spawnInterval:F2} s.");
+            spawners[i].MaxVehicles = vehicleCounts[i];
         }
+    }
+    private void ResetStatistics()
+    {
+        StatisticManagerForSczanieckiej statisticManager = FindObjectOfType<StatisticManagerForSczanieckiej>();
+
+        if (statisticManager != null)
+        {
+            statisticManager.ResetStatistics();
+        }
+
+        Debug.Log("📊 Wszystkie statystyki zostały wyzerowane po zmianie godziny.");
     }
 
     private void ResetSimulation()
     {
         simulationTime = 0f;
-        GameObject[] Cars = GameObject.FindGameObjectsWithTag("Car");
-        foreach( Counter counter in Counters)
+        foreach (Counter counter in Counters) counter.ResetCounter();
+        foreach (GameObject car in GameObject.FindGameObjectsWithTag("Car")) Destroy(car, 0.5f);
+        foreach (VehicleSpawner spawner in spawners) spawner.ResetSpawner();
+        foreach (VehicleSpawner tramSpawner in tramSpawners) tramSpawner.ResetSpawner();
+    }
+    private void ResetAllSensors()
+    {
+        Sensor[] sensors = FindObjectsOfType<Sensor>();
+
+        foreach (Sensor sensor in sensors)
         {
-            counter.ResetCounter();
-        }
-        foreach (GameObject Car in Cars)
-        {
-            Destroy(Car, 0.5f);
+            sensor.ResetSensor();
         }
 
-        foreach (VehicleSpawner Spawner in spawners)
-        {
-            Spawner.ResetSpawner();
-        }
-        foreach (VehicleSpawner TramSpawner in tramSpawners)
-        {
-            TramSpawner.ResetSpawner();
-        }
-
+        Debug.Log("🔄 Wszystkie czujniki zostały wyzerowane po zmianie godziny.");
     }
 
     private void ToggleSpeedUp()
@@ -160,21 +182,19 @@ public class TimeManager : MonoBehaviour
 
     private string GetFormattedSimulationTime()
     {
-        int baseHour = choosedHour; // Nowa wybrana godzina
-        int baseMinute = 0;
-        int baseSecond = 0;
-
-        int elapsedSeconds = Mathf.FloorToInt(simulationTime); // Czas od pocz�tku symulacji
+        int baseHour = choosedHour;
+        int elapsedSeconds = Mathf.FloorToInt(simulationTime);
         int currentHour = baseHour + (elapsedSeconds / 3600);
-        int currentMinute = baseMinute + ((elapsedSeconds % 3600) / 60);
-        int currentSecond = baseSecond + (elapsedSeconds % 60);
+        int currentMinute = (elapsedSeconds % 3600) / 60;
+        int currentSecond = elapsedSeconds % 60;
 
-        if (currentHour >= 24)
-        {
-            currentHour %= 24; // Reset do 00:00 po p�nocy
-        }
+        if (currentHour >= 24) currentHour %= 24;
 
         return $"{currentHour:D2}:{currentMinute:D2}:{currentSecond:D2}";
     }
 
+    public int GetChoosedHour()
+    {
+        return choosedHour;
+    }
 }

@@ -74,4 +74,13 @@ public class Sensor : MonoBehaviour
             isBlockingTraffic = false;
         }
     }
+
+    public void ResetSensor()
+    {
+        VehicleCount = 0;
+        QueueLength = 0;
+        isBlockingTraffic = false;
+        Debug.Log($"🔄 Sensor {gameObject.name} został wyzerowany.");
+    }
+
 }

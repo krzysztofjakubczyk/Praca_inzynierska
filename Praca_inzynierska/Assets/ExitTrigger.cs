@@ -1,11 +1,8 @@
-using System.Collections.Generic;
 using UnityEngine;
+using System.Collections.Generic;
 
 public class ExitTrigger : MonoBehaviour
 {
-    public delegate void VehicleExitEvent(string cameFrom, float travelTime);
-    public static event VehicleExitEvent OnVehicleExit;
-
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Car"))
@@ -18,9 +15,21 @@ public class ExitTrigger : MonoBehaviour
                 string cameFrom = timer.cameFrom;
                 float travelTime = timer.timeSpent;
 
-                // Przekazanie danych do StatisticManager
-                OnVehicleExit?.Invoke(cameFrom, travelTime);
+                int laneID = GetLaneID(cameFrom); // Pobieramy numer pasa
+                if (laneID != -1)
+                {
+                    StatisticManagerForSczanieckiej.RecordTimeSpent(laneID, travelTime);
+                }
             }
         }
+    }
+
+    private int GetLaneID(string cameFrom)
+    {
+        if (!string.IsNullOrEmpty(cameFrom) && char.IsDigit(cameFrom[0]))
+        {
+            return int.Parse(cameFrom[0].ToString());
+        }
+        return -1;
     }
 }

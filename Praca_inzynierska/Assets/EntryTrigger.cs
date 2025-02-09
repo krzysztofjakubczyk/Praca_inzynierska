@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections.Generic;
 
 public class EntryTrigger : MonoBehaviour
@@ -15,6 +15,7 @@ public class EntryTrigger : MonoBehaviour
             {
                 timer.SetCameFrom(gameObject.name);
                 timer.StartTimer();
+                timer.StartWaitingTimer(); // ➤ Rozpoczynamy licznik czasu oczekiwania
                 count++;
             }
         }
