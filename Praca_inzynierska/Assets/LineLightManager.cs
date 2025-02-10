@@ -32,6 +32,17 @@ public class LineLightManager : MonoBehaviour
             StartCoroutine(UpdateTrafficStateRoutine());
         }
     }
+    public void UpdateSensorData()
+    {
+        countOfVehicles = 0;
+        queueLength = 0;
+
+        foreach (var sensor in sensors) // Pobieramy dane z listy sensorów tylko przed obliczeniem logiki rozmytej
+        {
+            countOfVehicles += sensor.VehicleCount;
+            queueLength += sensor.QueueLength;
+        }
+    }
 
     private IEnumerator UpdateTrafficStateRoutine()
     {
@@ -68,8 +79,8 @@ public class LineLightManager : MonoBehaviour
 
     public void UpdateTrafficState()
     {
-        countOfVehicles = 0;
-        queueLength = 0;
+        //countOfVehicles = 0;
+        //queueLength = 0;
         bool shouldBlock = false;
         bool leftTurnBlocked = false;
         leftTurnWaiting = false; // Resetujemy flagę
@@ -91,11 +102,8 @@ public class LineLightManager : MonoBehaviour
                     print("NAPRZECIW SOBIE SA AUTKA");
                 }
             }
-            else
-            {
-                countOfVehicles += sensor.VehicleCount;
-                queueLength += sensor.QueueLength;
-            }
+
+            
         }
 
         // PRZENIESIONE: Aktualizujemy PO pętli, nie w trakcie!

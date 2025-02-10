@@ -34,7 +34,6 @@ public class Sensor : MonoBehaviour
             }
 
             CheckIfBlocking();
-            Debug.Log($"🚗 Pojazd {other.gameObject.name} wjechał do sensora. Liczba aut: {VehicleCount}");
         }
     }
 
@@ -59,7 +58,6 @@ public class Sensor : MonoBehaviour
             }
 
             CheckIfBlocking();
-            Debug.Log($"🚗 Pojazd {other.gameObject.name} opuścił sensor. Liczba aut: {VehicleCount}");
         }
     }
 
@@ -80,7 +78,6 @@ public class Sensor : MonoBehaviour
         VehicleCount = 0;
         QueueLength = 0;
         isBlockingTraffic = false;
-        Debug.Log($"🔄 Sensor {gameObject.name} został wyzerowany.");
-    }
+        }
 
 }

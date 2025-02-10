@@ -4,7 +4,6 @@ using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using static UnityEditor.Experimental.AssetDatabaseExperimental.AssetDatabaseCounters;
 
 public class StatisticManagerForSczanieckiej : MonoBehaviour
 {
@@ -110,7 +109,11 @@ public class StatisticManagerForSczanieckiej : MonoBehaviour
         toggleButton.gameObject.SetActive(!isPanelVisible);
         statisticsPanel.SetActive(isPanelVisible);
         cameraPanel.SetActive(!isPanelVisible);
-        hourPanel.SetActive(!isPanelVisible);
+        TimeManager time = FindAnyObjectByType<TimeManager>();
+        if (!time.isAfternoonPeakOnly)
+        {
+            hourPanel.SetActive(!isPanelVisible);
+        }
     }
 
     private float GetAverageWaitingTimeForLane(int laneID)

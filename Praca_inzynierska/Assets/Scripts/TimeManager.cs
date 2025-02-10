@@ -15,13 +15,16 @@ public class TimeManager : MonoBehaviour
     [SerializeField] private List<Counter> Counters;
     [SerializeField] private TMP_Text timeText;
     [SerializeField] private int simulationSpeedUpValue;
-    [SerializeField] private bool isAfternoonPeakOnly; // Czy symulacja działa tylko w szczycie popołudniowym?
+    [SerializeField] public bool isAfternoonPeakOnly; // Czy symulacja działa tylko w szczycie popołudniowym?
 
     private bool isPaused = false;
     private bool isSpeeded = false;
     private float simulationTime = 0f;
     private const float realToSimRatio = 1f;
     private int choosedHour;
+    private bool isFillingPhase = true;
+    private float fillingPhaseDuration = 20f; // 20 sekund wypełniania
+    private float spawnMultiplier = 4f; // 
 
     private void Start()
     {
@@ -33,6 +36,8 @@ public class TimeManager : MonoBehaviour
             tramSpawner.MaxVehicles = 5;
             tramSpawner.SetSpawnInterval(720); // Tramwaje co 12 minut
         }
+        StartCoroutine(ManageFillingPhase());
+
     }
 
     private void Update()
@@ -43,6 +48,28 @@ public class TimeManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.P)) TogglePause();
         if (Input.GetKeyDown(KeyCode.Q)) ToggleSpeedUp();
     }
+
+    private IEnumerator ManageFillingPhase()
+    {
+        Debug.Log("🚗💨 Rozpoczęcie fazy wypełniania - szybsze spawnowanie!");
+
+        foreach (VehicleSpawner spawner in spawners)
+        {
+            spawner.SetSpawnInterval(spawner.GetSpawnInterval() / spawnMultiplier);
+        }
+
+        yield return new WaitForSeconds(fillingPhaseDuration); // Czekamy 20 sekund
+
+        Debug.Log("🚗⏳ Koniec fazy wypełniania - powrót do normalnego tempa spawnowania!");
+
+        foreach (VehicleSpawner spawner in spawners)
+        {
+            spawner.SetSpawnInterval(spawner.GetSpawnInterval() * spawnMultiplier);
+        }
+
+        isFillingPhase = false;
+    }
+
 
     public void ChoosedDateAndHour()
     {

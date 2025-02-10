@@ -1122,6 +1122,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c3f2eee5478ad249b47b6141a674a29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  laneID: 0
   countOfVehicles: 0
 --- !u!65 &60367257
 BoxCollider:
@@ -15569,6 +15570,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c3f2eee5478ad249b47b6141a674a29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  laneID: 0
   countOfVehicles: 0
 --- !u!65 &773337483
 BoxCollider:
@@ -28105,6 +28107,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c3f2eee5478ad249b47b6141a674a29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  laneID: 0
   countOfVehicles: 0
 --- !u!65 &1384557982
 BoxCollider:
@@ -37148,7 +37151,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: febb61801a506c6418f3275112098474, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dropDownDay: {fileID: 815117857}
   dropDownHour: {fileID: 485797632}
   spawners:
   - {fileID: 379120690}
@@ -37179,7 +37181,8 @@ MonoBehaviour:
   - {fileID: 1810549008}
   - {fileID: 60367256}
   timeText: {fileID: 607223575}
-  simulationSpeedUpValue: 3
+  simulationSpeedUpValue: 5
+  isAfternoonPeakOnly: 0
 --- !u!4 &1725925254
 Transform:
   m_ObjectHideFlags: 0

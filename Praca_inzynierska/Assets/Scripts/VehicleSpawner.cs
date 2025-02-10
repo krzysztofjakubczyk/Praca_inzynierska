@@ -21,7 +21,10 @@ public class VehicleSpawner : MonoBehaviour
     {
         spawnInterval = interval;
     }
-
+    public float GetSpawnInterval()
+    {
+        return spawnInterval;
+    }
     public void ResetSpawner()
     {
         spawnedVehicles = 0;
