@@ -3,13 +3,14 @@ using UnityEngine;
 
 public class VehicleSpawner : MonoBehaviour
 {
-    [SerializeField] private GameObject vehiclePrefab; // Prefab pojazdu
-    [SerializeField] private Waypoint firstWaypoint; // Pierwszy waypoint, do którego pojazd ma się udać
-    [SerializeField] private float spawnInterval = 5f; // Interwał spawnowania
-    [SerializeField] private int maxVehicles; // Maksymalna liczba pojazdów do spawnowania
+    [SerializeField] private GameObject vehiclePrefab;
+    [SerializeField] private Waypoint firstWaypoint;
+    [SerializeField] private float spawnInterval = 5f;
+    [SerializeField] private int maxVehicles;
+    [SerializeField] private float raycastDistance = 8f; // Długość Raycasta do sprawdzania miejsca
+    [SerializeField] private LayerMask detectionLayer; // Warstwa, na której sprawdzamy pojazdy
 
-    [SerializeField]private int spawnedVehicles = 0; // Licznik spawnowanych pojazdów
-    [SerializeField]private bool wantToSpawn; // Licznik spawnowanych pojazdów
+    private int spawnedVehicles = 0;
 
     public int MaxVehicles
     {
@@ -21,33 +22,50 @@ public class VehicleSpawner : MonoBehaviour
     {
         spawnInterval = interval;
     }
-    public float GetSpawnInterval()
-    {
-        return spawnInterval;
-    }
+
     public void ResetSpawner()
     {
         spawnedVehicles = 0;
         StopAllCoroutines();
-        Invoke(nameof(StartSpawning),2f);
+        Invoke(nameof(StartSpawning), 2f);
     }
 
     public void StartSpawning()
     {
-        StartCoroutine(SpawnVehicles());
+        StartCoroutine(SpawnVehicles());    
     }
-
 
     private IEnumerator SpawnVehicles()
     {
-        while (spawnedVehicles < maxVehicles)   
+        while (spawnedVehicles < maxVehicles)
         {
- 
-            SpawnVehicle();
+            if (CanSpawnVehicle()) // ✅ Sprawdzamy, czy można spawnować pojazd
+            {
+                SpawnVehicle();
+            }
+
             yield return new WaitForSeconds(spawnInterval);
         }
     }
-    private void SpawnVehicle()
+
+    /// <summary>
+    /// ✅ Używa Raycasta do sprawdzania, czy przed spawnerem jest miejsce na pojazd.
+
+    private bool CanSpawnVehicle()
+    {
+        RaycastHit hit;
+        Vector3 rayOrigin = transform.position + Vector3.up * 1.5f; // 🟢 Podnosimy Raycast na wysokość zderzaka
+        Vector3 rayDirection = transform.forward;
+
+        if (Physics.Raycast(rayOrigin, rayDirection, out hit, raycastDistance, detectionLayer))
+        {
+            return false; // Jest przeszkoda – nie spawnujemy
+        }
+
+        return true; // Brak przeszkód – można spawnować
+    }
+
+        private void SpawnVehicle()
     {
         if (vehiclePrefab == null || firstWaypoint == null)
         {
@@ -60,18 +78,21 @@ public class VehicleSpawner : MonoBehaviour
 
         if (carController != null)
         {
-            carController.SetFirstWaypoint(firstWaypoint); // Przypisz pierwszy waypoint
+            carController.SetFirstWaypoint(firstWaypoint);
         }
 
-        spawnedVehicles++;    }
+        spawnedVehicles++;
+    }
+
+    public float GetSpawnInterval()
+    {
+        return spawnInterval;
+    }
 
     private void OnDrawGizmos()
     {
-        // Wizualizacja połączenia do firstWaypoint
-        if (firstWaypoint != null)
-        {
-            Gizmos.color = Color.blue;
-            Gizmos.DrawLine(transform.position, firstWaypoint.transform.position);
-        }
+        // Wizualizacja Raycasta w edytorze Unity
+        Gizmos.color = Color.red;
+        Gizmos.DrawRay(transform.position + Vector3.up * 1.5f, transform.forward * raycastDistance);
     }
 }

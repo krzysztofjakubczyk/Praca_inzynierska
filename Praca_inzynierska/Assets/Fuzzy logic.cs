@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -138,7 +138,7 @@ public class FuzzyLogicHandler
 
                 if (membershipValue == 0)
                 {
-                    ruleStrength = 0; // Jeœli przynale¿noœæ = 0, regu³a nie powinna byæ aktywna
+                    ruleStrength = 0; // JeÅ›li przynaleÅ¼noÅ›Ä‡ = 0, reguÅ‚a nie powinna byÄ‡ aktywna
                     break;
                 }
 
@@ -191,11 +191,17 @@ public class FuzzyLogicHandler
             {
                 result = numerator / denominator;
             }
-            else if (denominator == 0)
+            else
             {
-                //Debug.Log("Denominator is zero during defuzzification.");
-                return 10; // Zwróæ minimalny domyœlny czas zielonego œwiat³a
+                return 25; // Minimalny czas zielonego Å›wiatÅ‚a
             }
+
+            // Upewniamy siÄ™, Å¼e wynik nie jest mniejszy niÅ¼ 25 sekund
+            if (result < 25)
+            {
+                result = 25;
+            }
+
 
         }
         else if (method == "bisector")

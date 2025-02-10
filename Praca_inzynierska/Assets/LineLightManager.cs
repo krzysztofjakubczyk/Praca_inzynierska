@@ -31,16 +31,27 @@ public class LineLightManager : MonoBehaviour
         {
             StartCoroutine(UpdateTrafficStateRoutine());
         }
-    }
-    public void UpdateSensorData()
-    {
-        countOfVehicles = 0;
-        queueLength = 0;
+        StartCoroutine(UpdateVehicleData());
 
-        foreach (var sensor in sensors) // Pobieramy dane z listy sensorów tylko przed obliczeniem logiki rozmytej
+    }
+    private IEnumerator UpdateVehicleData()
+    {
+        while (true)
         {
-            countOfVehicles += sensor.VehicleCount;
-            queueLength += sensor.QueueLength;
+            int totalVehicles = 0;
+            float totalQueueLength = 0f;
+
+            foreach (var sensor in sensors)
+            {
+                totalVehicles += sensor.VehicleCount;
+                totalQueueLength += sensor.QueueLength;
+            }
+
+            countOfVehicles = totalVehicles;
+            queueLength = totalQueueLength;
+
+
+            yield return new WaitForSeconds(5f); // Aktualizacja co 5 sekund
         }
     }
 
@@ -71,14 +82,13 @@ public class LineLightManager : MonoBehaviour
             if (hasToWait && laneChooserToCollision.isDrivingStraight)
             {
                leftTurnAllowed = false; // Zatrzymujemy ruch na przeciwnym pasie
-                print("NA PRZECIW JADA PROSTO");
             }
             yield return new WaitForSeconds(0.5f); // Sprawdzamy co 3 sekundy
         }
     }
 
     public void UpdateTrafficState()
-    {
+    {   
         //countOfVehicles = 0;
         //queueLength = 0;
         bool shouldBlock = false;
@@ -99,7 +109,6 @@ public class LineLightManager : MonoBehaviour
                 if (sensor.VehicleCount > 0)
                 {
                     leftTurnBlocked = true; // Jeśli na wprost są auta, skręt w lewo jest zablokowany
-                    print("NAPRZECIW SOBIE SA AUTKA");
                 }
             }
 

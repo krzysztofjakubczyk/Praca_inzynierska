@@ -37,7 +37,6 @@ public class ChooseLane : MonoBehaviour
     {
         yield return new WaitForSeconds(resetStraightTime);
         isDrivingStraight = false; // Reset flagi po upływie czasu
-        Debug.Log("🔄 isDrivingStraight zresetowane do FALSE.");
     }
 
     private int GetLaneIndex()

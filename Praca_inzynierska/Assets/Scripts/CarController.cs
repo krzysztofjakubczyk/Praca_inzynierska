@@ -27,6 +27,7 @@ public class CarController : MonoBehaviour
     private bool stopForCollision = false;        // Flaga używana przy detekcji innego samochodu
     private bool isLaneBlocked = false;        // Flaga używana przy detekcji innego samochodu
     private Waypoint previousWaypoint;
+    
 
     private Vector3 lastPosition;
     private float stuckTimer;
@@ -43,6 +44,7 @@ public class CarController : MonoBehaviour
             Debug.LogError($"🚗 {gameObject.name} nie ma przypisanego `NavMeshAgent`! Sprawdź prefab.");
             return;
         }
+        
         StartCoroutine(MoveCoroutine());
         //StartCoroutine(CheckIfStuck());
     }
@@ -76,11 +78,10 @@ public class CarController : MonoBehaviour
                 CheckCarInFront();
 
                 // Oblicz łączny stan zatrzymania
-                bool shouldStop = stopForCar || stopForLight || stopForCollision || isLaneBlocked;
-                agent.isStopped = shouldStop;
+                agent.speed = ShouldStop() ? 0f : FullSpeed;
 
                 // Tylko jeśli auto ma się poruszać, sprawdzaj dotarcie do celu
-                if (!shouldStop && !agent.pathPending && agent.remainingDistance < 2f)
+                if (!ShouldStop() && !agent.pathPending && agent.remainingDistance < 2f)
                 {
                     if (CurrentWaypoint.isBeforeTrafiicLight)
                     {
@@ -107,7 +108,10 @@ public class CarController : MonoBehaviour
             yield return null;
         }
     }
-
+    private bool ShouldStop()
+    {
+        return stopForCar || stopForLight || stopForCollision || isLaneBlocked;
+    }
     private void CheckCarInFront()
     {
         RaycastHit hit;
@@ -172,7 +176,6 @@ public class CarController : MonoBehaviour
             // Auto jedzie prosto – nie musi czekać
             if (previousWaypoint.laneChooser != null && previousWaypoint.laneChooser.isDrivingStraight)
             {
-                print("XD");
                 stopForCollision = false;
                 break;
             }

@@ -14776,7 +14776,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5550509941466984960, guid: 17671ded22c7f584198d8138ee6fc4f4, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5819991166851175732, guid: 17671ded22c7f584198d8138ee6fc4f4, type: 3}
       propertyPath: m_LocalScale.x
@@ -15829,7 +15829,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -5933964581824985500, guid: a2fc164cb99a03343b8b10106e6073b3, type: 3}
       propertyPath: m_Carve
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1067602591013736702, guid: a2fc164cb99a03343b8b10106e6073b3, type: 3}
       propertyPath: m_Name
@@ -19544,7 +19544,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3052139848778910293, guid: eccc5c418b092904d92fb353b876741f, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3052139848778910293, guid: eccc5c418b092904d92fb353b876741f, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -24873,6 +24873,7 @@ MonoBehaviour:
   choosedHour: 0
   currentCycleTime: 0
   yellowLightDuration: 0
+  useFuzzyLogic: 0
 --- !u!1 &1468475103
 GameObject:
   m_ObjectHideFlags: 0

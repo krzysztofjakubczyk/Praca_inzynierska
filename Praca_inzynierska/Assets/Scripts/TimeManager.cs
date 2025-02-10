@@ -51,7 +51,6 @@ public class TimeManager : MonoBehaviour
 
     private IEnumerator ManageFillingPhase()
     {
-        Debug.Log("🚗💨 Rozpoczęcie fazy wypełniania - szybsze spawnowanie!");
 
         foreach (VehicleSpawner spawner in spawners)
         {
@@ -60,7 +59,6 @@ public class TimeManager : MonoBehaviour
 
         yield return new WaitForSeconds(fillingPhaseDuration); // Czekamy 20 sekund
 
-        Debug.Log("🚗⏳ Koniec fazy wypełniania - powrót do normalnego tempa spawnowania!");
 
         foreach (VehicleSpawner spawner in spawners)
         {
@@ -82,7 +80,6 @@ public class TimeManager : MonoBehaviour
         {
             choosedHour = 15;
             AssignVehicleCountsToSpawners(countOfVehiclesForFifteen);
-            Debug.Log("⏰ Tryb szczytu popołudniowego: ustawiono godzinę 15:00.");
         }
         else
         {
@@ -120,7 +117,6 @@ public class TimeManager : MonoBehaviour
             trafficController.ResetTrafficCycle();
         }
 
-        Debug.Log("🔄 Wszystkie światła zostały wyzerowane po zmianie godziny.");
     }
     private void AssignVehicleCountsToSpawners(List<int> vehicleCounts)
     {
@@ -148,7 +144,6 @@ public class TimeManager : MonoBehaviour
             statisticManager.ResetStatistics();
         }
 
-        Debug.Log("📊 Wszystkie statystyki zostały wyzerowane po zmianie godziny.");
     }
 
     private void ResetSimulation()
@@ -167,8 +162,6 @@ public class TimeManager : MonoBehaviour
         {
             sensor.ResetSensor();
         }
-
-        Debug.Log("🔄 Wszystkie czujniki zostały wyzerowane po zmianie godziny.");
     }
 
     private void ToggleSpeedUp()

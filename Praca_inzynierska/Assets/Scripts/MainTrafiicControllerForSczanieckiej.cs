@@ -18,6 +18,7 @@ public class MainTrafficControllerForSczanieckiej : MonoBehaviour
     public float currentCycleTime = 0f;
     private const int fullCycleTime = 120;
     [SerializeField] private float yellowLightDuration = 3f;
+    [SerializeField] private bool useFuzzyLogic ;
     private float initialFillingTime = 20f; // Czas wypełniania skrzyżowania
     private bool isFillingPhase = true; // Czy trwa faza wypełniania?
     private int cycleCounter = 0; // Licznik pełnych cykli
@@ -48,18 +49,18 @@ public class MainTrafficControllerForSczanieckiej : MonoBehaviour
         fuzzyLogicHandler = new FuzzyLogicHandler();
 
         var carCountMemberships = new Dictionary<string, (double a, double b, double c, double d)>
-    {
-        { "Low", (0,5,9,13) },
-        { "Medium", (9,13,17,21) },
-        { "High", (17,21,25,29) }
-    };
+{
+    { "Low", (0,10,15,20) },
+    { "Medium", (15,20,30,35) },
+    { "High", (30,35,45,50) } // Większy zakres, aby Faza 1 była traktowana jako High
+};
 
         var queueLengthMemberships = new Dictionary<string, (double a, double b, double c, double d)>
-    {
-        { "Small", (0,20,36,52) },
-        { "Medium", ( 36, 52, 68, 84) },
-        { "Big", (68, 84, 100, 116) }
-    };
+{
+    { "Small", (0,30,50,70) },
+    { "Medium", (50,70,90,110) },
+    { "Big", (90,110,150,180) } // Dostosowujemy do rzeczywistej długości kolejek
+};
 
         var greenLightDurationMemberships = new Dictionary<string, (double a, double b, double c, double d)>
     {
@@ -83,7 +84,88 @@ public class MainTrafficControllerForSczanieckiej : MonoBehaviour
     }
 
 
-    
+    private void AdjustGreenLightDurations()
+    {
+
+
+        cycleCounter++;
+        if (cycleCounter < cyclesUntilUpdate) return; // Sprawdzamy, czy czas na aktualizację
+        cycleCounter = 0;
+        cyclesUntilUpdate = Random.Range(2, 4); // Losujemy, co ile cykli aktualizować
+
+        Debug.Log($"🔄 Aktualizacja czasów faz (co {cyclesUntilUpdate} cykle)");
+
+        double totalGreenTime = 0;
+        List<double> calculatedTimes = new List<double>();
+
+        foreach (var phase in listToChangeColors)
+        {
+            double carCount = 0;
+            double queueLength = 0;
+
+            // Pobieramy rzeczywiste wartości z sensorów
+            foreach (var line in phase)
+            {
+                carCount += CarCountOnInlet.ContainsKey(line) ? CarCountOnInlet[line] : 0;
+                queueLength += CarQueueOnInlet.ContainsKey(line) ? CarQueueOnInlet[line] : 0;
+            }
+
+            Debug.Log($"📊 Faza {listToChangeColors.IndexOf(phase) + 1}: Auta: {carCount}, Kolejka: {queueLength}");
+
+            // Fuzzification - przetwarzamy dane wejściowe
+            var fuzzifiedInputs = fuzzyLogicHandler.Fuzzify(carCount, queueLength);
+
+            Debug.Log("🔎 Wyniki fuzzification:");
+            foreach (var variable in fuzzifiedInputs)
+            {
+                foreach (var membership in variable.Value)
+                {
+                    Debug.Log($"   - {variable.Key}: {membership.Key} -> {membership.Value:F3}");
+                }
+            }
+
+            // Zastosowanie reguł logiki rozmytej
+            var aggregatedOutputs = fuzzyLogicHandler.ApplyRules(fuzzifiedInputs);
+
+            Debug.Log("📜 Zagregowane wartości po zastosowaniu reguł:");
+            foreach (var output in aggregatedOutputs)
+            {
+                Debug.Log($"   - {output.Key}: {output.Value:F3}");
+            }
+
+            // Defuzzification - obliczenie czasu zielonego światła
+            double greenTime = fuzzyLogicHandler.Defuzzify(aggregatedOutputs, "centroid");
+            Debug.Log($"🎯 Wynik defuzyfikacji dla fazy {listToChangeColors.IndexOf(phase) + 1}: {greenTime:F2}s");
+
+            calculatedTimes.Add(greenTime);
+            totalGreenTime += greenTime;
+        }
+
+        // 💡 Sprawdzenie, czy suma czasów jest wystarczająca (minimum 94.5s)
+        if (totalGreenTime < 94.5)
+        {
+            double missingTime = 94.5 - totalGreenTime; // Ile sekund brakuje
+            Debug.Log($"⚠️ Czas faz jest za krótki o {missingTime:F2}s, zwiększamy proporcjonalnie!");
+
+            double scaleFactor = 1 + (missingTime / totalGreenTime); // Skala wydłużenia
+
+            for (int i = 0; i < calculatedTimes.Count; i++)
+            {
+                calculatedTimes[i] *= scaleFactor; // Wydłużamy proporcjonalnie
+            }
+        }
+
+        // Aktualizacja czasów faz w słowniku dla danej godziny
+        phaseDurationsByHour[choosedHour] = new List<int>
+    {
+        (int)calculatedTimes[0],
+        (int)calculatedTimes[1],
+        (int)calculatedTimes[2]
+    };
+
+        Debug.Log($"✅ **Nowe czasy faz:** {calculatedTimes[0]:F2}s, {calculatedTimes[1]:F2}s, {calculatedTimes[2]:F2}s");
+    }
+
 
 
 
@@ -146,7 +228,10 @@ public class MainTrafficControllerForSczanieckiej : MonoBehaviour
         while (true)
         {
             UpdateTrafficData(); // 🔄 Pobranie aktualnych danych o ruchu
-
+            if (useFuzzyLogic)
+            {
+                AdjustGreenLightDurations();
+            }
             currentCycleTime = 0f;
             List<int> startTimes = phaseStartTimesByHour[choosedHour];
             List<int> durations = phaseDurationsByHour[choosedHour];
@@ -178,7 +263,6 @@ public class MainTrafficControllerForSczanieckiej : MonoBehaviour
                 currentCycleTime += greenTime;
             }
 
-            AdjustGreenLightDurations(); // 🔄 Aktualizacja czasów co 2-3 cykle
 
             yield return new WaitForSeconds(fullCycleTime - currentCycleTime);
         }
@@ -214,7 +298,6 @@ public class MainTrafficControllerForSczanieckiej : MonoBehaviour
 
         currentCycleTime = 0f; // Resetowanie licznika cyklu
         isFillingPhase = true; // Ponowne uruchomienie fazy wypełniania
-        Debug.Log("🔄 Cykl świateł został zresetowany.");
 
         StartCoroutine(StartTrafficCycleWithDelay()); // Ponowne uruchomienie cyklu świateł
     }

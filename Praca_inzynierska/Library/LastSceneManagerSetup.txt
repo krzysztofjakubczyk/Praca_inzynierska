@@ -1,5 +1,5 @@
 sceneSetups:
-- path: Assets/Scenes/Dokument Sczanieckiej.unity
+- path: Assets/Scenes/Rozmyta Logika.unity
   isLoaded: 1
   isActive: 1
   isSubScene: 0

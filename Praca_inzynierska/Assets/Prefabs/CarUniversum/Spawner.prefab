@@ -44,8 +44,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b638ff06467f77141ac59d3d6906033c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CarPrefab:
-  - {fileID: 5505025493778204093, guid: 2ac4b7d4bac1bf64ebc845bb6b5f46d7, type: 3}
+  vehiclePrefab: {fileID: 0}
+  firstWaypoint: {fileID: 0}
   spawnInterval: 2
   maxVehicles: 1
-  currentVehicleCount: 0
+  raycastDistance: 5
+  detectionLayer:
+    serializedVersion: 2
+    m_Bits: 4294967295

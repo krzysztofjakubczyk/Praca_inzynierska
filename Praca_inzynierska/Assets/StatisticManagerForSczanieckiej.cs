@@ -97,7 +97,6 @@ public class StatisticManagerForSczanieckiej : MonoBehaviour
         foreach (TMP_Text text in obciazenieText) text.text = "0";
         foreach (TMP_Text text in gestoscText) text.text = "0 poj/km";
 
-        Debug.Log("📊 Statystyki ruchu drogowego zostały wyzerowane.");
 
         UpdateLanesUI(); // Aktualizacja interfejsu użytkownika
     }
