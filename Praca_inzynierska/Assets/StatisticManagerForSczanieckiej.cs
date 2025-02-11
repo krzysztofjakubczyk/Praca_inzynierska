@@ -30,6 +30,10 @@ public class StatisticManagerForSczanieckiej : MonoBehaviour
     private static Dictionary<int, List<float>> timeSpentPerLane = new Dictionary<int, List<float>>();
     public static Dictionary<int, int> vehicleCountPerLane = new Dictionary<int, int>();
 
+    private Dictionary<int, List<float>> vehicleDensityHistory = new Dictionary<int, List<float>>();
+
+    private const int historySize = 3; // Liczba cykli do obliczenia średniej
+
 
     private Dictionary<int, List<int>> phaseToLanes = new Dictionary<int, List<int>>
     {
@@ -174,6 +178,40 @@ public class StatisticManagerForSczanieckiej : MonoBehaviour
 
         List<int> lanes = phaseToLanes[selectedPhase];
 
+        for (int i = 0; i < gestoscText.Count; i++)
+        {
+            if (i < densitySensors.Count)
+            {
+                DensitySensor sensor = densitySensors[i];
+
+                // 🟢 Pobieramy liczbę aut w `DensitySensor`
+                int currentDensity = sensor.vehicleCount;
+                int laneID = i; // Indeks czujnika traktujemy jako ID pasa
+
+                // 🟢 Aktualizujemy historię dla danego pasa
+                if (!vehicleDensityHistory.ContainsKey(laneID))
+                {
+                    vehicleDensityHistory[laneID] = new List<float>();
+                }
+
+                // Dodajemy nową wartość i usuwamy najstarszą, jeśli przekroczyliśmy limit
+                if (vehicleDensityHistory[laneID].Count >= historySize)
+                {
+                    vehicleDensityHistory[laneID].RemoveAt(0);
+                }
+                vehicleDensityHistory[laneID].Add(currentDensity);
+
+                // 🟢 Obliczamy średnią liczbę aut przed skrzyżowaniem w ostatnich cyklach
+                float avgDensity = vehicleDensityHistory[laneID].Average();
+
+                gestoscText[i].text = $"{avgDensity:F1} poj.";
+            }
+            else
+            {
+                gestoscText[i].text = "Brak danych";
+            }
+        }
+
         for (int i = 0; i < sredniaText.Count; i++)
         {
             if (i < lanes.Count)
@@ -186,9 +224,8 @@ public class StatisticManagerForSczanieckiej : MonoBehaviour
                 {
                     float avgTimeSpent = GetAverageTimeSpentForLane(laneID);
                     float avgWaitingTime = GetAverageWaitingTimeForLane(laneID);
-                    float natezenie = entry.count / (waitingTime / 3600f);
                     float przepustowosc = natezenieNasycenia.ContainsKey(laneID) ? natezenieNasycenia[laneID] : 0;
-                    float stopienObciazenia = (przepustowosc > 0) ? natezenie / przepustowosc : 0;
+
 
                     float gestosc = GetVehicleDensityForLane(laneID); // Pobieramy gęstość
 
@@ -197,8 +234,9 @@ public class StatisticManagerForSczanieckiej : MonoBehaviour
                     iloscText[i].text = $"{entry.count}";
                     nazwaPasaText[i].text = $"Pas: {laneID}";
                     przepustowoscText[i].text = $"{przepustowosc:F0} poj/h";
-                    obciazenieText[i].text = $"{stopienObciazenia:F2}";
-                    gestoscText[i].text = $"{gestosc:F1} poj/km";
+                    obciazenieText[i].text = $"{(sensor.vehicleCount / (float)przepustowosc) * 100:F2}%";
+
+                    gestoscText[i].text = $"{gestosc:F1} poj";
                 }
                 else
                 {

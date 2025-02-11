@@ -20910,7 +20910,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -5933964581824985500, guid: a2fc164cb99a03343b8b10106e6073b3, type: 3}
       propertyPath: m_Carve
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1067602591013736702, guid: a2fc164cb99a03343b8b10106e6073b3, type: 3}
       propertyPath: m_Name
