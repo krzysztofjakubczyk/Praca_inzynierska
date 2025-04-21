@@ -3,14 +3,18 @@ using UnityEngine;
 
 public class VehicleSpawner : MonoBehaviour
 {
-    [SerializeField] private GameObject vehiclePrefab;
+    [SerializeField] private GameObject vehiclePrefabs;
+    [SerializeField] private GameObject busPrefab;
     [SerializeField] private Waypoint firstWaypoint;
     [SerializeField] private float spawnInterval = 5f;
+    [SerializeField] private int intervalForBus; // Co który pojazd pojawia się autobus
     [SerializeField] private int maxVehicles;
-    [SerializeField] private float raycastDistance = 8f; // Długość Raycasta do sprawdzania miejsca
-    [SerializeField] private LayerMask detectionLayer; // Warstwa, na której sprawdzamy pojazdy
+    [SerializeField] private float raycastDistance = 8f;
+    [SerializeField] private LayerMask detectionLayer;
+    [SerializeField] private bool isSpawningBuses;
 
     private int spawnedVehicles = 0;
+    private float busSpawnTimer = 0f; // 3 minuty
 
     public int MaxVehicles
     {
@@ -32,48 +36,58 @@ public class VehicleSpawner : MonoBehaviour
 
     public void StartSpawning()
     {
-        StartCoroutine(SpawnVehicles());    
+        StartCoroutine(SpawnVehicles());
+        if(isSpawningBuses) StartCoroutine(SpawnBusRoutine());
+
     }
 
     private IEnumerator SpawnVehicles()
     {
         while (spawnedVehicles < maxVehicles)
         {
-            if (CanSpawnVehicle()) // ✅ Sprawdzamy, czy można spawnować pojazd
+            if (CanSpawnVehicle())
             {
                 SpawnVehicle();
             }
-
             yield return new WaitForSeconds(spawnInterval);
         }
     }
 
-    /// <summary>
-    /// ✅ Używa Raycasta do sprawdzania, czy przed spawnerem jest miejsce na pojazd.
+    private IEnumerator SpawnBusRoutine()
+    {
+        while (spawnedVehicles < maxVehicles)
+        {
+            yield return new WaitForSeconds(intervalForBus);
+            if (CanSpawnVehicle())
+            {
+                SpawnBus();
+            }
+            
+        }
+    }
 
     private bool CanSpawnVehicle()
     {
         RaycastHit hit;
-        Vector3 rayOrigin = transform.position + Vector3.up * 1.5f; // 🟢 Podnosimy Raycast na wysokość zderzaka
+        Vector3 rayOrigin = transform.position + Vector3.up * 1.5f;
         Vector3 rayDirection = transform.forward;
 
         if (Physics.Raycast(rayOrigin, rayDirection, out hit, raycastDistance, detectionLayer))
         {
-            return false; // Jest przeszkoda – nie spawnujemy
+            return false;
         }
-
-        return true; // Brak przeszkód – można spawnować
+        return true;
     }
 
-        private void SpawnVehicle()
+    private void SpawnVehicle()
     {
-        if (vehiclePrefab == null || firstWaypoint == null)
+        if (vehiclePrefabs == null || firstWaypoint == null)
         {
             Debug.LogError($"Spawner {gameObject.name} ma brakujące elementy: prefab lub pierwszy waypoint!");
             return;
         }
 
-        GameObject vehicle = Instantiate(vehiclePrefab, transform.position, transform.rotation);
+        GameObject vehicle = Instantiate(vehiclePrefabs, transform.position, transform.rotation);
         CarController carController = vehicle.GetComponent<CarController>();
 
         if (carController != null)
@@ -84,6 +98,24 @@ public class VehicleSpawner : MonoBehaviour
         spawnedVehicles++;
     }
 
+    private void SpawnBus()
+    {
+        if (busPrefab == null || firstWaypoint == null)
+        {
+            Debug.LogError("Brak autobusu lub pierwszego waypointa!");
+            return;
+        }
+
+        GameObject bus = Instantiate(busPrefab, transform.position, transform.rotation);
+        CarController carController = bus.GetComponent<CarController>();
+
+        if (carController != null)
+        {
+            carController.SetFirstWaypoint(firstWaypoint);
+        }
+        spawnedVehicles++;
+    }
+
     public float GetSpawnInterval()
     {
         return spawnInterval;
@@ -91,7 +123,6 @@ public class VehicleSpawner : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        // Wizualizacja Raycasta w edytorze Unity
         Gizmos.color = Color.red;
         Gizmos.DrawRay(transform.position + Vector3.up * 1.5f, transform.forward * raycastDistance);
     }

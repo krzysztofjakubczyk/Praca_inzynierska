@@ -61,28 +61,29 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\VehicleSpawner.cs" />
-    <Compile Include="Assets\StatisticManagerForSczanieckiej.cs" />
     <Compile Include="Assets\Scripts\Waypoint.cs" />
+    <Compile Include="Assets\Scripts\EntryTrigger.cs" />
+    <Compile Include="Assets\Scripts\FreeLookCameraController.cs" />
     <Compile Include="Assets\Scripts\CarController.cs" />
-    <Compile Include="Assets\LineLightManager.cs" />
+    <Compile Include="Assets\Scripts\DensitySensor.cs" />
     <Compile Include="Assets\Scripts\MainTrafiicController.cs" />
     <Compile Include="Assets\Scripts\CarDestroyer.cs" />
+    <Compile Include="Assets\Scripts\LineLightManager.cs" />
     <Compile Include="Assets\Scripts\TimeManager.cs" />
-    <Compile Include="Assets\StatisticManager.cs" />
-    <Compile Include="Assets\ExitTrigger.cs" />
     <Compile Include="Assets\Scripts\MainTrafiicControllerForSczanieckiej.cs" />
-    <Compile Include="Assets\FreeLookCameraController.cs" />
-    <Compile Include="Assets\Fuzzy logic.cs" />
+    <Compile Include="Assets\Scripts\ExitTrigger.cs" />
+    <Compile Include="Assets\Scripts\StatisticManagerForSczanieckiej.cs" />
+    <Compile Include="Assets\Scripts\StartScreenManager.cs" />
     <Compile Include="Assets\Scripts\CameraManager.cs" />
     <Compile Include="Assets\Scripts\Sensor.cs" />
-    <Compile Include="Assets\Timers.cs" />
-    <Compile Include="Assets\DensitySensor.cs" />
     <Compile Include="Assets\Scripts\ChooseLane.cs" />
     <Compile Include="Assets\Scripts\LightMonitorForCar.cs" />
-    <Compile Include="Assets\Counter.cs" />
-    <Compile Include="Assets\CollisionDetector.cs" />
-    <Compile Include="Assets\EntryTrigger.cs" />
-    <Compile Include="Assets\FlyCamera.cs" />
+    <Compile Include="Assets\Scripts\Timers.cs" />
+    <Compile Include="Assets\Scripts\StatisticManager.cs" />
+    <Compile Include="Assets\Scripts\Counter.cs" />
+    <Compile Include="Assets\Scripts\Fuzzy logic.cs" />
+    <Compile Include="Assets\Scripts\CollisionDetector.cs" />
+    <Compile Include="Assets\Scripts\FlyCamera.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
@@ -92,6 +93,7 @@
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF SSD.shader" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Surface-Mobile.shader" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Surface.shader" />
+    <None Include="Assets\Packages\BEDRILL\Track_Environment_Free\Readme.txt" />
     <None Include="Assets\TextMesh Pro\Sprites\EmojiOne Attribution.txt" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap-Custom-Atlas.shader" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF.shader" />
@@ -100,9 +102,7 @@
     <None Include="Assets\TextMesh Pro\Shaders\TMPro_Properties.cginc" />
     <None Include="Assets\TextMesh Pro\Shaders\TMPro_Surface.cginc" />
     <None Include="Assets\TextMesh Pro\Resources\LineBreaking Following Characters.txt" />
-    <None Include="Assets\UnityAssets\SimpleLowPolyNature\Readme.txt" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Masking.shader" />
-    <None Include="Assets\UnityAssets\SimpleLowPolyNature\Shaders\SimpleWater.shader" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF Overlay.shader" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap-Mobile.shader" />
     <None Include="Assets\TextMesh Pro\Fonts\LiberationSans - OFL.txt" />

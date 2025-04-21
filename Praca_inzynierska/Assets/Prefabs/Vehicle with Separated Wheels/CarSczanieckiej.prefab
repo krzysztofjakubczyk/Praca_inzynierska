@@ -100,14 +100,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c40128ded95e48846b3d38d8b11202b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  detectionDistance: 12.6
-  stopDistance: 9
+  detectionDistance: 15
+  stopDistance: 11
   obstacleCheckRadius: 1.5
-  stuckTimeThreshold: 10
   CurrentWaypoint: {fileID: 0}
-  FullSpeed: 15
+  FullSpeed: 10
   vehicleLength: 4
   lineManager: {fileID: 0}
+  stopForCar: 0
+  stopForLight: 0
+  stopForCollision: 0
 --- !u!54 &-566944232893335450
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -192,3 +194,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   entryTime: 0
+  waitingStartTime: 0
+  timeSpentOnTraffic: 0
+  waitingTimeForGreenLight: 0
+  cameFrom: 

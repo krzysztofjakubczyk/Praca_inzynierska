@@ -23,8 +23,9 @@ public class TimeManager : MonoBehaviour
     private const float realToSimRatio = 1f;
     private int choosedHour;
     private bool isFillingPhase = true;
-    private float fillingPhaseDuration = 20f; // 20 sekund wypełniania
+    public float fillingPhaseDuration = 15f; // 20 sekund wypełniania
     private float spawnMultiplier = 4f; // 
+    private bool hasStartedStatistics = false;
 
     private void Start()
     {
@@ -47,6 +48,15 @@ public class TimeManager : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.P)) TogglePause();
         if (Input.GetKeyDown(KeyCode.Q)) ToggleSpeedUp();
+        if (simulationTime >= 3600f) // Jeśli upłynęła cała godzina lub 12 minut i 20 sekund, zatrzymaj symulację
+        {
+            PauseGame();
+        }
+        if (simulationTime >= 380f && !hasStartedStatistics) // Po 6 minutach i 20 sekundach
+        {
+            hasStartedStatistics = true;
+            ResetStatistics(); // Rozpocznij zbieranie statystyk
+        }
     }
 
     private IEnumerator ManageFillingPhase()
