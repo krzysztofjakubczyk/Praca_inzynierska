@@ -14,7 +14,6 @@ GameObject:
   - component: {fileID: -6981975694458157898}
   - component: {fileID: -566944232893335450}
   - component: {fileID: 4319532575485604089}
-  - component: {fileID: 4411577094623702775}
   - component: {fileID: 8832973447025941060}
   m_Layer: 0
   m_Name: CarSczanieckiej
@@ -100,10 +99,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c40128ded95e48846b3d38d8b11202b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stopDistance: 11
+  stopDistance: 5
   obstacleCheckRadius: 1.5
-  CurrentWaypoint: {fileID: 0}
-  CurretSpeed: 0
+  waypoints: []
+  speed: 25
+  rotationSpeed: 5
+  CurrentSpeed: 0
   vehicleLength: 4
   lineManager: {fileID: 0}
   stopForLight: 0
@@ -134,7 +135,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 116
   m_CollisionDetection: 0
 --- !u!64 &4319532575485604089
 MeshCollider:
@@ -158,28 +159,6 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!195 &4411577094623702775
-NavMeshAgent:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5505025493778204093}
-  m_Enabled: 1
-  m_AgentTypeID: 0
-  m_Radius: 0.28
-  m_Speed: 20
-  m_Acceleration: 30
-  avoidancePriority: 99
-  m_AngularSpeed: 100
-  m_StoppingDistance: 0
-  m_AutoTraverseOffMeshLink: 1
-  m_AutoBraking: 1
-  m_AutoRepath: 1
-  m_Height: 1.13
-  m_BaseOffset: 0.5
-  m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 4
 --- !u!114 &8832973447025941060
 MonoBehaviour:
   m_ObjectHideFlags: 0

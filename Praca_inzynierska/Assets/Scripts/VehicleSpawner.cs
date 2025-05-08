@@ -5,7 +5,7 @@ public class VehicleSpawner : MonoBehaviour
 {
     [SerializeField] private GameObject vehiclePrefabs;
     [SerializeField] private GameObject busPrefab;
-    [SerializeField] private Waypoint firstWaypoint;
+    [SerializeField] private Waypoint[] waypointList;
     [SerializeField] private float spawnInterval = 5f;
     [SerializeField] private int intervalForBus; // Co który pojazd pojawia się autobus
     [SerializeField] private int maxVehicles;
@@ -81,18 +81,12 @@ public class VehicleSpawner : MonoBehaviour
 
     private void SpawnVehicle()
     {
-        if (vehiclePrefabs == null || firstWaypoint == null)
-        {
-            Debug.LogError($"Spawner {gameObject.name} ma brakujące elementy: prefab lub pierwszy waypoint!");
-            return;
-        }
-
         GameObject vehicle = Instantiate(vehiclePrefabs, transform.position, transform.rotation);
         CarController carController = vehicle.GetComponent<CarController>();
 
         if (carController != null)
         {
-            carController.SetFirstWaypoint(firstWaypoint);
+            carController.SetFirstWaypoint(waypointList);
         }
 
         spawnedVehicles++;
@@ -100,18 +94,13 @@ public class VehicleSpawner : MonoBehaviour
 
     private void SpawnBus()
     {
-        if (busPrefab == null || firstWaypoint == null)
-        {
-            Debug.LogError("Brak autobusu lub pierwszego waypointa!");
-            return;
-        }
 
         GameObject bus = Instantiate(busPrefab, transform.position, transform.rotation);
         CarController carController = bus.GetComponent<CarController>();
 
         if (carController != null)
         {
-            carController.SetFirstWaypoint(firstWaypoint);
+            carController.SetFirstWaypoint(waypointList);
         }
         spawnedVehicles++;
     }
