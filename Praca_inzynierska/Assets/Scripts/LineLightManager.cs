@@ -20,6 +20,10 @@ public class LineLightManager : MonoBehaviour
     [SerializeField] GameObject[] laneChooserToHide;
     [SerializeField] ChooseLane laneChooserToCollision;
     public List<Sensor> sensors;
+    public double timeToStartGreenLight;
+    public double timeOfGreenLight;
+    public double timeOfBeforeYellowLight;
+    public double timeOfAfterYellowLight;
     public bool isBlocked = false; // Czy pas jest zablokowany?
     public bool leftTurnAllowed = false; // Czy można skręcać w lewo?
     public bool leftTurnWaiting = false; // Czy są auta na środku skrzyżowania?

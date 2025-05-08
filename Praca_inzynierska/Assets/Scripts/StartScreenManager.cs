@@ -1,35 +1,30 @@
-using System.Collections.Generic;
-using System.Xml.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+
 public class StartScreenManager : MonoBehaviour
 {
-    public GameObject startScreen;
+    public static StartScreenManager Instance { get; private set; }
+
+    //odpowiada za obs³ugê przycisku do wyboru wariantu symulacji
     public Button startButton;
-    public Canvas CanvasToReturnButton;
-    public Button returnButton;
     public TMP_Dropdown simulationModeDropdown;
     public static int selectedSimulationMode = 0;
-
     void Awake()
     {
-        DontDestroyOnLoad(gameObject);
-        DontDestroyOnLoad(CanvasToReturnButton);
-        PopulateDropdown();
-
-        if (startScreen != null && startButton != null && simulationModeDropdown != null)
+        if (Instance != null && Instance != this)
         {
-            startScreen.SetActive(true);
-            startButton.onClick.AddListener(StartSimulation);
-            returnButton.onClick.AddListener(ReturnToMainMenu);
+            Destroy(this);
         }
+        else
+        {
+            Instance = this;
+        }
+        PopulateDropdown();
+        startButton.onClick.AddListener(StartSimulation);
     }
-    public void ReturnToMainMenu()
-    {
-        SceneManager.LoadScene("Main");
-    }
+    
     void PopulateDropdown()
     {
         simulationModeDropdown.value = 0;
@@ -38,37 +33,41 @@ public class StartScreenManager : MonoBehaviour
     void StartSimulation()
     {
         selectedSimulationMode = simulationModeDropdown.value;
-        startScreen.SetActive(false);
         ApplySimulationMode();
     }
 
     void ApplySimulationMode()
-{
-    string sceneToLoad = "";
-    
-    switch (selectedSimulationMode)
     {
-        case 0:
-            sceneToLoad = "Arkonska-Niemierzynska";
-            break;
-        case 1:
-            sceneToLoad = "Oszacowane rzeczywisty";
-            break;
-        case 2:
-            sceneToLoad = "Dokument Sczanieckiej rzeczywisty";
-            break;
-        case 3:
-            sceneToLoad = "Oszacowane Logika rozmyta";
-            break;
-        case 4:
-            sceneToLoad = "Dokument Sczanieckiej Logika rozmyta";
-            break;
-        default:
-            Debug.LogWarning("Nieznany tryb symulacji");
-            return;
+        string sceneToLoad = "";
+
+        switch (selectedSimulationMode)
+        {
+            case 0:
+                sceneToLoad = "Arkonska-Niemierzynska";
+                break;
+            case 1:
+                sceneToLoad = "Oszacowane rzeczywisty";
+                break;
+            case 2:
+                sceneToLoad = "Dokument Sczanieckiej rzeczywisty";
+                break;
+            case 3:
+                sceneToLoad = "Oszacowane Logika rozmyta";
+                break;
+            case 4:
+                sceneToLoad = "Dokument Sczanieckiej Logika rozmyta";
+                break;
+            case 5:
+                sceneToLoad = "Wiêksze Oszacowane Logika rozmyta";
+                break;
+            case 6:
+                sceneToLoad = "Wiêksze Oszacowane rzeczywisty";
+                break;
+            default:
+                Debug.LogWarning("Nieznany tryb symulacji");
+                return;
+        }
+
+        SceneManager.LoadScene(sceneToLoad);
     }
-
-    SceneManager.LoadScene(sceneToLoad);
-}
-
 }

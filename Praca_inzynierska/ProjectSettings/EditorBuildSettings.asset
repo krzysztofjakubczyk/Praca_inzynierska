@@ -23,4 +23,12 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Sczanieckiej/Dane oszacowane/Oszacowane Logika rozmyta.unity
     guid: 66de3ae2fb671dd438d4ff9de76785d6
+  - enabled: 1
+    path: "Assets/Scenes/Sczanieckiej/Dane wi\u0119ksze o 10%/Wi\u0119ksze Oszacowane
+      Logika rozmyta.unity"
+    guid: bed3d00f04ae15e45bf4f452c8c9ae35
+  - enabled: 1
+    path: "Assets/Scenes/Sczanieckiej/Dane wi\u0119ksze o 10%/Wi\u0119ksze Oszacowane
+      rzeczywisty.unity"
+    guid: 2a13c98943ecde14a80c8041a73ceb87
   m_configObjects: {}

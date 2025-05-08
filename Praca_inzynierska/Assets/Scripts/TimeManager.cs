@@ -120,7 +120,7 @@ public class TimeManager : MonoBehaviour
     }
     private void ResetTrafficLights()
     {
-        MainTrafficControllerForSczanieckiej trafficController = FindObjectOfType<MainTrafficControllerForSczanieckiej>();
+        TraficController trafficController = FindObjectOfType<TraficController>();
 
         if (trafficController != null)
         {

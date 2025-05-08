@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class MainTrafficControllerForSczanieckiej : MonoBehaviour
+
+
+public class TraficController : MonoBehaviour
 {
     [Header("List of lanes to concrete cycle")]
     [SerializeField] private List<LineLightManager> Phase1 = new List<LineLightManager>();
