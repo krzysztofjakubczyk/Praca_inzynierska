@@ -36,6 +36,7 @@ public class LineLightManager : MonoBehaviour
             StartCoroutine(UpdateTrafficStateRoutine());
         }
         StartCoroutine(UpdateVehicleData());
+        StartCoroutine(UpdateTrafficState());
 
     }
     private IEnumerator UpdateVehicleData()
@@ -55,7 +56,7 @@ public class LineLightManager : MonoBehaviour
             queueLength = totalQueueLength;
 
 
-            yield return new WaitForSeconds(5f); // Aktualizacja co 5 sekund
+            yield return new WaitForSeconds(2f); // Aktualizacja co 5 sekund
         }
     }
 
@@ -63,7 +64,6 @@ public class LineLightManager : MonoBehaviour
     {
         while (true)
         {
-            UpdateTrafficState();
             if(currentColor == TrafficLightColor.red)
             {
                 sensorToHide.gameObject.SetActive(false);
@@ -87,14 +87,18 @@ public class LineLightManager : MonoBehaviour
             {
                leftTurnAllowed = false; // Zatrzymujemy ruch na przeciwnym pasie
             }
+            else
+            {
+                leftTurnAllowed = true;
+            }
             yield return new WaitForSeconds(0.5f); // Sprawdzamy co 3 sekundy
         }
     }
 
-    public void UpdateTrafficState()
+    public IEnumerator UpdateTrafficState()
     {   
-        //countOfVehicles = 0;
-        //queueLength = 0;
+        countOfVehicles = 0;
+        queueLength = 0;
         bool shouldBlock = false;
         bool leftTurnBlocked = false;
         leftTurnWaiting = false; // Resetujemy flagę
@@ -130,7 +134,7 @@ public class LineLightManager : MonoBehaviour
         {
             isBlocked = false;
         }
-
+        yield return new WaitForSeconds(0.5f);
 
     }
 

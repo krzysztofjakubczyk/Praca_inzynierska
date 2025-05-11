@@ -99,15 +99,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c40128ded95e48846b3d38d8b11202b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stopDistance: 0.07
+  stopDistance: 15
   obstacleCheckRadius: 1.5
-  CurrentWaypoint: {fileID: 0}
-  CurretSpeed: 0
+  waypoints: []
+  speed: 10
+  rotationSpeed: 5
+  CurrentSpeed: 0
   vehicleLength: 12
   lineManager: {fileID: 0}
   stopForLight: 0
   isAfterCar: 0
   stopForCollision: 0
+  hadLineManager: 0
+  currentWaypointIndex: 0
 --- !u!54 &-566944232893335450
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -133,7 +137,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 36
   m_CollisionDetection: 0
 --- !u!64 &4319532575485604089
 MeshCollider:

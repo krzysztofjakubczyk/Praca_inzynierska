@@ -21,18 +21,18 @@ public class CarController : MonoBehaviour
     public bool isAfterCar = false;
     public bool stopForCollision = false;
     private bool isLaneBlocked = false;
+    public bool hadLineManager = false;
     private Waypoint previousWaypoint;
 
     private Coroutine trafficLightCoroutine;
 
-    private int currentWaypointIndex = 0;
+    public int currentWaypointIndex = 0;
     private Waypoint CurrentWaypoint => waypoints[currentWaypointIndex];
 
     void Start()
     {
         StartCoroutine(MoveToWaypoints());
         StartCoroutine(CheckCarInFront());
-        StartCoroutine(ShouldStop());
     }
 
     private IEnumerator MoveToWaypoints()
@@ -42,9 +42,10 @@ public class CarController : MonoBehaviour
 
         while (true)
         {
-            if(currentWaypointIndex == 0)
+            if (hadLineManager == false && currentWaypointIndex == 0)
             {
                 lineManager = CurrentWaypoint.linkedController;
+                hadLineManager = true;
             }
             if (stopForLight || isAfterCar || stopForCollision || isLaneBlocked)
             {
@@ -87,13 +88,6 @@ public class CarController : MonoBehaviour
         }
     }
 
-    private IEnumerator ShouldStop()
-    {
-        while (true)
-        {
-            yield return null;
-        }
-    }
 
     private IEnumerator CheckCarInFront()
     {
@@ -112,7 +106,7 @@ public class CarController : MonoBehaviour
                 }
             }
 
-            yield return new WaitForSeconds(0.5f);
+            yield return null;
         }
     }
 
