@@ -70,7 +70,11 @@ public class CarController : MonoBehaviour
             }
 
             // Jeśli blisko waypointa – przejdź do kolejnego
-            if (Vector3.Distance(transform.position, targetPos) < 2f)
+            Vector3 toWaypoint = targetPos - transform.position;
+            float distance = toWaypoint.magnitude;
+            float forwardDot = Vector3.Dot(transform.forward, toWaypoint.normalized);
+
+            if (distance < 3f || forwardDot < 0f)
             {
                 if (CurrentWaypoint.isBeforeTrafiicLight)
                 {
@@ -84,6 +88,7 @@ public class CarController : MonoBehaviour
                 }
             }
 
+
             yield return null;
         }
     }
@@ -94,17 +99,19 @@ public class CarController : MonoBehaviour
         while (true)
         {
             isAfterCar = false;
-            RaycastHit hit;
-            Vector3 rayStartPosition = transform.position + Vector3.up * 1f;
+            Vector3 rayStartPosition = transform.position + transform.forward * (vehicleLength * 0.6f) + Vector3.up * 0.5f;
             Vector3 forwardDirection = transform.forward;
+            RaycastHit[] hits = Physics.RaycastAll(rayStartPosition, forwardDirection, stopDistance);
 
-            if (Physics.Raycast(rayStartPosition, forwardDirection, out hit, stopDistance))
+            foreach (var hit in hits)
             {
                 if (hit.collider.CompareTag("Car"))
                 {
                     isAfterCar = true;
+                    break; // Możesz przerwać pętlę, jeśli wystarczy Ci pierwsze trafienie auta
                 }
             }
+
 
             yield return null;
         }
@@ -128,7 +135,7 @@ public class CarController : MonoBehaviour
     {
         while (isAtMiddleOfIntersection)
         {
-            if (previousWaypoint.laneChooser != null && previousWaypoint.laneChooser.isDrivingStraight)
+            if (previousWaypoint != null && previousWaypoint.laneChooser != null && previousWaypoint.laneChooser.isDrivingStraight)
             {
                 stopForCollision = false;
                 break;

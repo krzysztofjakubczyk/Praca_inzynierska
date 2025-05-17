@@ -11,7 +11,7 @@ public class ChooseLane : MonoBehaviour
     public bool wantWarnings;
     public int choosedLane;
 
-    private int resetStraightTime = 2;
+    private int resetStraightTime = 4;
 
     private void OnTriggerEnter(Collider other)
     {
