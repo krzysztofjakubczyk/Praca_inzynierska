@@ -11860,6 +11860,10 @@ MonoBehaviour:
   - {fileID: 1769351579}
   - {fileID: 1613070359}
   - {fileID: 1323777750}
+  timeToStartGreenLight: 0
+  timeOfGreenLight: 0
+  timeOfBeforeYellowLight: 0
+  timeOfAfterYellowLight: 0
   isBlocked: 0
   leftTurnAllowed: 0
   leftTurnWaiting: 0
@@ -27312,8 +27316,10 @@ MonoBehaviour:
   tramSpawners: []
   countOfVehiclesForSeven: 
   countOfVehiclesForTwelve: 
-  countOfVehiclesForFifteen: 1d01000039010000b5000000d2010000bf0100006f0000005b01000086010000c6010000
+  countOfVehiclesForFifteen: 
   countOfVehiclesForNinePM: 
+  countOfVehiclesToSpawn:
+  - {fileID: 11400000, guid: 09ec9318f2967f2438773ae56e4d08a0, type: 2}
   Counters:
   - {fileID: 390316817}
   - {fileID: 1110827583}

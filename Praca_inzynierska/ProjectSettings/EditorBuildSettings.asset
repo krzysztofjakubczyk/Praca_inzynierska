@@ -9,7 +9,7 @@ EditorBuildSettings:
     path: Assets/Scenes/Main.unity
     guid: 42f21f8dfcc6f3d49b7b9f9a1effcc15
   - enabled: 1
-    path: Assets/Scenes/Arkonska-Niemierzynska.unity
+    path: Assets/Scenes/Arkonska/Arkonska-Niemierzynska.unity
     guid: 32da7b1ac00925c4689043af1da2d514
   - enabled: 1
     path: Assets/Scenes/Sczanieckiej/Dane oszacowane/Oszacowane rzeczywisty.unity

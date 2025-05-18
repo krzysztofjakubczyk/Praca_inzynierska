@@ -3188,11 +3188,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ccc0f59d4337cd42803216393b6d715, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &175576923 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1682181003657565133, guid: 4c0589fcde2b67541aec4e838d807714, type: 3}
-  m_PrefabInstance: {fileID: 581870624}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &177283940
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10065,41 +10060,9 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1271800455711129248, guid: 4c0589fcde2b67541aec4e838d807714, type: 3}
-      propertyPath: wantWarning
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1271800455711129248, guid: 4c0589fcde2b67541aec4e838d807714, type: 3}
-      propertyPath: ControllerList.Array.data[0]
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 1271800455711129248, guid: 4c0589fcde2b67541aec4e838d807714, type: 3}
-      propertyPath: ControllerList.Array.data[1]
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 1271800455711129248, guid: 4c0589fcde2b67541aec4e838d807714, type: 3}
-      propertyPath: ControllerList.Array.data[2]
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 1271800455711129248, guid: 4c0589fcde2b67541aec4e838d807714, type: 3}
-      propertyPath: ControllerList.Array.data[3]
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 1682181003657565133, guid: 4c0589fcde2b67541aec4e838d807714, type: 3}
       propertyPath: m_Name
       value: GlobalTrafficLightsSystem
-      objectReference: {fileID: 0}
-    - target: {fileID: 1682181003657565133, guid: 4c0589fcde2b67541aec4e838d807714, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7155084412624749333, guid: 4c0589fcde2b67541aec4e838d807714, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7155084412624749333, guid: 4c0589fcde2b67541aec4e838d807714, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7155084412624749333, guid: 4c0589fcde2b67541aec4e838d807714, type: 3}
       propertyPath: m_LocalPosition.x
@@ -10141,14 +10104,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 1271800455711129248, guid: 4c0589fcde2b67541aec4e838d807714, type: 3}
+    m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 1682181003657565133, guid: 4c0589fcde2b67541aec4e838d807714, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1463088617}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4c0589fcde2b67541aec4e838d807714, type: 3}
 --- !u!1 &589523260
 GameObject:
@@ -11870,7 +11829,8 @@ MonoBehaviour:
   - {fileID: 1323777750}
   timeToStartGreenLight: 0
   timeOfGreenLight: 0
-  timeOfYellowLight: 0
+  timeOfBeforeYellowLight: 0
+  timeOfAfterYellowLight: 0
   isBlocked: 0
   leftTurnAllowed: 0
   leftTurnWaiting: 0
@@ -25622,35 +25582,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3509344103631391927, guid: 4f6b1d4db16533f4ea319993b21c7a51, type: 3}
   m_PrefabInstance: {fileID: 1461521567}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1463088617
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 175576923}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2f704e93c46d0154280cc5bdcdaf80b5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Phase1:
-  - {fileID: 1244506095}
-  - {fileID: 1244506094}
-  - {fileID: 1844294838}
-  - {fileID: 1844294837}
-  Phase2:
-  - {fileID: 691697747}
-  - {fileID: 1285590501}
-  - {fileID: 1285590502}
-  Phase3:
-  - {fileID: 247194885}
-  - {fileID: 247194884}
-  choosedHour: 0
-  intervalForCheckingSensorsData: 0
-  currentCycleTime: 0
-  yellowLightDuration: 0
-  useFuzzyLogic: 0
 --- !u!1 &1468475103
 GameObject:
   m_ObjectHideFlags: 0
@@ -27410,6 +27341,11 @@ MonoBehaviour:
   countOfVehiclesForTwelve: 7e0000007f00000089000000890000008a0000008a0000008a000000890100008a010000
   countOfVehiclesForFifteen: 9300000094000000a7000000a7000000a8000000a9000000a90000006501000065010000
   countOfVehiclesForNinePM: 240000002500000029000000290000002a00000031000000320000008600000087000000
+  countOfVehiclesToSpawn:
+  - {fileID: 11400000, guid: 108ba84eee5b4284d8d464b9f0c8d5d8, type: 2}
+  - {fileID: 11400000, guid: d9a503631e0c44745b0cba253510f94e, type: 2}
+  - {fileID: 11400000, guid: ea9cd9c9d17ea504c8a95605354232d1, type: 2}
+  - {fileID: 11400000, guid: 7c5135a253e4e4f4fbff93a0951fda6b, type: 2}
   Counters:
   - {fileID: 390316817}
   - {fileID: 1110827583}

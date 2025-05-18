@@ -1,0 +1,16 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e663d37c7cbe91043b312f1fdb42a366, type: 3}
+  m_Name: 12_VehicleCount
+  m_EditorClassIdentifier: 
+  CountOfVehicles: 4a000000fe000000fe0000005d0000003300000096000000960000009f0000007c000000ef000000ef000000a9000000aa000000a3000000ab000000
+  ChoosedHour: {fileID: 11400000, guid: e367bda80095fa243a0f69c76598fe67, type: 2}

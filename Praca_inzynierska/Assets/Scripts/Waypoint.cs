@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Waypoint : MonoBehaviour
 {
-    public Waypoint NextWaypoint;
     public ChooseLane laneChooser;
     public bool isBeforeTrafiicLight;
     public LineLightManager linkedController;

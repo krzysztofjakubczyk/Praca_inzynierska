@@ -14,6 +14,7 @@ TagManager:
   - CarMonitor
   - Obstacle
   - LaneChooser
+  - Bus
   layers:
   - Default
   - TransparentFX

@@ -8,10 +8,7 @@ public class TimeManager : MonoBehaviour
     [SerializeField] private TMP_Dropdown dropDownHour;
     [SerializeField] private List<VehicleSpawner> spawners;
     [SerializeField] private List<VehicleSpawner> tramSpawners;
-    [SerializeField] private List<int> countOfVehiclesForSeven;
-    [SerializeField] private List<int> countOfVehiclesForTwelve;
-    [SerializeField] private List<int> countOfVehiclesForFifteen;
-    [SerializeField] private List<int> countOfVehiclesForNinePM;
+    [SerializeField] private List<VehicleCountSO> countOfVehiclesToSpawn;
     [SerializeField] private List<Counter> Counters;
     [SerializeField] private TMP_Text timeText;
     [SerializeField] private int simulationSpeedUpValue;
@@ -86,37 +83,7 @@ public class TimeManager : MonoBehaviour
         ResetTrafficLights(); // Reset świateł
         ResetStatistics(); // Reset statystyk
 
-        if (isAfternoonPeakOnly)
-        {
-            choosedHour = 15;
-            AssignVehicleCountsToSpawners(countOfVehiclesForFifteen);
-        }
-        else
-        {
-            int indexOfHour = dropDownHour.value;
-            switch (indexOfHour)
-            {
-                case 0:
-                    choosedHour = 7;
-                    AssignVehicleCountsToSpawners(countOfVehiclesForSeven);
-                    break;
-                case 1:
-                    choosedHour = 12;
-                    AssignVehicleCountsToSpawners(countOfVehiclesForTwelve);
-                    break;
-                case 2:
-                    choosedHour = 15;
-                    AssignVehicleCountsToSpawners(countOfVehiclesForFifteen);
-                    break;
-                case 3:
-                    choosedHour = 21;
-                    AssignVehicleCountsToSpawners(countOfVehiclesForNinePM);
-                    break;
-                default:
-                    Debug.LogError("❌ Niepoprawny wybór godziny!");
-                    break;
-            }
-        }
+            
     }
     private void ResetTrafficLights()
     {

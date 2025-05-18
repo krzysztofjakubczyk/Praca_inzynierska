@@ -105,7 +105,7 @@ public class CarController : MonoBehaviour
 
             foreach (var hit in hits)
             {
-                if (hit.collider.CompareTag("Car"))
+                if (hit.collider.CompareTag("Car") || hit.collider.CompareTag("Bus"))
                 {
                     isAfterCar = true;
                     break; // Możesz przerwać pętlę, jeśli wystarczy Ci pierwsze trafienie auta

@@ -66,11 +66,11 @@
     <Compile Include="Assets\Scripts\EntryTrigger.cs" />
     <Compile Include="Assets\Scripts\FreeLookCameraController.cs" />
     <Compile Include="Assets\Scripts\CarController.cs" />
+    <Compile Include="Assets\Scripts\VehicleCountSO.cs" />
     <Compile Include="Assets\Scripts\DensitySensor.cs" />
     <Compile Include="Assets\Scripts\MainTrafiicController.cs" />
     <Compile Include="Assets\Scripts\StaticInterfaceImplementation.cs" />
     <Compile Include="Assets\Scripts\CarDestroyer.cs" />
-    <Compile Include="Assets\exitManager.cs" />
     <Compile Include="Assets\Scripts\CycleSO.cs" />
     <Compile Include="Assets\Scripts\LineLightManager.cs" />
     <Compile Include="Assets\Scripts\TimeManager.cs" />
@@ -81,12 +81,14 @@
     <Compile Include="Assets\Scripts\StartScreenManager.cs" />
     <Compile Include="Assets\Scripts\CameraManager.cs" />
     <Compile Include="Assets\Scripts\Sensor.cs" />
+    <Compile Include="Assets\Scripts\exitManager.cs" />
     <Compile Include="Assets\Scripts\ChooseLane.cs" />
     <Compile Include="Assets\Scripts\LightMonitorForCar.cs" />
     <Compile Include="Assets\Scripts\Timers.cs" />
     <Compile Include="Assets\Scripts\StatisticManager.cs" />
     <Compile Include="Assets\Scripts\Counter.cs" />
     <Compile Include="Assets\Scripts\Fuzzy logic.cs" />
+    <Compile Include="Assets\Scripts\HourSO.cs" />
     <Compile Include="Assets\Scripts\CollisionDetector.cs" />
     <Compile Include="Assets\Scripts\FlyCamera.cs" />
     <Compile Include="Assets\Scripts\FuzzyInterfaceImplementation.cs" />

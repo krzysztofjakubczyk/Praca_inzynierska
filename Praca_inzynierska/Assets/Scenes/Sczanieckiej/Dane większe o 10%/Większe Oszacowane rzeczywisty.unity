@@ -11919,6 +11919,10 @@ MonoBehaviour:
   - {fileID: 1769351579}
   - {fileID: 1613070359}
   - {fileID: 1323777750}
+  timeToStartGreenLight: 0
+  timeOfGreenLight: 0
+  timeOfBeforeYellowLight: 0
+  timeOfAfterYellowLight: 0
   isBlocked: 0
   leftTurnAllowed: 0
   leftTurnWaiting: 0
@@ -26950,6 +26954,11 @@ MonoBehaviour:
   countOfVehiclesForTwelve: 8a0000008a0000009600000096000000960000009700000097000000a6010000a7010000
   countOfVehiclesForFifteen: a1000000a2000000b7000000b7000000b8000000b9000000ba0000008801000088010000
   countOfVehiclesForNinePM: 27000000280000002d0000002d0000002e00000035000000370000009300000094000000
+  countOfVehiclesToSpawn:
+  - {fileID: 11400000, guid: f93608d48cbfd8f449c46b1e65e236c6, type: 2}
+  - {fileID: 11400000, guid: 63e24d61a78694240847c05cad698626, type: 2}
+  - {fileID: 11400000, guid: 3fa762af93c4cd543bdd4f8178669a17, type: 2}
+  - {fileID: 11400000, guid: a5fcfbe90c3986547ad35fb8af285020, type: 2}
   Counters:
   - {fileID: 390316817}
   - {fileID: 1110827583}

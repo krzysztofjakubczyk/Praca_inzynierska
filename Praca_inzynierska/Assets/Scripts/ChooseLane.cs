@@ -23,11 +23,18 @@ public class ChooseLane : MonoBehaviour
             Debug.LogWarning($"Obiekt {other.name} nie ma komponentu CarController!");
             return;
         }
+        Waypoint[] selectedPath;
+        if (other.CompareTag("Bus"))
+        {
+            selectedPath = lane0Waypoints;
+        }
+        else
+        {
+            choosedLane = GetLaneIndex();
+            isDrivingStraight = (choosedLane == 0);
 
-        choosedLane = GetLaneIndex();
-        isDrivingStraight = (choosedLane == 0);
-
-        Waypoint[] selectedPath = (choosedLane == 0) ? lane0Waypoints : lane1Waypoints;
+            selectedPath = (choosedLane == 0) ? lane0Waypoints : lane1Waypoints;
+        }
         controller.SetFirstWaypoint(selectedPath);
 
         StartCoroutine(ResetDrivingStraight());
