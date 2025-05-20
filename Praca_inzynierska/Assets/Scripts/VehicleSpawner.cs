@@ -37,7 +37,7 @@ public class VehicleSpawner : MonoBehaviour
     public void StartSpawning()
     {
         StartCoroutine(CheckSpawnAvailabilityLoop()); // 🔁 Dodane
-        StartCoroutine(SpawnVehicles());
+        StartCoroutine(SpawnVehicles());    
         if (isSpawningBuses)
             StartCoroutine(SpawnBusRoutine());
     }

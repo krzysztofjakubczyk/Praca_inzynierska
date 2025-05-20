@@ -1260,7 +1260,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5044438759027066659, guid: 01dfd4dbdc030d545a9a4eefa967e585, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 3.7901008
+      value: 1.9999998
       objectReference: {fileID: 0}
     - target: {fileID: 5044438759027066659, guid: 01dfd4dbdc030d545a9a4eefa967e585, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1306,7 +1306,8 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 2748984080806958237, guid: 01dfd4dbdc030d545a9a4eefa967e585, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -1345,19 +1346,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4477642942597466992, guid: de81272e7e21ad6458d72f09b21f747a, type: 3}
       propertyPath: m_LocalScale.y
-      value: -0.1622231
+      value: -2.975334
       objectReference: {fileID: 0}
     - target: {fileID: 4477642942597466992, guid: de81272e7e21ad6458d72f09b21f747a, type: 3}
       propertyPath: m_LocalScale.z
-      value: 4.475764
+      value: 1.9449879
       objectReference: {fileID: 0}
     - target: {fileID: 4477642942597466992, guid: de81272e7e21ad6458d72f09b21f747a, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -2.79577
+      value: -1.53037
       objectReference: {fileID: 0}
     - target: {fileID: 4477642942597466992, guid: de81272e7e21ad6458d72f09b21f747a, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.2088
+      value: 2.38
       objectReference: {fileID: 0}
     - target: {fileID: 4477642942597466992, guid: de81272e7e21ad6458d72f09b21f747a, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1394,6 +1395,18 @@ PrefabInstance:
     - target: {fileID: 5899719176622298898, guid: de81272e7e21ad6458d72f09b21f747a, type: 3}
       propertyPath: m_Enabled
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6528256462406505330, guid: de81272e7e21ad6458d72f09b21f747a, type: 3}
+      propertyPath: m_Size.x
+      value: 4.4485064
+      objectReference: {fileID: 0}
+    - target: {fileID: 6528256462406505330, guid: de81272e7e21ad6458d72f09b21f747a, type: 3}
+      propertyPath: m_Center.x
+      value: -1.7242573
+      objectReference: {fileID: 0}
+    - target: {fileID: 6528256462406505330, guid: de81272e7e21ad6458d72f09b21f747a, type: 3}
+      propertyPath: m_Center.z
+      value: -0.00000002798341
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1451,7 +1464,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5044438759027066659, guid: 01dfd4dbdc030d545a9a4eefa967e585, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 3.7901008
+      value: 1.9999998
       objectReference: {fileID: 0}
     - target: {fileID: 5044438759027066659, guid: 01dfd4dbdc030d545a9a4eefa967e585, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1497,7 +1510,8 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 2748984080806958237, guid: 01dfd4dbdc030d545a9a4eefa967e585, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -4123,7 +4137,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5044438759027066659, guid: 01dfd4dbdc030d545a9a4eefa967e585, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 3.4639904
+      value: 1.6738894
       objectReference: {fileID: 0}
     - target: {fileID: 5044438759027066659, guid: 01dfd4dbdc030d545a9a4eefa967e585, type: 3}
       propertyPath: m_LocalPosition.z
@@ -4169,7 +4183,8 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 2748984080806958237, guid: 01dfd4dbdc030d545a9a4eefa967e585, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -4590,7 +4605,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5044438759027066659, guid: 01dfd4dbdc030d545a9a4eefa967e585, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 3.7901008
+      value: 1.9999998
       objectReference: {fileID: 0}
     - target: {fileID: 5044438759027066659, guid: 01dfd4dbdc030d545a9a4eefa967e585, type: 3}
       propertyPath: m_LocalPosition.z
@@ -4636,7 +4651,8 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 2748984080806958237, guid: 01dfd4dbdc030d545a9a4eefa967e585, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -4983,6 +4999,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 70455843}
+  - {fileID: 794877892}
   - {fileID: 528319327}
   - {fileID: 52188932}
   - {fileID: 410663149}
@@ -5268,7 +5285,7 @@ PrefabInstance:
     - target: {fileID: 1767903377547677920, guid: 01dfd4dbdc030d545a9a4eefa967e585, type: 3}
       propertyPath: waypointList.Array.data[4]
       value: 
-      objectReference: {fileID: 1155002933}
+      objectReference: {fileID: 794877893}
     - target: {fileID: 5044438759027066659, guid: 01dfd4dbdc030d545a9a4eefa967e585, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.25062573
@@ -5283,7 +5300,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5044438759027066659, guid: 01dfd4dbdc030d545a9a4eefa967e585, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 3.7901008
+      value: 1.9999998
       objectReference: {fileID: 0}
     - target: {fileID: 5044438759027066659, guid: 01dfd4dbdc030d545a9a4eefa967e585, type: 3}
       propertyPath: m_LocalPosition.z
@@ -5329,7 +5346,8 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 2748984080806958237, guid: 01dfd4dbdc030d545a9a4eefa967e585, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -5802,10 +5820,10 @@ MonoBehaviour:
   laneChooserToCollision: {fileID: 0}
   sensors:
   - {fileID: 1054413288}
-  timeToStartGreenLight: 0
-  timeOfGreenLight: 0
-  timeOfBeforeYellowLight: 0
-  timeOfAfterYellowLight: 0
+  timeToStartGreenLight: 105
+  timeOfGreenLight: 20
+  timeOfBeforeYellowLight: 1
+  timeOfAfterYellowLight: 3
   isBlocked: 0
   leftTurnAllowed: 0
   leftTurnWaiting: 0
@@ -5891,7 +5909,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5044438759027066659, guid: 01dfd4dbdc030d545a9a4eefa967e585, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 3.7901008
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5044438759027066659, guid: 01dfd4dbdc030d545a9a4eefa967e585, type: 3}
       propertyPath: m_LocalPosition.z
@@ -5937,7 +5955,8 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 2748984080806958237, guid: 01dfd4dbdc030d545a9a4eefa967e585, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -7203,7 +7222,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5044438759027066659, guid: 01dfd4dbdc030d545a9a4eefa967e585, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 3.7901008
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5044438759027066659, guid: 01dfd4dbdc030d545a9a4eefa967e585, type: 3}
       propertyPath: m_LocalPosition.z
@@ -7249,7 +7268,8 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 2748984080806958237, guid: 01dfd4dbdc030d545a9a4eefa967e585, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -10350,10 +10370,10 @@ MonoBehaviour:
   sensors:
   - {fileID: 1240040500}
   - {fileID: 327024555}
-  timeToStartGreenLight: 0
-  timeOfGreenLight: 0
-  timeOfBeforeYellowLight: 0
-  timeOfAfterYellowLight: 0
+  timeToStartGreenLight: 36
+  timeOfGreenLight: 16
+  timeOfBeforeYellowLight: 1
+  timeOfAfterYellowLight: 3
   isBlocked: 0
   leftTurnAllowed: 0
   leftTurnWaiting: 0
@@ -13071,6 +13091,107 @@ Transform:
   - {fileID: 1402637196}
   m_Father: {fileID: 1989454620}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &794877891
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 257533066}
+    m_Modifications:
+    - target: {fileID: 3818225017013126588, guid: de81272e7e21ad6458d72f09b21f747a, type: 3}
+      propertyPath: m_Name
+      value: CarDestroyer (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4477642942597466992, guid: de81272e7e21ad6458d72f09b21f747a, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.13134836
+      objectReference: {fileID: 0}
+    - target: {fileID: 4477642942597466992, guid: de81272e7e21ad6458d72f09b21f747a, type: 3}
+      propertyPath: m_LocalScale.y
+      value: -2.975334
+      objectReference: {fileID: 0}
+    - target: {fileID: 4477642942597466992, guid: de81272e7e21ad6458d72f09b21f747a, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1.9449879
+      objectReference: {fileID: 0}
+    - target: {fileID: 4477642942597466992, guid: de81272e7e21ad6458d72f09b21f747a, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -4.04
+      objectReference: {fileID: 0}
+    - target: {fileID: 4477642942597466992, guid: de81272e7e21ad6458d72f09b21f747a, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 2.38
+      objectReference: {fileID: 0}
+    - target: {fileID: 4477642942597466992, guid: de81272e7e21ad6458d72f09b21f747a, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -5.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 4477642942597466992, guid: de81272e7e21ad6458d72f09b21f747a, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 4477642942597466992, guid: de81272e7e21ad6458d72f09b21f747a, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4477642942597466992, guid: de81272e7e21ad6458d72f09b21f747a, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 4477642942597466992, guid: de81272e7e21ad6458d72f09b21f747a, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4477642942597466992, guid: de81272e7e21ad6458d72f09b21f747a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4477642942597466992, guid: de81272e7e21ad6458d72f09b21f747a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 4477642942597466992, guid: de81272e7e21ad6458d72f09b21f747a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5899719176622298898, guid: de81272e7e21ad6458d72f09b21f747a, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6528256462406505330, guid: de81272e7e21ad6458d72f09b21f747a, type: 3}
+      propertyPath: m_Size.x
+      value: 4.4485064
+      objectReference: {fileID: 0}
+    - target: {fileID: 6528256462406505330, guid: de81272e7e21ad6458d72f09b21f747a, type: 3}
+      propertyPath: m_Center.x
+      value: -1.7242573
+      objectReference: {fileID: 0}
+    - target: {fileID: 6528256462406505330, guid: de81272e7e21ad6458d72f09b21f747a, type: 3}
+      propertyPath: m_Center.z
+      value: -0.00000002798341
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: de81272e7e21ad6458d72f09b21f747a, type: 3}
+--- !u!4 &794877892 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4477642942597466992, guid: de81272e7e21ad6458d72f09b21f747a, type: 3}
+  m_PrefabInstance: {fileID: 794877891}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &794877893 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6712875366879567230, guid: de81272e7e21ad6458d72f09b21f747a, type: 3}
+  m_PrefabInstance: {fileID: 794877891}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0796e4a7117d164aad023637984170c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &798916027
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -15509,10 +15630,10 @@ MonoBehaviour:
   laneChooserToCollision: {fileID: 0}
   sensors:
   - {fileID: 382538317}
-  timeToStartGreenLight: 0
-  timeOfGreenLight: 0
-  timeOfBeforeYellowLight: 0
-  timeOfAfterYellowLight: 0
+  timeToStartGreenLight: 94
+  timeOfGreenLight: 16
+  timeOfBeforeYellowLight: 1
+  timeOfAfterYellowLight: 3
   isBlocked: 0
   leftTurnAllowed: 0
   leftTurnWaiting: 0
@@ -15682,10 +15803,10 @@ MonoBehaviour:
   - {fileID: 373028786}
   - {fileID: 1278657046}
   - {fileID: 1588121848}
-  timeToStartGreenLight: 0
-  timeOfGreenLight: 0
-  timeOfBeforeYellowLight: 0
-  timeOfAfterYellowLight: 0
+  timeToStartGreenLight: 39
+  timeOfGreenLight: 15
+  timeOfBeforeYellowLight: 1
+  timeOfAfterYellowLight: 3
   isBlocked: 0
   leftTurnAllowed: 0
   leftTurnWaiting: 0
@@ -16086,7 +16207,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5044438759027066659, guid: 01dfd4dbdc030d545a9a4eefa967e585, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 3.4639904
+      value: 1.6738894
       objectReference: {fileID: 0}
     - target: {fileID: 5044438759027066659, guid: 01dfd4dbdc030d545a9a4eefa967e585, type: 3}
       propertyPath: m_LocalPosition.z
@@ -16132,7 +16253,8 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 2748984080806958237, guid: 01dfd4dbdc030d545a9a4eefa967e585, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -17413,10 +17535,10 @@ MonoBehaviour:
   - {fileID: 773378848}
   - {fileID: 2039204471}
   - {fileID: 2004878049}
-  timeToStartGreenLight: 0
-  timeOfGreenLight: 0
-  timeOfBeforeYellowLight: 0
-  timeOfAfterYellowLight: 0
+  timeToStartGreenLight: 57
+  timeOfGreenLight: 19
+  timeOfBeforeYellowLight: 1
+  timeOfAfterYellowLight: 3
   isBlocked: 0
   leftTurnAllowed: 0
   leftTurnWaiting: 0
@@ -18328,7 +18450,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5044438759027066659, guid: 01dfd4dbdc030d545a9a4eefa967e585, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 3.790099
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5044438759027066659, guid: 01dfd4dbdc030d545a9a4eefa967e585, type: 3}
       propertyPath: m_LocalPosition.z
@@ -18374,7 +18496,8 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 2748984080806958237, guid: 01dfd4dbdc030d545a9a4eefa967e585, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -18827,10 +18950,10 @@ MonoBehaviour:
   sensors:
   - {fileID: 528319328}
   - {fileID: 410663150}
-  timeToStartGreenLight: 0
-  timeOfGreenLight: 0
-  timeOfBeforeYellowLight: 0
-  timeOfAfterYellowLight: 0
+  timeToStartGreenLight: 24
+  timeOfGreenLight: 28
+  timeOfBeforeYellowLight: 1
+  timeOfAfterYellowLight: 3
   isBlocked: 0
   leftTurnAllowed: 0
   leftTurnWaiting: 0
@@ -19026,7 +19149,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5044438759027066659, guid: 01dfd4dbdc030d545a9a4eefa967e585, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 3.7901008
+      value: 1.9999998
       objectReference: {fileID: 0}
     - target: {fileID: 5044438759027066659, guid: 01dfd4dbdc030d545a9a4eefa967e585, type: 3}
       propertyPath: m_LocalPosition.z
@@ -19072,7 +19195,8 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 2748984080806958237, guid: 01dfd4dbdc030d545a9a4eefa967e585, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -20885,7 +21009,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5044438759027066659, guid: 01dfd4dbdc030d545a9a4eefa967e585, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 3.4639904
+      value: 1.6738894
       objectReference: {fileID: 0}
     - target: {fileID: 5044438759027066659, guid: 01dfd4dbdc030d545a9a4eefa967e585, type: 3}
       propertyPath: m_LocalPosition.z
@@ -20931,7 +21055,8 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 2748984080806958237, guid: 01dfd4dbdc030d545a9a4eefa967e585, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -23004,7 +23129,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5044438759027066659, guid: 01dfd4dbdc030d545a9a4eefa967e585, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 3.7901008
+      value: 1.9999998
       objectReference: {fileID: 0}
     - target: {fileID: 5044438759027066659, guid: 01dfd4dbdc030d545a9a4eefa967e585, type: 3}
       propertyPath: m_LocalPosition.z
@@ -23050,7 +23175,8 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 2748984080806958237, guid: 01dfd4dbdc030d545a9a4eefa967e585, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -23730,7 +23856,7 @@ PrefabInstance:
     - target: {fileID: 1767903377547677920, guid: 01dfd4dbdc030d545a9a4eefa967e585, type: 3}
       propertyPath: waypointList.Array.data[2]
       value: 
-      objectReference: {fileID: 1155002933}
+      objectReference: {fileID: 794877893}
     - target: {fileID: 5044438759027066659, guid: 01dfd4dbdc030d545a9a4eefa967e585, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.6683649
@@ -23745,7 +23871,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5044438759027066659, guid: 01dfd4dbdc030d545a9a4eefa967e585, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 3.7901008
+      value: 1.9999998
       objectReference: {fileID: 0}
     - target: {fileID: 5044438759027066659, guid: 01dfd4dbdc030d545a9a4eefa967e585, type: 3}
       propertyPath: m_LocalPosition.z
@@ -23791,7 +23917,8 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 2748984080806958237, guid: 01dfd4dbdc030d545a9a4eefa967e585, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -23913,7 +24040,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1429556932}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.0073416983, y: 0.77447635, z: -0.6309516, w: 0.045085076}
+  m_LocalRotation: {x: 0.0073416685, y: 0.77447635, z: -0.6309516, w: 0.045085076}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -25428,6 +25555,7 @@ MonoBehaviour:
   currentCycleTime: 0
   timeBeforeNextPhase: 2
   currentChoosedSystemType: 0
+  fullCycleTime: 110
   activePhase: 0
 --- !u!1 &1528583163
 GameObject:
@@ -26822,10 +26950,10 @@ MonoBehaviour:
   laneChooserToCollision: {fileID: 0}
   sensors:
   - {fileID: 28201401}
-  timeToStartGreenLight: 0
-  timeOfGreenLight: 0
-  timeOfBeforeYellowLight: 0
-  timeOfAfterYellowLight: 0
+  timeToStartGreenLight: 62
+  timeOfGreenLight: 21
+  timeOfBeforeYellowLight: 1
+  timeOfAfterYellowLight: 3
   isBlocked: 0
   leftTurnAllowed: 0
   leftTurnWaiting: 0
@@ -27612,10 +27740,10 @@ MonoBehaviour:
   laneChooserToCollision: {fileID: 0}
   sensors:
   - {fileID: 1964899113}
-  timeToStartGreenLight: 0
-  timeOfGreenLight: 0
-  timeOfBeforeYellowLight: 0
-  timeOfAfterYellowLight: 0
+  timeToStartGreenLight: 94
+  timeOfGreenLight: 16
+  timeOfBeforeYellowLight: 1
+  timeOfAfterYellowLight: 3
   isBlocked: 0
   leftTurnAllowed: 0
   leftTurnWaiting: 0
@@ -29342,10 +29470,10 @@ MonoBehaviour:
   - {fileID: 1564917145}
   - {fileID: 2050560212}
   - {fileID: 232359051}
-  timeToStartGreenLight: 0
-  timeOfGreenLight: 0
-  timeOfBeforeYellowLight: 0
-  timeOfAfterYellowLight: 0
+  timeToStartGreenLight: 57
+  timeOfGreenLight: 19
+  timeOfBeforeYellowLight: 1
+  timeOfAfterYellowLight: 3
   isBlocked: 0
   leftTurnAllowed: 0
   leftTurnWaiting: 0
@@ -30508,10 +30636,10 @@ MonoBehaviour:
   - {fileID: 297140219}
   - {fileID: 1965552574}
   - {fileID: 803311735}
-  timeToStartGreenLight: 0
-  timeOfGreenLight: 0
-  timeOfBeforeYellowLight: 0
-  timeOfAfterYellowLight: 0
+  timeToStartGreenLight: 90
+  timeOfGreenLight: 6
+  timeOfBeforeYellowLight: 1
+  timeOfAfterYellowLight: 3
   isBlocked: 0
   leftTurnAllowed: 0
   leftTurnWaiting: 0
@@ -32378,7 +32506,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2758840785380136237, guid: a2fc164cb99a03343b8b10106e6073b3, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.013084242
+      value: 0.05430389
       objectReference: {fileID: 0}
     - target: {fileID: 2758840785380136237, guid: a2fc164cb99a03343b8b10106e6073b3, type: 3}
       propertyPath: m_LocalScale.y
@@ -32386,11 +32514,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2758840785380136237, guid: a2fc164cb99a03343b8b10106e6073b3, type: 3}
       propertyPath: m_LocalScale.z
-      value: 7.6949
+      value: 6.3000617
       objectReference: {fileID: 0}
     - target: {fileID: 2758840785380136237, guid: a2fc164cb99a03343b8b10106e6073b3, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.6830551
+      value: -0.684099
       objectReference: {fileID: 0}
     - target: {fileID: 2758840785380136237, guid: a2fc164cb99a03343b8b10106e6073b3, type: 3}
       propertyPath: m_LocalPosition.y
@@ -32398,7 +32526,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2758840785380136237, guid: a2fc164cb99a03343b8b10106e6073b3, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.01303
+      value: 0.71045
       objectReference: {fileID: 0}
     - target: {fileID: 2758840785380136237, guid: a2fc164cb99a03343b8b10106e6073b3, type: 3}
       propertyPath: m_LocalRotation.w
@@ -32562,7 +32690,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5044438759027066659, guid: fb253a32c27f0e442afe44b8a0b0eae0, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 3.7901008
+      value: 1.9999998
       objectReference: {fileID: 0}
     - target: {fileID: 5044438759027066659, guid: fb253a32c27f0e442afe44b8a0b0eae0, type: 3}
       propertyPath: m_LocalPosition.z
@@ -32608,7 +32736,8 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 2748984080806958237, guid: fb253a32c27f0e442afe44b8a0b0eae0, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -32977,7 +33106,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5044438759027066659, guid: 01dfd4dbdc030d545a9a4eefa967e585, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 3.7901027
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5044438759027066659, guid: 01dfd4dbdc030d545a9a4eefa967e585, type: 3}
       propertyPath: m_LocalPosition.z
@@ -33023,7 +33152,8 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 2748984080806958237, guid: 01dfd4dbdc030d545a9a4eefa967e585, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -34384,10 +34514,10 @@ MonoBehaviour:
   sensors:
   - {fileID: 52188933}
   - {fileID: 1125552972}
-  timeToStartGreenLight: 0
-  timeOfGreenLight: 0
-  timeOfBeforeYellowLight: 0
-  timeOfAfterYellowLight: 0
+  timeToStartGreenLight: 24
+  timeOfGreenLight: 28
+  timeOfBeforeYellowLight: 1
+  timeOfAfterYellowLight: 3
   isBlocked: 0
   leftTurnAllowed: 0
   leftTurnWaiting: 0
@@ -36137,6 +36267,10 @@ PrefabInstance:
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 3275966562997892069, guid: 6106663683bacca4f91cc46033631089, type: 3}
+      propertyPath: timeOfGreenLight
+      value: 24
+      objectReference: {fileID: 0}
+    - target: {fileID: 3275966562997892069, guid: 6106663683bacca4f91cc46033631089, type: 3}
       propertyPath: sensors.Array.size
       value: 2
       objectReference: {fileID: 0}
@@ -36148,6 +36282,18 @@ PrefabInstance:
       propertyPath: sensors.Array.data[1]
       value: 
       objectReference: {fileID: 200485790}
+    - target: {fileID: 3275966562997892069, guid: 6106663683bacca4f91cc46033631089, type: 3}
+      propertyPath: timeToStartGreenLight
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 3275966562997892069, guid: 6106663683bacca4f91cc46033631089, type: 3}
+      propertyPath: timeOfAfterYellowLight
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3275966562997892069, guid: 6106663683bacca4f91cc46033631089, type: 3}
+      propertyPath: timeOfBeforeYellowLight
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3624836386029749700, guid: 6106663683bacca4f91cc46033631089, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.04391847
@@ -36201,6 +36347,10 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5837575135455399320, guid: 6106663683bacca4f91cc46033631089, type: 3}
+      propertyPath: timeOfGreenLight
+      value: 24
+      objectReference: {fileID: 0}
+    - target: {fileID: 5837575135455399320, guid: 6106663683bacca4f91cc46033631089, type: 3}
       propertyPath: sensors.Array.size
       value: 2
       objectReference: {fileID: 0}
@@ -36212,6 +36362,18 @@ PrefabInstance:
       propertyPath: sensors.Array.data[1]
       value: 
       objectReference: {fileID: 188111422}
+    - target: {fileID: 5837575135455399320, guid: 6106663683bacca4f91cc46033631089, type: 3}
+      propertyPath: timeToStartGreenLight
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 5837575135455399320, guid: 6106663683bacca4f91cc46033631089, type: 3}
+      propertyPath: timeOfAfterYellowLight
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5837575135455399320, guid: 6106663683bacca4f91cc46033631089, type: 3}
+      propertyPath: timeOfBeforeYellowLight
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5866436659606749303, guid: 6106663683bacca4f91cc46033631089, type: 3}
       propertyPath: m_Name
       value: TrafficLights
@@ -36225,6 +36387,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6161979873261721327, guid: 6106663683bacca4f91cc46033631089, type: 3}
+      propertyPath: timeOfGreenLight
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 6161979873261721327, guid: 6106663683bacca4f91cc46033631089, type: 3}
       propertyPath: sensors.Array.size
       value: 2
       objectReference: {fileID: 0}
@@ -36236,6 +36402,18 @@ PrefabInstance:
       propertyPath: sensors.Array.data[1]
       value: 
       objectReference: {fileID: 1466231910}
+    - target: {fileID: 6161979873261721327, guid: 6106663683bacca4f91cc46033631089, type: 3}
+      propertyPath: timeToStartGreenLight
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 6161979873261721327, guid: 6106663683bacca4f91cc46033631089, type: 3}
+      propertyPath: timeOfAfterYellowLight
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6161979873261721327, guid: 6106663683bacca4f91cc46033631089, type: 3}
+      propertyPath: timeOfBeforeYellowLight
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6467746733016149279, guid: 6106663683bacca4f91cc46033631089, type: 3}
       propertyPath: m_Name
       value: 4Right
@@ -36249,6 +36427,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6863778559472776312, guid: 6106663683bacca4f91cc46033631089, type: 3}
+      propertyPath: timeOfGreenLight
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 6863778559472776312, guid: 6106663683bacca4f91cc46033631089, type: 3}
       propertyPath: sensors.Array.size
       value: 2
       objectReference: {fileID: 0}
@@ -36260,6 +36442,18 @@ PrefabInstance:
       propertyPath: sensors.Array.data[1]
       value: 
       objectReference: {fileID: 1409289813}
+    - target: {fileID: 6863778559472776312, guid: 6106663683bacca4f91cc46033631089, type: 3}
+      propertyPath: timeToStartGreenLight
+      value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 6863778559472776312, guid: 6106663683bacca4f91cc46033631089, type: 3}
+      propertyPath: timeOfAfterYellowLight
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6863778559472776312, guid: 6106663683bacca4f91cc46033631089, type: 3}
+      propertyPath: timeOfBeforeYellowLight
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8580181632204708448, guid: 6106663683bacca4f91cc46033631089, type: 3}
       propertyPath: m_Name
       value: 2Straight
@@ -36755,7 +36949,7 @@ PrefabInstance:
     - target: {fileID: 1767903377547677920, guid: 01dfd4dbdc030d545a9a4eefa967e585, type: 3}
       propertyPath: waypointList.Array.data[2]
       value: 
-      objectReference: {fileID: 1155002933}
+      objectReference: {fileID: 794877893}
     - target: {fileID: 5044438759027066659, guid: 01dfd4dbdc030d545a9a4eefa967e585, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.28104043
@@ -36770,7 +36964,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5044438759027066659, guid: 01dfd4dbdc030d545a9a4eefa967e585, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 3.4639904
+      value: 1.6738894
       objectReference: {fileID: 0}
     - target: {fileID: 5044438759027066659, guid: 01dfd4dbdc030d545a9a4eefa967e585, type: 3}
       propertyPath: m_LocalPosition.z
@@ -36816,7 +37010,8 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 2748984080806958237, guid: 01dfd4dbdc030d545a9a4eefa967e585, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []

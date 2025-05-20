@@ -15,7 +15,7 @@ public class MainTrafficController : MonoBehaviour
 
     [SerializeField] private float timeBeforeNextPhase = 2f;
     [SerializeField] private systemType currentChoosedSystemType;
-    private int fullCycleTime = 120;
+    public int fullCycleTime = 120;
     private int periodOfTimeToCheckCountOfVehicles = 4;
     private int sample = 0;
 

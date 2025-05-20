@@ -14,6 +14,7 @@ public class TimeManager : MonoBehaviour
     [SerializeField] private int simulationSpeedUpValue;
     [SerializeField] public bool isAfternoonPeakOnly; // Czy symulacja działa tylko w szczycie popołudniowym?
 
+    private VehicleCountSO currentSO;
     private bool isPaused = false;
     private bool isSpeeded = false;
     private float simulationTime = 0f;
@@ -26,6 +27,7 @@ public class TimeManager : MonoBehaviour
 
     private void Start()
     {
+
         Time.timeScale = realToSimRatio;
         ChoosedDateAndHour(); // Ustawienie godziny
 
@@ -82,8 +84,15 @@ public class TimeManager : MonoBehaviour
         ResetAllSensors();
         ResetTrafficLights(); // Reset świateł
         ResetStatistics(); // Reset statystyk
+        choosedHour = 7;
+        foreach(var so in countOfVehiclesToSpawn)
+        {
+            if(so.ChoosedHour.Hour == choosedHour)
+            {
+                AssignVehicleCountsToSpawners(so);
+            }
+        }
 
-            
     }
     private void ResetTrafficLights()
     {
@@ -95,103 +104,99 @@ public class TimeManager : MonoBehaviour
         }
 
     }
-    private void AssignVehicleCountsToSpawners(List<int> vehicleCounts)
+    private void AssignVehicleCountsToSpawners(VehicleCountSO vehicleCounts)
     {
-        if (vehicleCounts.Count != spawners.Count)
-        {
-            Debug.LogError("❌ Liczba pojazdów nie odpowiada liczbie spawnerów!");
-            return;
-        }
 
         for (int i = 0; i < spawners.Count; i++)
         {
-            float vehiclesPerSecond = (float)vehicleCounts[i] / 3600f;
+            float vehiclesPerSecond = (float)vehicleCounts.CountOfVehicles[i] / 3600f;
             float spawnInterval = 1f / vehiclesPerSecond;
 
             spawners[i].SetSpawnInterval(spawnInterval);
-            spawners[i].MaxVehicles = vehicleCounts[i];
-        }
-    }
-    private void ResetStatistics()
-    {
-        StatisticManagerForSczanieckiej statisticManager = FindObjectOfType<StatisticManagerForSczanieckiej>();
-
-        if (statisticManager != null)
-        {
-            statisticManager.ResetStatistics();
-        }
-
-    }
-
-    private void ResetSimulation()
-    {
-        simulationTime = 0f;
-        foreach (Counter counter in Counters) counter.ResetCounter();
-        foreach (GameObject car in GameObject.FindGameObjectsWithTag("Car")) Destroy(car, 0.5f);
-        foreach (VehicleSpawner spawner in spawners) spawner.ResetSpawner();
-        foreach (VehicleSpawner tramSpawner in tramSpawners) tramSpawner.ResetSpawner();
-    }
-    private void ResetAllSensors()
-    {
-        Sensor[] sensors = FindObjectsOfType<Sensor>();
-
-        foreach (Sensor sensor in sensors)
-        {
-            sensor.ResetSensor();
+            spawners[i].MaxVehicles = vehicleCounts.CountOfVehicles[i];
         }
     }
 
-    private void ToggleSpeedUp()
+private void ResetStatistics()
+{
+    StatisticManagerForSczanieckiej statisticManager = FindObjectOfType<StatisticManagerForSczanieckiej>();
+
+    if (statisticManager != null)
     {
-        if (isSpeeded) StopSpeedUpSimulation();
-        else SpeedUpSimulation();
+        statisticManager.ResetStatistics();
     }
 
-    private void SpeedUpSimulation()
+}
+
+private void ResetSimulation()
+{
+    simulationTime = 0f;
+    foreach (Counter counter in Counters) counter.ResetCounter();
+    foreach (GameObject car in GameObject.FindGameObjectsWithTag("Car")) Destroy(car, 0.5f);
+    foreach (VehicleSpawner spawner in spawners) spawner.ResetSpawner();
+    foreach (VehicleSpawner tramSpawner in tramSpawners) tramSpawner.ResetSpawner();
+}
+private void ResetAllSensors()
+{
+    Sensor[] sensors = FindObjectsOfType<Sensor>();
+
+    foreach (Sensor sensor in sensors)
     {
-        Time.timeScale = simulationSpeedUpValue;
-        isSpeeded = true;
+        sensor.ResetSensor();
     }
+}
 
-    private void StopSpeedUpSimulation()
-    {
-        Time.timeScale = realToSimRatio;
-        isSpeeded = false;
-    }
+private void ToggleSpeedUp()
+{
+    if (isSpeeded) StopSpeedUpSimulation();
+    else SpeedUpSimulation();
+}
 
-    private void TogglePause()
-    {
-        if (isPaused) ResumeGame();
-        else PauseGame();
-    }
+private void SpeedUpSimulation()
+{
+    Time.timeScale = simulationSpeedUpValue;
+    isSpeeded = true;
+}
 
-    private void PauseGame()
-    {
-        Time.timeScale = 0f;
-        isPaused = true;
-    }
+private void StopSpeedUpSimulation()
+{
+    Time.timeScale = realToSimRatio;
+    isSpeeded = false;
+}
 
-    private void ResumeGame()
-    {
-        Time.timeScale = realToSimRatio;
-        isPaused = false;
-    }
+private void TogglePause()
+{
+    if (isPaused) ResumeGame();
+    else PauseGame();
+}
 
-    private string GetFormattedSimulationTime()
-    {
-        int baseHour = choosedHour;
-        int elapsedSeconds = Mathf.FloorToInt(simulationTime);
-        int currentHour = baseHour + (elapsedSeconds / 3600);
-        int currentMinute = (elapsedSeconds % 3600) / 60;
-        int currentSecond = elapsedSeconds % 60;
+private void PauseGame()
+{
+    Time.timeScale = 0f;
+    isPaused = true;
+}
 
-        if (currentHour >= 24) currentHour %= 24;
+private void ResumeGame()
+{
+    Time.timeScale = realToSimRatio;
+    isPaused = false;
+}
 
-        return $"{currentHour:D2}:{currentMinute:D2}:{currentSecond:D2}";
-    }
+private string GetFormattedSimulationTime()
+{
+    int baseHour = choosedHour;
+    int elapsedSeconds = Mathf.FloorToInt(simulationTime);
+    int currentHour = baseHour + (elapsedSeconds / 3600);
+    int currentMinute = (elapsedSeconds % 3600) / 60;
+    int currentSecond = elapsedSeconds % 60;
 
-    public int GetChoosedHour()
-    {
-        return choosedHour;
-    }
+    if (currentHour >= 24) currentHour %= 24;
+
+    return $"{currentHour:D2}:{currentMinute:D2}:{currentSecond:D2}";
+}
+
+public int GetChoosedHour()
+{
+    return choosedHour;
+}
 }
