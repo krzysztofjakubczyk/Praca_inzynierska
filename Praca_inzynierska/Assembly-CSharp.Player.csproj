@@ -71,6 +71,7 @@
     <Compile Include="Assets\Scripts\MainTrafiicController.cs" />
     <Compile Include="Assets\Scripts\StaticInterfaceImplementation.cs" />
     <Compile Include="Assets\Scripts\CarDestroyer.cs" />
+    <Compile Include="Assets\Scripts\CountOfVehiclesManager.cs" />
     <Compile Include="Assets\Scripts\CycleSO.cs" />
     <Compile Include="Assets\Scripts\LineLightManager.cs" />
     <Compile Include="Assets\Scripts\TimeManager.cs" />

@@ -9017,8 +9017,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 581791148}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.24973002, y: -0.3458462, z: 0.09603567, w: 0.89933443}
-  m_LocalPosition: {x: -35.7, y: 58.7, z: -59.9}
+  m_LocalRotation: {x: 0.32508057, y: 0.39202037, z: -0.115767136, w: 0.85278404}
+  m_LocalPosition: {x: -123.75, y: 34.67, z: -21.64}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -9100,7 +9100,7 @@ Camera:
     height: 1
   near clip plane: 0.1
   far clip plane: 5000
-  field of view: 40
+  field of view: 60.000004
   orthographic: 0
   orthographic size: 10
   m_Depth: -1
@@ -9225,7 +9225,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 1682181003657565133, guid: 4c0589fcde2b67541aec4e838d807714, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2103301736}
   m_SourcePrefab: {fileID: 100100000, guid: 4c0589fcde2b67541aec4e838d807714, type: 3}
 --- !u!4 &581870625 stripped
 Transform:
@@ -12849,6 +12852,67 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6773858565787326070, guid: eccc5c418b092904d92fb353b876741f, type: 3}
   m_PrefabInstance: {fileID: 390316816}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &798457693
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 798457694}
+  - component: {fileID: 798457695}
+  m_Layer: 0
+  m_Name: CountOfVehiclesManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &798457694
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 798457693}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -12.505159, y: 7.7814684, z: -16.829422}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2068395655}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &798457695
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 798457693}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d42b80e5b1ff6b54fb8a3b33a1f3efa8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spawners:
+  - {fileID: 1096284842}
+  - {fileID: 2102714586}
+  - {fileID: 2021556351}
+  - {fileID: 1985040131}
+  - {fileID: 1068755994}
+  - {fileID: 1725933447}
+  - {fileID: 1516683465}
+  - {fileID: 1077723494}
+  - {fileID: 575200675}
+  tramSpawners: []
+  countOfVehiclesToSpawn:
+  - {fileID: 11400000, guid: 108ba84eee5b4284d8d464b9f0c8d5d8, type: 2}
+  - {fileID: 11400000, guid: d9a503631e0c44745b0cba253510f94e, type: 2}
+  - {fileID: 11400000, guid: ea9cd9c9d17ea504c8a95605354232d1, type: 2}
+  - {fileID: 11400000, guid: 7c5135a253e4e4f4fbff93a0951fda6b, type: 2}
+  fillingPhaseDuration: 15
 --- !u!1 &809580726
 GameObject:
   m_ObjectHideFlags: 0
@@ -13209,7 +13273,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0796e4a7117d164aad023637984170c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  NextWaypoint: {fileID: 0}
   laneChooser: {fileID: 0}
   isBeforeTrafiicLight: 0
   linkedController: {fileID: 1844294837}
@@ -14140,7 +14203,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0796e4a7117d164aad023637984170c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  NextWaypoint: {fileID: 0}
   laneChooser: {fileID: 0}
   isBeforeTrafiicLight: 0
   linkedController: {fileID: 1244506095}
@@ -15657,7 +15719,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 970438160}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.84199107, y: -0.29966125, z: -0.19757426, w: 0.4027637}
+  m_LocalRotation: {x: 0.84199107, y: -0.29966128, z: -0.19757429, w: 0.4027637}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -16389,7 +16451,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0796e4a7117d164aad023637984170c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  NextWaypoint: {fileID: 0}
   laneChooser: {fileID: 0}
   isBeforeTrafiicLight: 0
   linkedController: {fileID: 247194885}
@@ -20922,7 +20983,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 7:00
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -20949,7 +21010,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 56.9
+  m_fontSize: 18
   m_fontSizeBase: 14
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -22311,7 +22372,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0796e4a7117d164aad023637984170c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  NextWaypoint: {fileID: 0}
   laneChooser: {fileID: 0}
   isBeforeTrafiicLight: 0
   linkedController: {fileID: 247194884}
@@ -23146,7 +23206,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0796e4a7117d164aad023637984170c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  NextWaypoint: {fileID: 0}
   laneChooser: {fileID: 0}
   isBeforeTrafiicLight: 0
   linkedController: {fileID: 1285590502}
@@ -25840,35 +25899,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dropDownHour: {fileID: 2028948216}
-  spawners:
-  - {fileID: 1096284842}
-  - {fileID: 2102714586}
-  - {fileID: 2021556351}
-  - {fileID: 1985040131}
-  - {fileID: 1068755994}
-  - {fileID: 1725933447}
-  - {fileID: 1516683465}
-  - {fileID: 1077723494}
-  - {fileID: 575200675}
-  tramSpawners: []
-  countOfVehiclesForSeven: 
-  countOfVehiclesForTwelve: 
-  countOfVehiclesForFifteen: 
-  countOfVehiclesForNinePM: 
-  countOfVehiclesToSpawn:
-  - {fileID: 11400000, guid: 108ba84eee5b4284d8d464b9f0c8d5d8, type: 2}
-  - {fileID: 11400000, guid: d9a503631e0c44745b0cba253510f94e, type: 2}
-  - {fileID: 11400000, guid: ea9cd9c9d17ea504c8a95605354232d1, type: 2}
-  - {fileID: 11400000, guid: 7c5135a253e4e4f4fbff93a0951fda6b, type: 2}
   Counters:
   - {fileID: 390316817}
   - {fileID: 1110827583}
   - {fileID: 1491838084}
   - {fileID: 1860371477}
+  hours:
+  - 07:00
+  - 12:00
+  - 15:00
+  - 21:00
   timeText: {fileID: 158221949}
   simulationSpeedUpValue: 10
   isAfternoonPeakOnly: 0
-  fillingPhaseDuration: 15
+  choosedHour: 0
+  countOfVehiclesManager: {fileID: 798457695}
 --- !u!4 &1589026317
 Transform:
   m_ObjectHideFlags: 0
@@ -26640,7 +26685,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0796e4a7117d164aad023637984170c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  NextWaypoint: {fileID: 0}
   laneChooser: {fileID: 0}
   isBeforeTrafiicLight: 0
   linkedController: {fileID: 1244506094}
@@ -32284,15 +32328,7 @@ MonoBehaviour:
   m_ItemImage: {fileID: 0}
   m_Value: 0
   m_Options:
-    m_Options:
-    - m_Text: 7:00
-      m_Image: {fileID: 0}
-    - m_Text: 12:00
-      m_Image: {fileID: 0}
-    - m_Text: 15:00
-      m_Image: {fileID: 0}
-    - m_Text: 21:00
-      m_Image: {fileID: 0}
+    m_Options: []
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
@@ -32832,6 +32868,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 798457694}
   - {fileID: 1589026317}
   - {fileID: 2095530470}
   - {fileID: 581870625}
@@ -33576,6 +33613,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b638ff06467f77141ac59d3d6906033c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &2103301732 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1682181003657565133, guid: 4c0589fcde2b67541aec4e838d807714, type: 3}
+  m_PrefabInstance: {fileID: 581870624}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2103301736
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2103301732}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc8983c339b3fb64ab099416083e4650, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  phasesInCycle:
+  - {fileID: 1983586013}
+  - {fileID: 1527557212}
+  - {fileID: 1499138661}
+  currentCycleTime: 0
+  timeBeforeNextPhase: 2
+  currentChoosedSystemType: 0
+  fullCycleTime: 120
+  activePhase: 0
 --- !u!4 &2106416377 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3500228604119245144, guid: 4d02dca8ecbb8184f8e04402c84e7cea, type: 3}

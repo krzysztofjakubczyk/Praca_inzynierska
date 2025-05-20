@@ -1,43 +1,51 @@
-﻿using System.Collections;
+﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
 using TMPro;
 using UnityEngine;
 
 public class TimeManager : MonoBehaviour
 {
     [SerializeField] private TMP_Dropdown dropDownHour;
-    [SerializeField] private List<VehicleSpawner> spawners;
-    [SerializeField] private List<VehicleSpawner> tramSpawners;
-    [SerializeField] private List<VehicleCountSO> countOfVehiclesToSpawn;
     [SerializeField] private List<Counter> Counters;
+    [SerializeField] private List<string> hours;
     [SerializeField] private TMP_Text timeText;
     [SerializeField] private int simulationSpeedUpValue;
     [SerializeField] public bool isAfternoonPeakOnly; // Czy symulacja działa tylko w szczycie popołudniowym?
 
-    private VehicleCountSO currentSO;
     private bool isPaused = false;
     private bool isSpeeded = false;
     private float simulationTime = 0f;
     private const float realToSimRatio = 1f;
-    private int choosedHour;
-    private bool isFillingPhase = true;
-    public float fillingPhaseDuration = 15f; // 20 sekund wypełniania
-    private float spawnMultiplier = 4f; // 
+    public int choosedHour;
     private bool hasStartedStatistics = false;
-
+    [SerializeField]private CountOfVehiclesManager countOfVehiclesManager;
     private void Start()
     {
-
         Time.timeScale = realToSimRatio;
-        ChoosedDateAndHour(); // Ustawienie godziny
+        OnHourChanged(0); // Ustawienie godziny
+        dropDownHour.AddOptions(hours);
+        dropDownHour.value = 0;
+        dropDownHour.RefreshShownValue();
+        dropDownHour.onValueChanged.AddListener(OnHourChanged);
+    }
 
-        foreach (var tramSpawner in tramSpawners)
+    private void OnHourChanged(int index)
+    {
+        choosedHour = index;
+        string hourString = hours[index]; // np. "07:00"
+        choosedHour = int.Parse(hourString.Substring(0, 2)); // 7
+        ResetSimulation();
+        ResetAllSensors();
+        ResetTrafficLights(); // Reset świateł
+        ResetStatistics(); // Reset statystyk
+        foreach (var so in countOfVehiclesManager.countOfVehiclesToSpawn)
         {
-            tramSpawner.MaxVehicles = 5;
-            tramSpawner.SetSpawnInterval(720); // Tramwaje co 12 minut
+            if (so.ChoosedHour.Hour == choosedHour)
+            {
+                countOfVehiclesManager.AssignVehicleCountsToSpawners(so);
+            }
         }
-        StartCoroutine(ManageFillingPhase());
-
     }
 
     private void Update()
@@ -58,42 +66,6 @@ public class TimeManager : MonoBehaviour
         }
     }
 
-    private IEnumerator ManageFillingPhase()
-    {
-
-        foreach (VehicleSpawner spawner in spawners)
-        {
-            spawner.SetSpawnInterval(spawner.GetSpawnInterval() / spawnMultiplier);
-        }
-
-        yield return new WaitForSeconds(fillingPhaseDuration); // Czekamy 20 sekund
-
-
-        foreach (VehicleSpawner spawner in spawners)
-        {
-            spawner.SetSpawnInterval(spawner.GetSpawnInterval() * spawnMultiplier);
-        }
-
-        isFillingPhase = false;
-    }
-
-
-    public void ChoosedDateAndHour()
-    {
-        ResetSimulation();
-        ResetAllSensors();
-        ResetTrafficLights(); // Reset świateł
-        ResetStatistics(); // Reset statystyk
-        choosedHour = 7;
-        foreach(var so in countOfVehiclesToSpawn)
-        {
-            if(so.ChoosedHour.Hour == choosedHour)
-            {
-                AssignVehicleCountsToSpawners(so);
-            }
-        }
-
-    }
     private void ResetTrafficLights()
     {
         TraficController trafficController = FindObjectOfType<TraficController>();
@@ -102,101 +74,89 @@ public class TimeManager : MonoBehaviour
         {
             trafficController.ResetTrafficCycle();
         }
-
     }
-    private void AssignVehicleCountsToSpawners(VehicleCountSO vehicleCounts)
+
+
+    private void ResetStatistics()
     {
+        StatisticManagerForSczanieckiej statisticManager = FindObjectOfType<StatisticManagerForSczanieckiej>();
 
-        for (int i = 0; i < spawners.Count; i++)
+        if (statisticManager != null)
         {
-            float vehiclesPerSecond = (float)vehicleCounts.CountOfVehicles[i] / 3600f;
-            float spawnInterval = 1f / vehiclesPerSecond;
-
-            spawners[i].SetSpawnInterval(spawnInterval);
-            spawners[i].MaxVehicles = vehicleCounts.CountOfVehicles[i];
+            statisticManager.ResetStatistics();
         }
     }
 
-private void ResetStatistics()
-{
-    StatisticManagerForSczanieckiej statisticManager = FindObjectOfType<StatisticManagerForSczanieckiej>();
-
-    if (statisticManager != null)
+    private void ResetSimulation()
     {
-        statisticManager.ResetStatistics();
+        simulationTime = 0f;
+        foreach (Counter counter in Counters) counter.ResetCounter();
+        foreach (GameObject car in GameObject.FindGameObjectsWithTag("Car")) Destroy(car, 0.5f);
+        foreach (GameObject bus in GameObject.FindGameObjectsWithTag("Bus")) Destroy(bus, 0.5f);
+        foreach (VehicleSpawner spawner in countOfVehiclesManager.spawners) spawner.ResetSpawner();
+        foreach (VehicleSpawner tramSpawner in countOfVehiclesManager.tramSpawners) tramSpawner.ResetSpawner();
+    }
+    private void ResetAllSensors()
+    {
+        Sensor[] sensors = FindObjectsOfType<Sensor>();
+
+        foreach (Sensor sensor in sensors)
+        {
+            sensor.ResetSensor();
+        }
     }
 
-}
-
-private void ResetSimulation()
-{
-    simulationTime = 0f;
-    foreach (Counter counter in Counters) counter.ResetCounter();
-    foreach (GameObject car in GameObject.FindGameObjectsWithTag("Car")) Destroy(car, 0.5f);
-    foreach (VehicleSpawner spawner in spawners) spawner.ResetSpawner();
-    foreach (VehicleSpawner tramSpawner in tramSpawners) tramSpawner.ResetSpawner();
-}
-private void ResetAllSensors()
-{
-    Sensor[] sensors = FindObjectsOfType<Sensor>();
-
-    foreach (Sensor sensor in sensors)
+    private void ToggleSpeedUp()
     {
-        sensor.ResetSensor();
+        if (isSpeeded) StopSpeedUpSimulation();
+        else SpeedUpSimulation();
     }
-}
 
-private void ToggleSpeedUp()
-{
-    if (isSpeeded) StopSpeedUpSimulation();
-    else SpeedUpSimulation();
-}
+    private void SpeedUpSimulation()
+    {
+        Time.timeScale = simulationSpeedUpValue;
+        isSpeeded = true;
+    }
 
-private void SpeedUpSimulation()
-{
-    Time.timeScale = simulationSpeedUpValue;
-    isSpeeded = true;
-}
+    private void StopSpeedUpSimulation()
+    {
+        Time.timeScale = realToSimRatio;
+        isSpeeded = false;
+    }
 
-private void StopSpeedUpSimulation()
-{
-    Time.timeScale = realToSimRatio;
-    isSpeeded = false;
-}
+    private void TogglePause()
+    {
+        if (isPaused) ResumeGame();
+        else PauseGame();
+    }
 
-private void TogglePause()
-{
-    if (isPaused) ResumeGame();
-    else PauseGame();
-}
+    private void PauseGame()
+    {
+        Time.timeScale = 0f;
+        isPaused = true;
+    }
 
-private void PauseGame()
-{
-    Time.timeScale = 0f;
-    isPaused = true;
-}
+    private void ResumeGame()
+    {
+        Time.timeScale = realToSimRatio;
+        isPaused = false;
+    }
 
-private void ResumeGame()
-{
-    Time.timeScale = realToSimRatio;
-    isPaused = false;
-}
+    private string GetFormattedSimulationTime()
+    {
+        int baseHour = choosedHour;
+        int elapsedSeconds = Mathf.FloorToInt(simulationTime);
+        int currentHour = baseHour + (elapsedSeconds / 3600);
+        int currentMinute = (elapsedSeconds % 3600) / 60;
+        int currentSecond = elapsedSeconds % 60;
 
-private string GetFormattedSimulationTime()
-{
-    int baseHour = choosedHour;
-    int elapsedSeconds = Mathf.FloorToInt(simulationTime);
-    int currentHour = baseHour + (elapsedSeconds / 3600);
-    int currentMinute = (elapsedSeconds % 3600) / 60;
-    int currentSecond = elapsedSeconds % 60;
+        if (currentHour >= 24) currentHour %= 24;
 
-    if (currentHour >= 24) currentHour %= 24;
+        return $"{currentHour:D2}:{currentMinute:D2}:{currentSecond:D2}";
+    }
 
-    return $"{currentHour:D2}:{currentMinute:D2}:{currentSecond:D2}";
-}
-
-public int GetChoosedHour()
-{
-    return choosedHour;
-}
+    public int GetChoosedHour()
+    {
+        return choosedHour;
+    }
 }

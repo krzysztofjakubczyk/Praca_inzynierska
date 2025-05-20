@@ -26,7 +26,6 @@ public class MainTrafficController : MonoBehaviour
         {
             case systemType.staticSystem:
                 timingStrategy = new StaticInterfaceImplementation();
-
                 break;
             case systemType.fuzzySystem:
                 timingStrategy = new FuzzyInterfaceImplementation(phasesInCycle, carCountOnInlet, carQueueOnInlet, fullCycleTime);

@@ -365,6 +365,7 @@
 "Assets/Scripts/ChooseLane.cs"
 "Assets/Scripts/CollisionDetector.cs"
 "Assets/Scripts/Counter.cs"
+"Assets/Scripts/CountOfVehiclesManager.cs"
 "Assets/Scripts/CycleSO.cs"
 "Assets/Scripts/DensitySensor.cs"
 "Assets/Scripts/EntryTrigger.cs"
