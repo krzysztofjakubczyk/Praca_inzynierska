@@ -7,9 +7,9 @@ public class CountOfVehiclesManager : MonoBehaviour
     [SerializeField] public List<VehicleSpawner> spawners;
     [SerializeField] public List<VehicleSpawner> tramSpawners;
     [SerializeField] public List<VehicleCountSO> countOfVehiclesToSpawn;
-
+    public int waitingTIme = 5;
     private VehicleCountSO currentSO;
-    private float spawnMultiplier = 4f;
+    [SerializeField] private float spawnMultiplier = 4f;
     public float fillingPhaseDuration = 15f;
     private void Start()
     {
@@ -22,7 +22,7 @@ public class CountOfVehiclesManager : MonoBehaviour
     }
     private IEnumerator ManageFillingPhase()
     {
-
+        yield return new WaitForSeconds(waitingTIme);
         foreach (VehicleSpawner spawner in spawners)
         {
             spawner.SetSpawnInterval(spawner.GetSpawnInterval() / spawnMultiplier);

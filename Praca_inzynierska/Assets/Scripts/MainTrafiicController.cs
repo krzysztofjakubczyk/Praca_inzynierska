@@ -10,7 +10,8 @@ public class MainTrafficController : MonoBehaviour
     private Dictionary<PhaseSO, int> carCountOnInlet = new Dictionary<PhaseSO, int>();
     private Dictionary<PhaseSO, float> carQueueOnInlet = new Dictionary<PhaseSO, float>();
     ITrafficTimingStrategy timingStrategy;
-
+    bool hadPhillingPhase;
+    [SerializeField] CountOfVehiclesManager countOfVehiclesManager;
     [SerializeField] private float currentCycleTime = 0f; // Aktualny czas w cyklu
 
     [SerializeField] private float timeBeforeNextPhase = 2f;
@@ -94,9 +95,15 @@ public class MainTrafficController : MonoBehaviour
     {
         while (true)
         {
-            if(currentChoosedSystemType == systemType.fuzzySystem)
+            if (currentChoosedSystemType == systemType.fuzzySystem)
             {
                 timingStrategy.AdjustGreenLightDurations();
+            }
+            if (!hadPhillingPhase)
+            {
+                yield return new WaitForSeconds(countOfVehiclesManager.fillingPhaseDuration + countOfVehiclesManager.waitingTIme);
+                hadPhillingPhase = true;
+                currentCycleTime = 0;
             }
             for (int phaseIndex = 0; phaseIndex < phasesInCycle.Count; phaseIndex++)
             {

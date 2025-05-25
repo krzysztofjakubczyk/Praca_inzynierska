@@ -12912,6 +12912,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: d9a503631e0c44745b0cba253510f94e, type: 2}
   - {fileID: 11400000, guid: ea9cd9c9d17ea504c8a95605354232d1, type: 2}
   - {fileID: 11400000, guid: 7c5135a253e4e4f4fbff93a0951fda6b, type: 2}
+  waitingTIme: 5
+  spawnMultiplier: 4
   fillingPhaseDuration: 15
 --- !u!1 &809580726
 GameObject:
@@ -33634,9 +33636,10 @@ MonoBehaviour:
   - {fileID: 1983586013}
   - {fileID: 1527557212}
   - {fileID: 1499138661}
+  countOfVehiclesManager: {fileID: 798457695}
   currentCycleTime: 0
   timeBeforeNextPhase: 2
-  currentChoosedSystemType: 0
+  currentChoosedSystemType: 1
   fullCycleTime: 120
   activePhase: 0
 --- !u!4 &2106416377 stripped
