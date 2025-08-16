@@ -12,6 +12,7 @@ public class TimeManager : MonoBehaviour
     [SerializeField] private TMP_Text timeText;
     [SerializeField] private int simulationSpeedUpValue;
     [SerializeField] public bool isAfternoonPeakOnly; // Czy symulacja działa tylko w szczycie popołudniowym?
+    [SerializeField] private CountOfVehiclesManager countOfVehiclesManager;
 
     private bool isPaused = false;
     private bool isSpeeded = false;
@@ -19,7 +20,7 @@ public class TimeManager : MonoBehaviour
     private const float realToSimRatio = 1f;
     public int choosedHour;
     private bool hasStartedStatistics = false;
-    [SerializeField]private CountOfVehiclesManager countOfVehiclesManager;
+
     private void Start()
     {
         Time.timeScale = realToSimRatio;
@@ -55,11 +56,11 @@ public class TimeManager : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.P)) TogglePause();
         if (Input.GetKeyDown(KeyCode.Q)) ToggleSpeedUp();
-        if (simulationTime >= 3600f) // Jeśli upłynęła cała godzina lub 12 minut i 20 sekund, zatrzymaj symulację
+        if (simulationTime >= 3620f) // Jeśli upłynęła cała godzina lub 12 minut i 20 sekund, zatrzymaj symulację
         {
             PauseGame();
         }
-        if (simulationTime >= 380f && !hasStartedStatistics) // Po 6 minutach i 20 sekundach
+        if (simulationTime >= 400f && !hasStartedStatistics) // Po 6 minutach i 20 sekundach
         {
             hasStartedStatistics = true;
             ResetStatistics(); // Rozpocznij zbieranie statystyk
@@ -124,13 +125,13 @@ public class TimeManager : MonoBehaviour
         isSpeeded = false;
     }
 
-    private void TogglePause()
+    public void TogglePause()
     {
         if (isPaused) ResumeGame();
         else PauseGame();
     }
 
-    private void PauseGame()
+    public void PauseGame()
     {
         Time.timeScale = 0f;
         isPaused = true;

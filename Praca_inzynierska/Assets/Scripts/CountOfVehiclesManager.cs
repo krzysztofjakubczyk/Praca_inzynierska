@@ -6,6 +6,7 @@ public class CountOfVehiclesManager : MonoBehaviour
 {
     [SerializeField] public List<VehicleSpawner> spawners;
     [SerializeField] public List<VehicleSpawner> tramSpawners;
+    [SerializeField] private bool useTrams = false;
     [SerializeField] public List<VehicleCountSO> countOfVehiclesToSpawn;
     public int waitingTIme = 5;
     private VehicleCountSO currentSO;
@@ -13,11 +14,15 @@ public class CountOfVehiclesManager : MonoBehaviour
     public float fillingPhaseDuration = 15f;
     private void Start()
     {
-        foreach (var tramSpawner in tramSpawners)
+        if(useTrams)
         {
-            tramSpawner.MaxVehicles = 5;
-            tramSpawner.SetSpawnInterval(720); // Tramwaje co 12 minut
+            foreach (var tramSpawner in tramSpawners)
+            {
+                tramSpawner.MaxVehicles = 5;
+                tramSpawner.SetSpawnInterval(720); // Tramwaje co 12 minut
+            }
         }
+
         StartCoroutine(ManageFillingPhase());
     }
     private IEnumerator ManageFillingPhase()

@@ -67,6 +67,8 @@
     <Compile Include="Assets\Scripts\FreeLookCameraController.cs" />
     <Compile Include="Assets\Scripts\CarController.cs" />
     <Compile Include="Assets\Scripts\VehicleCountSO.cs" />
+    <Compile Include="Assets\scenarioManager.cs" />
+    <Compile Include="Assets\Scripts\CountSO.cs" />
     <Compile Include="Assets\Scripts\DensitySensor.cs" />
     <Compile Include="Assets\Scripts\MainTrafiicController.cs" />
     <Compile Include="Assets\Scripts\StaticInterfaceImplementation.cs" />

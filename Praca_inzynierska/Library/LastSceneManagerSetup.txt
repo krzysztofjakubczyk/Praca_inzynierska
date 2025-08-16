@@ -1,5 +1,6 @@
 sceneSetups:
-- path: Assets/Scenes/Sczanieckiej/Dane oszacowane/Oszacowane rzeczywisty.unity
+- path: "Assets/Scenes/Sczanieckiej/Dane wi\u0119ksze o 10%/Wi\u0119ksze Oszacowane
+    Logika rozmyta.unity"
   isLoaded: 1
   isActive: 1
   isSubScene: 0

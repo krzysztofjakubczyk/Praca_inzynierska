@@ -18,8 +18,10 @@ public class LineLightManager : MonoBehaviour
     [SerializeField] bool hasCollisionLine;
     [SerializeField] Sensor sensorToHide;
     [SerializeField] GameObject[] laneChooserToHide;
+    [SerializeField] GameObject planeToShowCurrentColor;
     [SerializeField] ChooseLane laneChooserToCollision;
     public List<Sensor> sensors;
+    private MeshRenderer MeshRenderer;
     public double timeToStartGreenLight;
     public double timeOfGreenLight;
     public double timeOfBeforeYellowLight;
@@ -31,6 +33,7 @@ public class LineLightManager : MonoBehaviour
 
     private void Start()
     {
+        MeshRenderer = planeToShowCurrentColor.GetComponent<MeshRenderer>();
         if (hasCollisionLine)
         {
             StartCoroutine(UpdateTrafficStateRoutine());
@@ -82,6 +85,7 @@ public class LineLightManager : MonoBehaviour
                 {
                     lanechooser.SetActive(true);
                 }
+
             }
             if (hasToWait && laneChooserToCollision.isDrivingStraight)
             {
@@ -119,8 +123,6 @@ public class LineLightManager : MonoBehaviour
                     leftTurnBlocked = true; // Jeśli na wprost są auta, skręt w lewo jest zablokowany
                 }
             }
-
-            
         }
 
         // PRZENIESIONE: Aktualizujemy PO pętli, nie w trakcie!
@@ -134,10 +136,26 @@ public class LineLightManager : MonoBehaviour
         {
             isBlocked = false;
         }
+
+
         yield return new WaitForSeconds(0.5f);
 
     }
-
+    private void Update()
+    {
+        if (currentColor == TrafficLightColor.green)
+        {
+            MeshRenderer.material.color = Color.green;
+        }
+        else if (currentColor == TrafficLightColor.yellow)
+        {
+            MeshRenderer.material.color = Color.yellow;
+        }
+        else if (currentColor == TrafficLightColor.red)
+        {
+            MeshRenderer.material.color = Color.red;
+        }
+    }
     public void ChangeColor(TrafficLightColor color)
     {
         currentColor = color;

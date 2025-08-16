@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 7320053961458408463}
   - component: {fileID: 5883600932395460778}
   - component: {fileID: 4766805417199910698}
+  - component: {fileID: 4821799220728266279}
   m_Layer: 0
   m_Name: GlobalTrafficLightsSystem
   m_TagString: Untagged
@@ -29,7 +30,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -9.9, y: 22.07, z: 42.29}
-  m_LocalScale: {x: 5.4987, y: 3.483504, z: 5.6848}
+  m_LocalScale: {x: 1, y: 3.483504, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -107,3 +108,25 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
+--- !u!114 &4821799220728266279
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1682181003657565133}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc8983c339b3fb64ab099416083e4650, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  phasesInCycle:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  countOfVehiclesManager: {fileID: 0}
+  currentCycleTime: 0
+  timeBeforeNextPhase: 2
+  currentChoosedSystemType: 1
+  fullCycleTime: 120
+  activePhase: 0

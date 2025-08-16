@@ -1307,8 +1307,6 @@ MonoBehaviour:
       m_Image: {fileID: 0}
     - m_Text: Latajaca kamera
       m_Image: {fileID: 0}
-    - m_Text: "Orbituj\u0105ca kamera"
-      m_Image: {fileID: 0}
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
@@ -9126,62 +9124,30 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2068395655}
     m_Modifications:
-    - target: {fileID: 1271800455711129248, guid: 4c0589fcde2b67541aec4e838d807714, type: 3}
-      propertyPath: wantWarning
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1271800455711129248, guid: 4c0589fcde2b67541aec4e838d807714, type: 3}
-      propertyPath: useFuzzyLogic
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1271800455711129248, guid: 4c0589fcde2b67541aec4e838d807714, type: 3}
-      propertyPath: phasesInCycle.Array.size
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 1271800455711129248, guid: 4c0589fcde2b67541aec4e838d807714, type: 3}
-      propertyPath: phasesInCycle.Array.data[0]
-      value: 
-      objectReference: {fileID: 1983586013}
-    - target: {fileID: 1271800455711129248, guid: 4c0589fcde2b67541aec4e838d807714, type: 3}
-      propertyPath: phasesInCycle.Array.data[1]
-      value: 
-      objectReference: {fileID: 1527557212}
-    - target: {fileID: 1271800455711129248, guid: 4c0589fcde2b67541aec4e838d807714, type: 3}
-      propertyPath: phasesInCycle.Array.data[2]
-      value: 
-      objectReference: {fileID: 1499138661}
-    - target: {fileID: 1271800455711129248, guid: 4c0589fcde2b67541aec4e838d807714, type: 3}
-      propertyPath: ControllerList.Array.data[0]
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 1271800455711129248, guid: 4c0589fcde2b67541aec4e838d807714, type: 3}
-      propertyPath: ControllerList.Array.data[1]
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 1271800455711129248, guid: 4c0589fcde2b67541aec4e838d807714, type: 3}
-      propertyPath: ControllerList.Array.data[2]
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 1271800455711129248, guid: 4c0589fcde2b67541aec4e838d807714, type: 3}
-      propertyPath: ControllerList.Array.data[3]
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 1682181003657565133, guid: 4c0589fcde2b67541aec4e838d807714, type: 3}
       propertyPath: m_Name
       value: GlobalTrafficLightsSystem
       objectReference: {fileID: 0}
-    - target: {fileID: 1682181003657565133, guid: 4c0589fcde2b67541aec4e838d807714, type: 3}
-      propertyPath: m_IsActive
-      value: 1
+    - target: {fileID: 4821799220728266279, guid: 4c0589fcde2b67541aec4e838d807714, type: 3}
+      propertyPath: countOfVehiclesManager
+      value: 
+      objectReference: {fileID: 798457695}
+    - target: {fileID: 4821799220728266279, guid: 4c0589fcde2b67541aec4e838d807714, type: 3}
+      propertyPath: currentChoosedSystemType
+      value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7155084412624749333, guid: 4c0589fcde2b67541aec4e838d807714, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7155084412624749333, guid: 4c0589fcde2b67541aec4e838d807714, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 1
-      objectReference: {fileID: 0}
+    - target: {fileID: 4821799220728266279, guid: 4c0589fcde2b67541aec4e838d807714, type: 3}
+      propertyPath: phasesInCycle.Array.data[0]
+      value: 
+      objectReference: {fileID: 1983586013}
+    - target: {fileID: 4821799220728266279, guid: 4c0589fcde2b67541aec4e838d807714, type: 3}
+      propertyPath: phasesInCycle.Array.data[1]
+      value: 
+      objectReference: {fileID: 1527557212}
+    - target: {fileID: 4821799220728266279, guid: 4c0589fcde2b67541aec4e838d807714, type: 3}
+      propertyPath: phasesInCycle.Array.data[2]
+      value: 
+      objectReference: {fileID: 1499138661}
     - target: {fileID: 7155084412624749333, guid: 4c0589fcde2b67541aec4e838d807714, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -9225,10 +9191,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 1682181003657565133, guid: 4c0589fcde2b67541aec4e838d807714, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 2103301736}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4c0589fcde2b67541aec4e838d807714, type: 3}
 --- !u!4 &581870625 stripped
 Transform:
@@ -12907,6 +12870,7 @@ MonoBehaviour:
   - {fileID: 1077723494}
   - {fileID: 575200675}
   tramSpawners: []
+  useTrams: 0
   countOfVehiclesToSpawn:
   - {fileID: 11400000, guid: 108ba84eee5b4284d8d464b9f0c8d5d8, type: 2}
   - {fileID: 11400000, guid: d9a503631e0c44745b0cba253510f94e, type: 2}
@@ -25914,8 +25878,8 @@ MonoBehaviour:
   timeText: {fileID: 158221949}
   simulationSpeedUpValue: 10
   isAfternoonPeakOnly: 0
-  choosedHour: 0
   countOfVehiclesManager: {fileID: 798457695}
+  choosedHour: 0
 --- !u!4 &1589026317
 Transform:
   m_ObjectHideFlags: 0
@@ -30411,7 +30375,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -781.56665, y: 474.45715}
+  m_AnchoredPosition: {x: -781.56665, y: 383}
   m_SizeDelta: {x: -1563.1311, y: -948.9042}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1883143063
@@ -33615,33 +33579,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b638ff06467f77141ac59d3d6906033c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &2103301732 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1682181003657565133, guid: 4c0589fcde2b67541aec4e838d807714, type: 3}
-  m_PrefabInstance: {fileID: 581870624}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &2103301736
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2103301732}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fc8983c339b3fb64ab099416083e4650, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  phasesInCycle:
-  - {fileID: 1983586013}
-  - {fileID: 1527557212}
-  - {fileID: 1499138661}
-  countOfVehiclesManager: {fileID: 798457695}
-  currentCycleTime: 0
-  timeBeforeNextPhase: 2
-  currentChoosedSystemType: 0
-  fullCycleTime: 120
-  activePhase: 0
 --- !u!4 &2106416377 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3500228604119245144, guid: 4d02dca8ecbb8184f8e04402c84e7cea, type: 3}
