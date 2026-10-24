@@ -61,6 +61,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\VehicleSpawner.cs" />
+    <Compile Include="Assets\Scripts\SimulationScenarioSO.cs" />
     <Compile Include="Assets\Scripts\Waypoint.cs" />
     <Compile Include="Assets\Scripts\PhaseSO.cs" />
     <Compile Include="Assets\Scripts\EntryTrigger.cs" />
@@ -74,6 +75,7 @@
     <Compile Include="Assets\Scripts\StaticInterfaceImplementation.cs" />
     <Compile Include="Assets\Scripts\CarDestroyer.cs" />
     <Compile Include="Assets\Scripts\CountOfVehiclesManager.cs" />
+    <Compile Include="Assets\Scripts\SimulationInitializer.cs" />
     <Compile Include="Assets\Scripts\CycleSO.cs" />
     <Compile Include="Assets\Scripts\LineLightManager.cs" />
     <Compile Include="Assets\Scripts\TimeManager.cs" />

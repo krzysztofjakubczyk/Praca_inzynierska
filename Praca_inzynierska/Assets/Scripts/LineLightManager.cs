@@ -11,151 +11,138 @@ public enum TrafficLightColor
 
 public class LineLightManager : MonoBehaviour
 {
+    [Header("Current State")]
     [SerializeField] public TrafficLightColor currentColor;
     [SerializeField] public int countOfVehicles;
     [SerializeField] public float queueLength;
     [SerializeField] public int idAtDraw;
+
+    [Header("Collision & Left Turn Settings")]
     [SerializeField] bool hasCollisionLine;
     [SerializeField] Sensor sensorToHide;
     [SerializeField] GameObject[] laneChooserToHide;
     [SerializeField] GameObject planeToShowCurrentColor;
     [SerializeField] ChooseLane laneChooserToCollision;
-    public List<Sensor> sensors;
-    private MeshRenderer MeshRenderer;
+
+    public List<Sensor> sensors = new List<Sensor>();
+    private MeshRenderer meshRenderer;
+
+    [Header("Timings")]
     public double timeToStartGreenLight;
     public double timeOfGreenLight;
     public double timeOfBeforeYellowLight;
     public double timeOfAfterYellowLight;
-    public bool isBlocked = false; // Czy pas jest zablokowany?
-    public bool leftTurnAllowed = false; // Czy można skręcać w lewo?
-    public bool leftTurnWaiting = false; // Czy są auta na środku skrzyżowania?
-    public bool hasToWait; // Czy są auta na środku skrzyżowania?
+
+    [Header("Flags")]
+    public bool isBlocked = false;        // Czy pas jest zablokowany przez zator?
+    public bool leftTurnAllowed = false; // Czy można bezpiecznie skręcić w lewo?
+    public bool hasToWait;                // Flaga oczekiwania na skrzyżowaniu
 
     private void Start()
     {
-        MeshRenderer = planeToShowCurrentColor.GetComponent<MeshRenderer>();
-        if (hasCollisionLine)
+        if (planeToShowCurrentColor != null)
         {
-            StartCoroutine(UpdateTrafficStateRoutine());
+            meshRenderer = planeToShowCurrentColor.GetComponent<MeshRenderer>();
         }
-        StartCoroutine(UpdateVehicleData());
-        StartCoroutine(UpdateTrafficState());
 
+        // Uruchamiamy JEDNĄ, ujednoliconą pętlę zarządzania stanem
+        StartCoroutine(UpdateTrafficStateMaster());
     }
-    private IEnumerator UpdateVehicleData()
+
+    private IEnumerator UpdateTrafficStateMaster()
     {
         while (true)
         {
+            // 1. Zliczanie pojazdów i długości kolejek
             int totalVehicles = 0;
             float totalQueueLength = 0f;
 
+            bool shouldBlock = false;
+            bool leftTurnBlockedBySensor = false;
+
             foreach (var sensor in sensors)
             {
-                totalVehicles += sensor.VehicleCount;
-                totalQueueLength += sensor.QueueLength;
+                if (sensor == null) continue;
+
+                // 1. Zwykły sensor dojazdowy przed światłami (zlicza statystyki)
+                if (!sensor.isForCollision && !sensor.isForLeftTurnCheck)
+                {
+                    totalVehicles += sensor.VehicleCount;
+                    totalQueueLength += sensor.QueueLength;
+                }
+
+                // 2. Sensor ZJAZDOWY ZA skrzyżowaniem (wykrywa realny zator na wyjeździe)
+                if (sensor.isForCollision && sensor.isBlockingTraffic)
+                {
+                    shouldBlock = true; // Zator ZA skrzyżowaniem -> zatrzymaj wjazd!
+                }
+
+                // 3. Sensor z naprzeciwka do skrętu w lewo
+                else if (sensor.isForLeftTurnCheck && sensor.HasStraightDrivingVehicles())
+                {
+                    leftTurnBlockedBySensor = true;
+                }
             }
 
             countOfVehicles = totalVehicles;
             queueLength = totalQueueLength;
+            isBlocked = shouldBlock;
 
+            // 2. Obsługa ukrywania sensorów / wyznaczania pasów na czerwonym świetle
+            if (hasCollisionLine)
+            {
+                bool isRedOrYellow = (currentColor == TrafficLightColor.red || currentColor == TrafficLightColor.yellow);
 
-            yield return new WaitForSeconds(2f); // Aktualizacja co 5 sekund
+                if (sensorToHide != null)
+                {
+                    sensorToHide.gameObject.SetActive(!isRedOrYellow);
+                    if (isRedOrYellow)
+                    {
+                        sensorToHide.ResetSensor();
+                    }
+                }
+
+                if (laneChooserToHide != null)
+                {
+                    foreach (GameObject lanechooser in laneChooserToHide)
+                    {
+                        if (lanechooser != null)
+                        {
+                            lanechooser.SetActive(!isRedOrYellow);
+                        }
+                    }
+                }
+            }
+
+            // 3. SPÓJNE WYLICZENIE leftTurnAllowed (połączenie obu warunków)
+            bool isBlockedByCollisionLine = (hasCollisionLine && hasToWait && laneChooserToCollision != null && laneChooserToCollision.isDrivingStraight);
+
+            // Skręt w lewo jest dozwolony TYLKO wtedy, gdy żaden z warunków go nie blokuje
+            leftTurnAllowed = (!leftTurnBlockedBySensor && !isBlockedByCollisionLine);
+
+            yield return new WaitForSeconds(0.2f); // Odświeżanie 5 razy na sekundę
         }
     }
 
-    private IEnumerator UpdateTrafficStateRoutine()
-    {
-        while (true)
-        {
-            if(currentColor == TrafficLightColor.red)
-            {
-                sensorToHide.gameObject.SetActive(false);
-                sensorToHide.VehicleCount = 0;
-                sensorToHide.QueueLength = 0;
-                foreach (GameObject lanechooser in laneChooserToHide)
-                {
-                    lanechooser.SetActive(false);
-                    
-                }
-            }
-            else if(currentColor == TrafficLightColor.green)
-            {
-                sensorToHide.gameObject.SetActive(true);
-                foreach (GameObject lanechooser in laneChooserToHide)
-                {
-                    lanechooser.SetActive(true);
-                }
-
-            }
-            if (hasToWait && laneChooserToCollision.isDrivingStraight)
-            {
-               leftTurnAllowed = false; // Zatrzymujemy ruch na przeciwnym pasie
-            }
-            else
-            {
-                leftTurnAllowed = true;
-            }
-            yield return new WaitForSeconds(0.5f); // Sprawdzamy co 3 sekundy
-        }
-    }
-
-    public IEnumerator UpdateTrafficState()
-    {   
-        countOfVehicles = 0;
-        queueLength = 0;
-        bool shouldBlock = false;
-        bool leftTurnBlocked = false;
-        leftTurnWaiting = false; // Resetujemy flagę
-
-        foreach (var sensor in sensors)
-        {
-            if (sensor.isForCollision)
-            {
-                if (sensor.isBlockingTraffic)
-                {
-                    shouldBlock = true; // Jeśli chociaż jeden sensor zgłasza blokadę → blokujemy pas
-                }
-            }
-            else if (sensor.isForLeftTurnCheck)
-            {
-                if (sensor.VehicleCount > 0)
-                {
-                    leftTurnBlocked = true; // Jeśli na wprost są auta, skręt w lewo jest zablokowany
-                }
-            }
-        }
-
-        // PRZENIESIONE: Aktualizujemy PO pętli, nie w trakcie!
-        leftTurnAllowed = !leftTurnBlocked; // Jeśli NIE ma aut na wprost, można skręcać w lewo
-
-        if (shouldBlock)
-        {
-            isBlocked = true;
-        }
-        else
-        {
-            isBlocked = false;
-        }
-
-
-        yield return new WaitForSeconds(0.5f);
-
-    }
     private void Update()
     {
-        if (currentColor == TrafficLightColor.green)
+        if (meshRenderer != null)
         {
-            MeshRenderer.material.color = Color.green;
-        }
-        else if (currentColor == TrafficLightColor.yellow)
-        {
-            MeshRenderer.material.color = Color.yellow;
-        }
-        else if (currentColor == TrafficLightColor.red)
-        {
-            MeshRenderer.material.color = Color.red;
+            switch (currentColor)
+            {
+                case TrafficLightColor.green:
+                    meshRenderer.material.color = Color.green;
+                    break;
+                case TrafficLightColor.yellow:
+                    meshRenderer.material.color = Color.yellow;
+                    break;
+                case TrafficLightColor.red:
+                    meshRenderer.material.color = Color.red;
+                    break;
+            }
         }
     }
+
     public void ChangeColor(TrafficLightColor color)
     {
         currentColor = color;

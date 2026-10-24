@@ -385,6 +385,8 @@
 "Assets/Scripts/MainTrafiicControllerForSczanieckiej.cs"
 "Assets/Scripts/PhaseSO.cs"
 "Assets/Scripts/Sensor.cs"
+"Assets/Scripts/SimulationInitializer.cs"
+"Assets/Scripts/SimulationScenarioSO.cs"
 "Assets/Scripts/StartScreenManager.cs"
 "Assets/Scripts/StaticInterfaceImplementation.cs"
 "Assets/Scripts/StatisticManager.cs"

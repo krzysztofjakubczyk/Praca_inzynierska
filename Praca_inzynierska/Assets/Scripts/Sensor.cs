@@ -13,23 +13,24 @@ public class Sensor : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (!other.CompareTag("Car")) return;
+        // 1. Obsługujemy zarówno samochody osobowe, jak i autobusy
+        if (!other.CompareTag("Car") && !other.CompareTag("Bus")) return;
 
-        if (!vehiclesInSensor.Contains(other.gameObject)) // Zapobiega wielokrotnemu dodawaniu
+        // 2. Pobieramy główny obiekt (Root), na wypadek gdyby trigger dotknął koła lub karoserii
+        GameObject rootVehicle = other.transform.root.gameObject;
+
+        if (!vehiclesInSensor.Contains(rootVehicle))
         {
-            vehiclesInSensor.Add(other.gameObject);
-            VehicleCount++;
+            vehiclesInSensor.Add(rootVehicle);
 
-            CarController car = other.GetComponent<CarController>();
+            CarController car = rootVehicle.GetComponent<CarController>();
             if (car != null)
             {
                 QueueLength += car.vehicleLength;
             }
 
-            if (isForCollision)
-            {
-                car.SetMiddleIntersectionState(true);
-            }
+            // POPRAWKA: Usunięto wywoływanie car.SetMiddleIntersectionState(true)!
+            // Auta na skrzyżowaniu nie mogą zamrażać ruchu w pętli kolizji.
 
             CheckIfBlocking();
         }
@@ -37,21 +38,20 @@ public class Sensor : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (!other.CompareTag("Car")) return;
+        if (!other.CompareTag("Car") && !other.CompareTag("Bus")) return;
 
-        if (vehiclesInSensor.Contains(other.gameObject)) // Usuwamy pojazd tylko jeśli był w sensorze
+        GameObject rootVehicle = other.transform.root.gameObject;
+
+        if (vehiclesInSensor.Contains(rootVehicle))
         {
-            vehiclesInSensor.Remove(other.gameObject);
-            VehicleCount = Mathf.Max(0, VehicleCount - 1);
+            vehiclesInSensor.Remove(rootVehicle);
 
-            CarController car = other.GetComponent<CarController>();
+            CarController car = rootVehicle.GetComponent<CarController>();
             if (car != null)
             {
-                QueueLength -= car.vehicleLength;
-            }
+                QueueLength = Mathf.Max(0f, QueueLength - car.vehicleLength);
 
-            if (isForCollision)
-            {
+                // Po opuszczeniu skrzyżowania upewniamy się, że flaga kolizji jest wyłączona
                 car.SetMiddleIntersectionState(false);
             }
 
@@ -61,7 +61,13 @@ public class Sensor : MonoBehaviour
 
     private void CheckIfBlocking()
     {
-        if (isForCollision && VehicleCount > 3) // Blokada wjazdu na skrzyżowanie
+        // Czyszczenie martwych referencji (np. gdy auto zostanie zniszczone wewnątrz sensora)
+        vehiclesInSensor.RemoveWhere(v => v == null);
+        VehicleCount = vehiclesInSensor.Count;
+
+        // Jeśli na skrzyżowaniu znajdują się więcej niż 2 auta, oznaczamy pas jako zablokowany.
+        // Nowe auta zatrzymają się PRZED skrzyżowaniem, a te wewnątrz spokojnie zjadą.
+        if (isForCollision && VehicleCount > 2)
         {
             isBlockingTraffic = true;
         }
@@ -73,9 +79,25 @@ public class Sensor : MonoBehaviour
 
     public void ResetSensor()
     {
+        vehiclesInSensor.Clear();
         VehicleCount = 0;
         QueueLength = 0;
         isBlockingTraffic = false;
     }
 
+    public bool HasStraightDrivingVehicles()
+    {
+        vehiclesInSensor.RemoveWhere(v => v == null);
+
+        foreach (var vehicle in vehiclesInSensor)
+        {
+            if (vehicle == null) continue;
+            CarController car = vehicle.GetComponent<CarController>();
+            if (car != null && !car.isTurningLeft)
+            {
+                return true; // Co najmniej jedno auto jedzie na wprost -> BLOKADA
+            }
+        }
+        return false; // Brak aut na wprost (pusto lub auta też skręcają w lewo)
+    }
 }

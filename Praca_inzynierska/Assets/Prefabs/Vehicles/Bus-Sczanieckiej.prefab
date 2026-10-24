@@ -99,18 +99,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c40128ded95e48846b3d38d8b11202b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stopDistance: 5
+  stopDistance: 7
   obstacleCheckRadius: 1.5
   waypoints: []
-  speed: 15
+  speed: 12
   rotationSpeed: 5
   CurrentSpeed: 0
-  vehicleLength: 12
+  vehicleLength: 4
   lineManager: {fileID: 0}
+  isTurningLeft: 0
   stopForLight: 0
   isAfterCar: 0
   stopForCollision: 0
-  hadLineManager: 0
+  isLaneBlocked: 0
   currentWaypointIndex: 0
 --- !u!54 &-566944232893335450
 Rigidbody:

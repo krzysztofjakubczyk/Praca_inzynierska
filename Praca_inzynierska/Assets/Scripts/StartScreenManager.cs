@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -7,67 +8,58 @@ public class StartScreenManager : MonoBehaviour
 {
     public static StartScreenManager Instance { get; private set; }
 
-    //odpowiada za obs³ugê przycisku do wyboru wariantu symulacji
     public Button startButton;
     public TMP_Dropdown simulationModeDropdown;
-    public static int selectedSimulationMode = 0;
-    void Awake()
+
+    [Header("Lista wszystkich scenariuszy (Pliki SO)")]
+    [SerializeField] private List<SimulationScenarioSO> scenarios;
+
+    [Header("Nazwa g³ównej sceny symulacji")]
+    [SerializeField] private string mainSceneName = "Sczanieckiej_Main";
+
+    // Wybrany scenariusz, do którego odwo³a siê nowa scena po za³adowaniu
+    public static SimulationScenarioSO SelectedScenario { get; private set; }
+
+    private void Awake()
     {
         if (Instance != null && Instance != this)
         {
-            Destroy(this);
+            Destroy(gameObject);
+            return;
         }
-        else
-        {
-            Instance = this;
-        }
+        Instance = this;
+
         PopulateDropdown();
         startButton.onClick.AddListener(StartSimulation);
     }
-    
-    void PopulateDropdown()
+
+    private void PopulateDropdown()
     {
+        simulationModeDropdown.ClearOptions();
+        List<string> options = new List<string>();
+
+        foreach (var scenario in scenarios)
+        {
+            if (scenario != null)
+                options.Add(scenario.scenarioName);
+        }
+
+        simulationModeDropdown.AddOptions(options);
         simulationModeDropdown.value = 0;
     }
 
-    void StartSimulation()
+    private void StartSimulation()
     {
-        selectedSimulationMode = simulationModeDropdown.value;
-        ApplySimulationMode();
-    }
+        int selectedIndex = simulationModeDropdown.value;
 
-    void ApplySimulationMode()
-    {
-        string sceneToLoad = "";
-
-        switch (selectedSimulationMode)
+        if (selectedIndex >= 0 && selectedIndex < scenarios.Count)
         {
-            case 0:
-                sceneToLoad = "Arkonska-Niemierzynska";
-                break;
-            case 1:
-                sceneToLoad = "Oszacowane rzeczywisty";
-                break;
-            case 2:
-                sceneToLoad = "Dokument Sczanieckiej rzeczywisty";
-                break;
-            case 3:
-                sceneToLoad = "Oszacowane Logika rozmyta";
-                break;
-            case 4:
-                sceneToLoad = "Dokument Sczanieckiej Logika rozmyta";
-                break;
-            case 5:
-                sceneToLoad = "Wiêksze Oszacowane Logika rozmyta";
-                break;
-            case 6:
-                sceneToLoad = "Wiêksze Oszacowane rzeczywisty";
-                break;
-            default:
-                Debug.LogWarning("Nieznany tryb symulacji");
-                return;
+            SelectedScenario = scenarios[selectedIndex];
+            SceneManager.LoadScene(mainSceneName);
         }
-
-        SceneManager.LoadScene(sceneToLoad);
+        else
+        {
+            Debug.LogWarning("Wybrano nieprawid³owy scenariusz z listy!");
+        }
     }
 }

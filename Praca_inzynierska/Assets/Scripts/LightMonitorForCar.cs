@@ -3,21 +3,23 @@
 public class LightMonitorForCar : MonoBehaviour
 {
     public bool wantWarning;
+
     private void OnTriggerEnter(Collider other)
     {
-        CarController carController = other.GetComponent<CarController>();
+        // Szukamy kontrolera również na obiekcie rodzica (transform.root)
+        CarController carController = other.GetComponentInParent<CarController>();
         if (carController != null)
         {
-            carController.StartTrafficLightMonitoring(); // Uruchom monitorowanie świateł
+            carController.StartTrafficLightMonitoring();
         }
-    }   
+    }
 
     private void OnTriggerExit(Collider other)
     {
-        CarController carController = other.GetComponent<CarController>();
+        CarController carController = other.GetComponentInParent<CarController>();
         if (carController != null)
         {
-            carController.StopTrafficLightMonitoring(); // Zatrzymaj monitorowanie świateł
+            carController.StopTrafficLightMonitoring();
         }
     }
 }
