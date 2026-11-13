@@ -1412,6 +1412,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   startButton: {fileID: 846459432}
   simulationModeDropdown: {fileID: 523611624}
+  scenarios:
+  - {fileID: 11400000, guid: 5c3df8066b987b040a7adbef46581f99, type: 2}
+  - {fileID: 11400000, guid: d87560fb33c0b8841b86ee10145383e1, type: 2}
+  - {fileID: 11400000, guid: 1b4a8e9057e17a14385e21f93c66c2ec, type: 2}
+  - {fileID: 11400000, guid: b035352bb883eb645b8dedb055df2e1e, type: 2}
+  - {fileID: 11400000, guid: cb4cc5d57ef00884cb13ff75ad467eda, type: 2}
+  - {fileID: 11400000, guid: 30fda0cecd004e14e8f75553829413b2, type: 2}
+  - {fileID: 11400000, guid: a55c3092cdc840529f3ecf84748a6b49, type: 2}
+  mainSceneName: Oszacowane Logika rozmyta
 --- !u!1 &837426717
 GameObject:
   m_ObjectHideFlags: 0

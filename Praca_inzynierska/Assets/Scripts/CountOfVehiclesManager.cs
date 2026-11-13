@@ -12,6 +12,18 @@ public class CountOfVehiclesManager : MonoBehaviour
     private VehicleCountSO currentSO;
     [SerializeField] private float spawnMultiplier = 4f;
     public float fillingPhaseDuration = 15f;
+
+    private void Awake()
+    {
+        for (int i = 0; i < spawners.Count; i++)
+        {
+            if (spawners[i] != null)
+            {
+                spawners[i].SetTrafficLaneId(i + 1);
+            }
+        }
+    }
+
     private void Start()
     {
         if(useTrams)
@@ -52,5 +64,9 @@ public class CountOfVehiclesManager : MonoBehaviour
             spawners[i].SetSpawnInterval(spawnInterval);
             spawners[i].MaxVehicles = vehicleCounts.CountOfVehicles[i];
         }
+    }
+    public void SetStraightClosureForLaneIds(IEnumerable<int> laneIds, bool isActive)
+    {
+        RoadClosureRuntime.SetStraightMovementClosed(laneIds, isActive);
     }
 }

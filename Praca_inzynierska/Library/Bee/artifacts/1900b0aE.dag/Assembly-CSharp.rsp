@@ -384,6 +384,7 @@
 "Assets/Scripts/MainTrafiicController.cs"
 "Assets/Scripts/MainTrafiicControllerForSczanieckiej.cs"
 "Assets/Scripts/PhaseSO.cs"
+"Assets/Scripts/RoadClosureRuntime.cs"
 "Assets/Scripts/Sensor.cs"
 "Assets/Scripts/SimulationInitializer.cs"
 "Assets/Scripts/SimulationScenarioSO.cs"

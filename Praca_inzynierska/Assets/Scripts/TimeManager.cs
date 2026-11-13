@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Reflection;
 using TMPro;
@@ -20,6 +20,8 @@ public class TimeManager : MonoBehaviour
     private const float realToSimRatio = 1f;
     public int choosedHour;
     private bool hasStartedStatistics = false;
+
+    public float SimulationTime => simulationTime;
 
     private void Start()
     {

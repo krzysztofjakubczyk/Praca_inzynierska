@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using UnityEngine;
 
 public class VehicleSpawner : MonoBehaviour
@@ -14,9 +14,16 @@ public class VehicleSpawner : MonoBehaviour
     [SerializeField] private int maxVehicles = 20;
     [SerializeField] private bool isSpawningBuses;
 
-    [Header("Lane & Turn Safeguard")]
-    [Tooltip("Jeśli zaznaczone, każdy zespawnowany pojazd automatycznie ma włączoną flagę skrętu w lewo.")]
-    [SerializeField] private bool isOnlyLeftTurn = false; // <--- NOWE ZABEZPIECZENIE
+    [Header("Spawn Safeguard")]
+    [Tooltip("Minimalny odstęp czasowy (w sekundach) między jakimikolwiek dwoma pojazdami z tego spawnera.")]
+    [SerializeField] private float minSpawnCooldown = 2f; // <--- NOWE ZABEZPIECZENIE (np. 2 sekundy)
+    private float lastSpawnTime = -999f;
+
+    [Header("Lane & Turn Settings")]
+    [SerializeField] private bool isOnlyLeftTurn = false;
+    [SerializeField] private bool isRandomTurn = true;
+    [Range(0f, 100f)]
+    [SerializeField] private float leftTurnProbability = 50f;
 
     [Header("Detection")]
     [SerializeField] private float raycastDistance = 8f;
@@ -24,6 +31,7 @@ public class VehicleSpawner : MonoBehaviour
 
     private int spawnedVehicles = 0;
     private bool canSpawn = true;
+    private int trafficLaneId;
 
     public int MaxVehicles
     {
@@ -36,9 +44,15 @@ public class VehicleSpawner : MonoBehaviour
         spawnInterval = interval;
     }
 
+    public void SetTrafficLaneId(int laneId)
+    {
+        trafficLaneId = laneId;
+    }
+
     public void ResetSpawner()
     {
         spawnedVehicles = 0;
+        lastSpawnTime = -999f;
         StopAllCoroutines();
         Invoke(nameof(StartSpawning), 2f);
     }
@@ -47,6 +61,7 @@ public class VehicleSpawner : MonoBehaviour
     {
         StartCoroutine(CheckSpawnAvailabilityLoop());
         StartCoroutine(SpawnVehicles());
+
         if (isSpawningBuses)
             StartCoroutine(SpawnBusRoutine());
     }
@@ -84,13 +99,20 @@ public class VehicleSpawner : MonoBehaviour
         return true;
     }
 
+    // Pomocnicza metoda sprawdzająca fizyczną strefę ORAZ czasowy bufor
+    private bool CanSafelySpawn()
+    {
+        return canSpawn && (Time.time - lastSpawnTime >= minSpawnCooldown);
+    }
+
     private IEnumerator SpawnVehicles()
     {
         while (spawnedVehicles < maxVehicles)
         {
-            if (canSpawn)
+            if (CanSafelySpawn())
             {
                 SpawnVehicle();
+                lastSpawnTime = Time.time; // Zapisujemy czas ostatniego spawnu
             }
             yield return new WaitForSeconds(spawnInterval);
         }
@@ -101,9 +123,11 @@ public class VehicleSpawner : MonoBehaviour
         while (spawnedVehicles < maxVehicles)
         {
             yield return new WaitForSeconds(intervalForBus);
-            if (canSpawn)
+
+            if (CanSafelySpawn())
             {
                 SpawnBus();
+                lastSpawnTime = Time.time; // Zapisujemy czas ostatniego spawnu
             }
         }
     }
@@ -112,18 +136,22 @@ public class VehicleSpawner : MonoBehaviour
     {
         GameObject vehicle = Instantiate(vehiclePrefabs, transform.position, transform.rotation);
         CarController carController = vehicle.GetComponent<CarController>();
-
         if (carController != null)
         {
+            carController.sourceLaneId = trafficLaneId;
             carController.SetFirstWaypoint(waypointList);
 
-            // ZABEZPIECZENIE: Jeśli spawner obsługuje pas wyłącznie do skrętu w lewo
             if (isOnlyLeftTurn)
             {
                 carController.isTurningLeft = true;
             }
-        }
+            else if (isRandomTurn)
+            {
+                float randomVal = Random.Range(0f, 100f);
+                carController.isTurningLeft = (randomVal < leftTurnProbability);
+            }
 
+        }
         spawnedVehicles++;
     }
 
@@ -131,16 +159,11 @@ public class VehicleSpawner : MonoBehaviour
     {
         GameObject bus = Instantiate(busPrefab, transform.position, transform.rotation);
         CarController carController = bus.GetComponent<CarController>();
-
         if (carController != null)
         {
+            carController.sourceLaneId = trafficLaneId;
             carController.SetFirstWaypoint(waypointList);
-
-            // ZABEZPIECZENIE: Jeśli spawner obsługuje pas wyłącznie do skrętu w lewo
-            if (isOnlyLeftTurn)
-            {
-                carController.isTurningLeft = true;
-            }
+            carController.isTurningLeft = false;
         }
         spawnedVehicles++;
     }

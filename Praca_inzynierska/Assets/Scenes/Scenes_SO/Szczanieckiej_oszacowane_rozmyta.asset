@@ -14,4 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   scenarioName: ul. Sczanieckiej; dane oszacowane; system logiki rozmytej
   useFuzzyLogic: 1
-  vehicleCountsByHour: []
+  vehicleCountsByHour:
+  - {fileID: 11400000, guid: 108ba84eee5b4284d8d464b9f0c8d5d8, type: 2}
+  - {fileID: 11400000, guid: d9a503631e0c44745b0cba253510f94e, type: 2}
+  - {fileID: 11400000, guid: ea9cd9c9d17ea504c8a95605354232d1, type: 2}
+  - {fileID: 11400000, guid: 7c5135a253e4e4f4fbff93a0951fda6b, type: 2}

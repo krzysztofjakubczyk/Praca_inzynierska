@@ -13,8 +13,8 @@ GameObject:
   - component: {fileID: 6235519761259254079}
   - component: {fileID: -6981975694458157898}
   - component: {fileID: -566944232893335450}
-  - component: {fileID: 4319532575485604089}
   - component: {fileID: 8832973447025941060}
+  - component: {fileID: 6061941970654571726}
   m_Layer: 0
   m_Name: Bus-Sczanieckiej
   m_TagString: Bus
@@ -31,7 +31,7 @@ Transform:
   m_GameObject: {fileID: 5505025493778204093}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.5784, y: 1.4914, z: 6.5038}
+  m_LocalPosition: {x: -0.5784, y: 1.72, z: 6.5038}
   m_LocalScale: {x: 2.22941, y: 2.1314564, z: 12.354923}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -99,10 +99,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c40128ded95e48846b3d38d8b11202b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stopDistance: 7
+  stopDistance: 12
   obstacleCheckRadius: 1.5
   waypoints: []
-  speed: 12
+  speed: 8
   rotationSpeed: 5
   CurrentSpeed: 0
   vehicleLength: 4
@@ -140,28 +140,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 116
   m_CollisionDetection: 0
---- !u!64 &4319532575485604089
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5505025493778204093}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!114 &8832973447025941060
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -179,3 +157,24 @@ MonoBehaviour:
   timeSpentOnTraffic: 0
   waitingTimeForGreenLight: 0
   cameFrom: 
+--- !u!65 &6061941970654571726
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5505025493778204093}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1.0000001, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}

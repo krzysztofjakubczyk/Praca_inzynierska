@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c31ec7078f70dde40a6deb313f56d059, type: 3}
+  m_Name: Szczanieckiej_oszacowane_rzeczywisty
+  m_EditorClassIdentifier: 
+  scenarioName: ul. Sczanieckiej; dane oszacowane; system rzeczywisty
+  useFuzzyLogic: 0
+  vehicleCountsByHour:
+  - {fileID: 11400000, guid: 108ba84eee5b4284d8d464b9f0c8d5d8, type: 2}
+  - {fileID: 11400000, guid: d9a503631e0c44745b0cba253510f94e, type: 2}
+  - {fileID: 11400000, guid: ea9cd9c9d17ea504c8a95605354232d1, type: 2}
+  - {fileID: 11400000, guid: 7c5135a253e4e4f4fbff93a0951fda6b, type: 2}

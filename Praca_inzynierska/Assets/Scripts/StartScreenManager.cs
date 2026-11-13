@@ -15,9 +15,8 @@ public class StartScreenManager : MonoBehaviour
     [SerializeField] private List<SimulationScenarioSO> scenarios;
 
     [Header("Nazwa g³ównej sceny symulacji")]
-    [SerializeField] private string mainSceneName = "Sczanieckiej_Main";
+    [SerializeField] private string mainSceneName = "Oszacowane Logika rozmyta";
 
-    // Wybrany scenariusz, do którego odwo³a siê nowa scena po za³adowaniu
     public static SimulationScenarioSO SelectedScenario { get; private set; }
 
     private void Awake()

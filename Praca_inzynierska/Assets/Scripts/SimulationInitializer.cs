@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+using UnityEngine;
+using System.Collections;
 
 public class SimulationInitializer : MonoBehaviour
 {
@@ -7,11 +8,12 @@ public class SimulationInitializer : MonoBehaviour
 
     private void Awake()
     {
+        RoadClosureRuntime.Reset();
         SimulationScenarioSO scenario = StartScreenManager.SelectedScenario;
 
         if (scenario == null)
         {
-            Debug.LogWarning("⚠️ Uruchomiono scenę bez wyboru z Menu! Używam domyślnych ustawień w scenie.");
+            Debug.LogWarning("Uruchomiono scenę bez wyboru z menu. Używam ustawień zapisanych w scenie.");
             return;
         }
 
@@ -27,6 +29,46 @@ public class SimulationInitializer : MonoBehaviour
             countOfVehiclesManager.countOfVehiclesToSpawn = scenario.vehicleCountsByHour;
         }
 
-        Debug.Log($"✅ Pomyślnie załadowano scenariusz: {scenario.scenarioName} | Fuzzy Logic: {scenario.useFuzzyLogic}");
+        Debug.Log($"Załadowano scenariusz: {scenario.scenarioName} | Fuzzy Logic: {scenario.useFuzzyLogic}");
+
+        if (scenario.roadClosureEvent != null && scenario.roadClosureEvent.enabled)
+        {
+            StartCoroutine(ManageRoadClosureEvent(scenario.roadClosureEvent));
+        }
+    }
+    private IEnumerator ManageRoadClosureEvent(RoadClosureEventSettings eventSettings)
+    {
+        TimeManager timeManager = null;
+        while (timeManager == null)
+        {
+            timeManager = FindObjectOfType<TimeManager>();
+            yield return null;
+        }
+
+        bool eventWasActive = false;
+        float eventEndTime = eventSettings.startTimeSeconds + eventSettings.durationSeconds;
+        while (true)
+        {
+            float simulationTime = timeManager.SimulationTime;
+            bool eventIsActive = eventSettings.durationSeconds > 0f
+                && simulationTime >= eventSettings.startTimeSeconds
+                && simulationTime < eventEndTime;
+
+            if (eventIsActive != eventWasActive)
+            {
+                if (countOfVehiclesManager != null)
+                {
+                    // Spawner indices 0 and 1 correspond to lanes 1 and 2.
+                    countOfVehiclesManager.SetStraightClosureForLaneIds(new[] { 1, 2 }, eventIsActive);
+                }
+
+                Debug.Log(eventIsActive
+                    ? "Zdarzenie rozpoczęte: zamknięto jazdę na wprost z Plater od Firlika; objazd prowadzi w lewo."
+                    : "Zdarzenie zakończone: przywrócono normalny wybór trasy.");
+                eventWasActive = eventIsActive;
+            }
+
+            yield return null;
+        }
     }
 }

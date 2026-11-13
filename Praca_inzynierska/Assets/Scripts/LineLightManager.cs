@@ -113,12 +113,7 @@ public class LineLightManager : MonoBehaviour
                     }
                 }
             }
-
-            // 3. SPÓJNE WYLICZENIE leftTurnAllowed (połączenie obu warunków)
-            bool isBlockedByCollisionLine = (hasCollisionLine && hasToWait && laneChooserToCollision != null && laneChooserToCollision.isDrivingStraight);
-
-            // Skręt w lewo jest dozwolony TYLKO wtedy, gdy żaden z warunków go nie blokuje
-            leftTurnAllowed = (!leftTurnBlockedBySensor && !isBlockedByCollisionLine);
+            leftTurnAllowed = !leftTurnBlockedBySensor;
 
             yield return new WaitForSeconds(0.2f); // Odświeżanie 5 razy na sekundę
         }

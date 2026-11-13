@@ -14,6 +14,7 @@ public class CarController : MonoBehaviour
     public float rotationSpeed = 5f;
     public float CurrentSpeed;
     public int vehicleLength = 4;
+    [HideInInspector] public int sourceLaneId;
 
     [Header("Intersection & Lights")]
     public LineLightManager lineManager;
@@ -61,14 +62,16 @@ public class CarController : MonoBehaviour
             bool waitingForLeftTurnBeforeIntersection = false;
             if (isTurningLeft && lineManager != null && !lineManager.leftTurnAllowed)
             {
+                if (CurrentWaypoint != null && CurrentWaypoint.isBeforeTrafiicLight)
+                {
                     waitingForLeftTurnBeforeIntersection = true;
-               
+                }
             }
 
             bool mustStop = stopForLight || isAfterCar || stopForCollision || isLaneBlocked || waitingForLeftTurnBeforeIntersection;
             float targetSpeed = mustStop ? 0f : speed;
 
-            float accelRate = mustStop ? 15f : 5f;
+            float accelRate = mustStop ? 25f : 5f;
             CurrentSpeed = Mathf.MoveTowards(CurrentSpeed, targetSpeed, accelRate * Time.deltaTime);
 
             if (CurrentSpeed > 0.001f)
@@ -154,15 +157,19 @@ public class CarController : MonoBehaviour
         }
     }
 
+    // W CarController.cs w metodzie CheckCollisionLaneState():
+
     private IEnumerator CheckCollisionLaneState()
     {
         while (isAtMiddleOfIntersection)
         {
-            if (previousWaypoint != null && previousWaypoint.laneChooser != null && previousWaypoint.laneChooser.isDrivingStraight)
+            // 1. Jeśli my sami jedziemy na wprost (!isTurningLeft), nie musimy czekać na żaden skręt kolizyjny!
+            if (!isTurningLeft)
             {
                 stopForCollision = false;
                 break;
             }
+            // 2. Jeśli skręcamy w lewo i linia wydała zgodę na skręt
             else if (lineManager != null && lineManager.leftTurnAllowed)
             {
                 stopForCollision = false;
