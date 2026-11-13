@@ -1,33 +1,50 @@
-using System.Collections.Generic;
+using UnityEngine;
 
 public static class RoadClosureRuntime
 {
-    private static readonly HashSet<int> closedStraightMovementLaneIds = new HashSet<int>();
+    private static RoadClosureEventSettings currentEvent;
+    private static TimeManager timeManager;
 
-    public static bool IsStraightMovementClosed(int laneId)
+    public static void Configure(RoadClosureEventSettings eventSettings)
     {
-        return closedStraightMovementLaneIds.Contains(laneId);
+        currentEvent = eventSettings;
+        timeManager = Object.FindObjectOfType<TimeManager>();
     }
 
-    public static void SetStraightMovementClosed(IEnumerable<int> laneIds, bool isClosed)
+    public static bool IsMovementClosed(int laneId, TrafficMovement movement)
     {
-        if (laneIds == null) return;
-
-        foreach (int laneId in laneIds)
+        if (currentEvent == null || !currentEvent.enabled || currentEvent.durationSeconds <= 0f)
         {
-            if (isClosed)
+            return false;
+        }
+
+        if (timeManager == null)
+        {
+            timeManager = Object.FindObjectOfType<TimeManager>();
+        }
+
+        if (timeManager == null || currentEvent.closedLaneMovements == null) return false;
+
+        float eventEndTime = currentEvent.startTimeSeconds + currentEvent.durationSeconds;
+        bool eventIsActive = timeManager.SimulationTime >= currentEvent.startTimeSeconds
+            && timeManager.SimulationTime < eventEndTime;
+
+        if (!eventIsActive) return false;
+
+        foreach (LaneMovementClosure closure in currentEvent.closedLaneMovements)
+        {
+            if (closure != null && closure.laneId == laneId && closure.movement == movement)
             {
-                closedStraightMovementLaneIds.Add(laneId);
-            }
-            else
-            {
-                closedStraightMovementLaneIds.Remove(laneId);
+                return true;
             }
         }
+
+        return false;
     }
 
     public static void Reset()
     {
-        closedStraightMovementLaneIds.Clear();
+        currentEvent = null;
+        timeManager = null;
     }
 }

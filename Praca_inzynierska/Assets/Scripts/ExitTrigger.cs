@@ -3,10 +3,21 @@ using System.Collections.Generic;
 
 public class ExitTrigger : MonoBehaviour
 {
+    public static int TotalVehiclesExited { get; private set; }
+    private static readonly HashSet<int> CountedVehicleIds = new HashSet<int>();
+
+    public static void ResetTotalVehiclesExited()
+    {
+        TotalVehiclesExited = 0;
+        CountedVehicleIds.Clear();
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Car"))
         {
+            if (CountedVehicleIds.Add(other.transform.root.gameObject.GetInstanceID()))
+                TotalVehiclesExited++;
             Timers timer = other.GetComponent<Timers>();
             if (timer != null)
             {

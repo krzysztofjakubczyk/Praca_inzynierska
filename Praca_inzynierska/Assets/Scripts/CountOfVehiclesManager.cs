@@ -65,8 +65,4 @@ public class CountOfVehiclesManager : MonoBehaviour
             spawners[i].MaxVehicles = vehicleCounts.CountOfVehicles[i];
         }
     }
-    public void SetStraightClosureForLaneIds(IEnumerable<int> laneIds, bool isActive)
-    {
-        RoadClosureRuntime.SetStraightMovementClosed(laneIds, isActive);
-    }
 }

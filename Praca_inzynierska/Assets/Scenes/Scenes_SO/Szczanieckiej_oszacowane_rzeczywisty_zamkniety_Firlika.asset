@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c31ec7078f70dde40a6deb313f56d059, type: 3}
-  m_Name: Szczanieckiej_oszacowane_rzeczywisty_zamkniecie_na_wprost_Firlika
-  m_EditorClassIdentifier:
-  scenarioName: ul. Sczanieckiej; dane oszacowane; system rzeczywisty; zamknięcie jazdy na wprost z Plater od Firlika
+  m_Name: Szczanieckiej_oszacowane_rzeczywisty_zamkniety_Firlika
+  m_EditorClassIdentifier: 
+  scenarioName: "ul. Sczanieckiej; dane oszacowane; system rzeczywisty; zamknięcia ruchów na pasach 1, 2, 5 i 8"
   useFuzzyLogic: 0
   vehicleCountsByHour:
   - {fileID: 11400000, guid: 108ba84eee5b4284d8d464b9f0c8d5d8, type: 2}
@@ -21,5 +21,14 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 7c5135a253e4e4f4fbff93a0951fda6b, type: 2}
   roadClosureEvent:
     enabled: 1
-    startTimeSeconds: 0
-    durationSeconds: 0
+    startTimeSeconds: 10
+    durationSeconds: 700
+    closedLaneMovements:
+    - laneId: 1
+      movement: 0
+    - laneId: 2
+      movement: 0
+    - laneId: 5
+      movement: 2
+    - laneId: 8
+      movement: 1

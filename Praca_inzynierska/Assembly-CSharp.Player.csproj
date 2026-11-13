@@ -55,7 +55,7 @@
     <UnityVersion>2022.3.21f1</UnityVersion>
   </PropertyGroup>
   <ItemGroup>
-    <Analyzer Include="C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\Extensions\Microsoft\Visual Studio Tools for Unity\Analyzers\Microsoft.Unity.Analyzers.dll" />
+    <Analyzer Include="C:\Program Files\Microsoft Visual Studio\18\Community\Common7\IDE\Extensions\Microsoft\Visual Studio Tools for Unity\Analyzers\Microsoft.Unity.Analyzers.dll" />
     <Analyzer Include="C:\Program Files\Unity\Hub\Editor\2022.3.21f1\Editor\Data\Tools\Unity.SourceGenerators\Unity.SourceGenerators.dll" />
     <Analyzer Include="C:\Program Files\Unity\Hub\Editor\2022.3.21f1\Editor\Data\Tools\Unity.SourceGenerators\Unity.Properties.SourceGenerator.dll" />
   </ItemGroup>
@@ -72,6 +72,7 @@
     <Compile Include="Assets\Scripts\CountSO.cs" />
     <Compile Include="Assets\Scripts\DensitySensor.cs" />
     <Compile Include="Assets\Scripts\MainTrafiicController.cs" />
+    <Compile Include="Assets\Scripts\RoadClosureRuntime.cs" />
     <Compile Include="Assets\Scripts\StaticInterfaceImplementation.cs" />
     <Compile Include="Assets\Scripts\CarDestroyer.cs" />
     <Compile Include="Assets\Scripts\CountOfVehiclesManager.cs" />
@@ -84,6 +85,7 @@
     <Compile Include="Assets\Scripts\StatisticManagerForSczanieckiej.cs" />
     <Compile Include="Assets\Scripts\ITrafficTimingStrategy.cs" />
     <Compile Include="Assets\Scripts\StartScreenManager.cs" />
+    <Compile Include="Assets\Scripts\TrafficSignalMlAgent.cs" />
     <Compile Include="Assets\Scripts\CameraManager.cs" />
     <Compile Include="Assets\Scripts\Sensor.cs" />
     <Compile Include="Assets\Scripts\exitManager.cs" />
@@ -392,8 +394,28 @@
       <HintPath>C:\Program Files\Unity\Hub\Editor\2022.3.21f1\Editor\Data\PlaybackEngines\WindowsStandaloneSupport\Variations\mono\Managed\UnityEngine.XRModule.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="System.IO.Abstractions">
+      <HintPath>Library\PackageCache\com.unity.ml-agents@2.3.0-exp.3\Plugins\System.IO.Abstractions.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Interactive.Async">
+      <HintPath>Library\PackageCache\com.unity.ml-agents@2.3.0-exp.3\Plugins\ProtoBuffer\System.Interactive.Async.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="Unity.VisualScripting.Antlr3.Runtime">
       <HintPath>Library\PackageCache\com.unity.visualscripting@1.9.1\Runtime\VisualScripting.Flow\Dependencies\NCalc\Unity.VisualScripting.Antlr3.Runtime.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Google.Protobuf">
+      <HintPath>Library\PackageCache\com.unity.barracuda@3.0.0\Barracuda\Runtime\Plugins\ProtoBuffer\Google.Protobuf.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Grpc.Core">
+      <HintPath>Library\PackageCache\com.unity.ml-agents@2.3.0-exp.3\Plugins\ProtoBuffer\Grpc.Core.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.IO.Abstractions.TestingHelpers">
+      <HintPath>Library\PackageCache\com.unity.ml-agents@2.3.0-exp.3\Plugins\System.IO.Abstractions.TestingHelpers.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="FLS">
@@ -898,9 +920,25 @@
       <Project>{0C561E4D-860D-EB94-0D27-ECCB5CCC51A4}</Project>
       <Name>Unity.AI.Navigation.Player</Name>
     </ProjectReference>
+    <ProjectReference Include="Unity.Burst.Player.csproj">
+      <Project>{B41CFBAB-1F2F-3B31-5CCF-5461A82FA652}</Project>
+      <Name>Unity.Burst.Player</Name>
+    </ProjectReference>
+    <ProjectReference Include="Unity.Barracuda.ONNX.Player.csproj">
+      <Project>{C53DDC79-A54C-A4EC-EBF2-CC37708E0B91}</Project>
+      <Name>Unity.Barracuda.ONNX.Player</Name>
+    </ProjectReference>
     <ProjectReference Include="Unity.VisualScripting.Core.Player.csproj">
       <Project>{5BF5DD6E-1D57-6516-AA57-3D2B6FA40019}</Project>
       <Name>Unity.VisualScripting.Core.Player</Name>
+    </ProjectReference>
+    <ProjectReference Include="Unity.Barracuda.Player.csproj">
+      <Project>{26D1BB52-13DA-95FF-404F-51EB02863EC7}</Project>
+      <Name>Unity.Barracuda.Player</Name>
+    </ProjectReference>
+    <ProjectReference Include="Unity.Barracuda.BurstBLAS.Player.csproj">
+      <Project>{12750B80-3FAC-9587-AED4-4401B6B6BF18}</Project>
+      <Name>Unity.Barracuda.BurstBLAS.Player</Name>
     </ProjectReference>
     <ProjectReference Include="Unity.VisualScripting.Flow.Player.csproj">
       <Project>{E0A7A4C7-817B-EEC1-A4FB-360CA86FB976}</Project>
@@ -909,6 +947,18 @@
     <ProjectReference Include="Unity.Timeline.Player.csproj">
       <Project>{4F77C8FC-8CEC-1513-D585-53540E620A30}</Project>
       <Name>Unity.Timeline.Player</Name>
+    </ProjectReference>
+    <ProjectReference Include="Unity.ML-Agents.Player.csproj">
+      <Project>{52D69680-7126-5CB8-3FAE-AFFC19EF459D}</Project>
+      <Name>Unity.ML-Agents.Player</Name>
+    </ProjectReference>
+    <ProjectReference Include="Unity.ML-Agents.CommunicatorObjects.Player.csproj">
+      <Project>{A76937E6-8B09-6FAC-AD8F-091C390E1630}</Project>
+      <Name>Unity.ML-Agents.CommunicatorObjects.Player</Name>
+    </ProjectReference>
+    <ProjectReference Include="Unity.Mathematics.Player.csproj">
+      <Project>{6ED8A146-3998-7748-B1C6-564A62843651}</Project>
+      <Name>Unity.Mathematics.Player</Name>
     </ProjectReference>
     <ProjectReference Include="Unity.TextMeshPro.Player.csproj">
       <Project>{1BDD16FB-EDA7-3934-F207-836B6942A645}</Project>

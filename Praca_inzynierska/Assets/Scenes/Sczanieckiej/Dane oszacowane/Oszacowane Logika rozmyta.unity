@@ -9165,6 +9165,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 798457695}
     - target: {fileID: 4821799220728266279, guid: 4c0589fcde2b67541aec4e838d807714, type: 3}
+      propertyPath: currentChoosedSystemType
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4821799220728266279, guid: 4c0589fcde2b67541aec4e838d807714, type: 3}
       propertyPath: phasesInCycle.Array.data[0]
       value: 
       objectReference: {fileID: 1983586013}
@@ -12954,6 +12958,7 @@ GameObject:
   m_Component:
   - component: {fileID: 798457694}
   - component: {fileID: 798457695}
+  - component: {fileID: 8000000000000000123}
   m_Layer: 0
   m_Name: CountOfVehiclesManager
   m_TagString: Untagged
@@ -13359,6 +13364,10 @@ PrefabInstance:
     - target: {fileID: 2344605760804664235, guid: a62126b02651b0f47933ce590b5915ee, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2951707867576324168, guid: a62126b02651b0f47933ce590b5915ee, type: 3}
+      propertyPath: lane1Movement
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2951707867576324168, guid: a62126b02651b0f47933ce590b5915ee, type: 3}
       propertyPath: isDrivingStraight
@@ -22788,6 +22797,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2951707867576324168, guid: a62126b02651b0f47933ce590b5915ee, type: 3}
+      propertyPath: lane1Movement
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2951707867576324168, guid: a62126b02651b0f47933ce590b5915ee, type: 3}
       propertyPath: isDrivingStraight
       value: 0
       objectReference: {fileID: 0}
@@ -23622,6 +23635,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2951707867576324168, guid: a62126b02651b0f47933ce590b5915ee, type: 3}
+      propertyPath: lane1Movement
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2951707867576324168, guid: a62126b02651b0f47933ce590b5915ee, type: 3}
       propertyPath: isDrivingStraight
       value: 0
       objectReference: {fileID: 0}
@@ -24293,6 +24310,10 @@ PrefabInstance:
     - target: {fileID: 2344605760804664235, guid: a62126b02651b0f47933ce590b5915ee, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2951707867576324168, guid: a62126b02651b0f47933ce590b5915ee, type: 3}
+      propertyPath: lane1Movement
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2951707867576324168, guid: a62126b02651b0f47933ce590b5915ee, type: 3}
       propertyPath: isDrivingStraight
@@ -35302,6 +35323,20 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1122772047419058631, guid: 308409165dfb4f645a73bb4ec74f0dab, type: 3}
   m_PrefabInstance: {fileID: 6490296464833746051}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &8000000000000000123
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 798457693}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c10756d330f2c0248ade225c34a5b02c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  traficController: {fileID: 0}
+  countOfVehiclesManager: {fileID: 798457695}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

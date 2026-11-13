@@ -15,6 +15,8 @@ public class CarController : MonoBehaviour
     public float CurrentSpeed;
     public int vehicleLength = 4;
     [HideInInspector] public int sourceLaneId;
+    [HideInInspector] public bool hasChosenLaneRoute;
+    [HideInInspector] public bool stopForRoadClosure;
 
     [Header("Intersection & Lights")]
     public LineLightManager lineManager;
@@ -68,7 +70,7 @@ public class CarController : MonoBehaviour
                 }
             }
 
-            bool mustStop = stopForLight || isAfterCar || stopForCollision || isLaneBlocked || waitingForLeftTurnBeforeIntersection;
+            bool mustStop = stopForLight || isAfterCar || stopForCollision || isLaneBlocked || stopForRoadClosure || waitingForLeftTurnBeforeIntersection;
             float targetSpeed = mustStop ? 0f : speed;
 
             float accelRate = mustStop ? 25f : 5f;

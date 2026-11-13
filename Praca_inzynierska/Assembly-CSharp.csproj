@@ -55,7 +55,7 @@
     <UnityVersion>2022.3.21f1</UnityVersion>
   </PropertyGroup>
   <ItemGroup>
-    <Analyzer Include="C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\Extensions\Microsoft\Visual Studio Tools for Unity\Analyzers\Microsoft.Unity.Analyzers.dll" />
+    <Analyzer Include="C:\Program Files\Microsoft Visual Studio\18\Community\Common7\IDE\Extensions\Microsoft\Visual Studio Tools for Unity\Analyzers\Microsoft.Unity.Analyzers.dll" />
     <Analyzer Include="C:\Program Files\Unity\Hub\Editor\2022.3.21f1\Editor\Data\Tools\Unity.SourceGenerators\Unity.SourceGenerators.dll" />
     <Analyzer Include="C:\Program Files\Unity\Hub\Editor\2022.3.21f1\Editor\Data\Tools\Unity.SourceGenerators\Unity.Properties.SourceGenerator.dll" />
   </ItemGroup>
@@ -72,6 +72,7 @@
     <Compile Include="Assets\Scripts\CountSO.cs" />
     <Compile Include="Assets\Scripts\DensitySensor.cs" />
     <Compile Include="Assets\Scripts\MainTrafiicController.cs" />
+    <Compile Include="Assets\Scripts\RoadClosureRuntime.cs" />
     <Compile Include="Assets\Scripts\StaticInterfaceImplementation.cs" />
     <Compile Include="Assets\Scripts\CarDestroyer.cs" />
     <Compile Include="Assets\Scripts\CountOfVehiclesManager.cs" />
@@ -84,6 +85,7 @@
     <Compile Include="Assets\Scripts\StatisticManagerForSczanieckiej.cs" />
     <Compile Include="Assets\Scripts\ITrafficTimingStrategy.cs" />
     <Compile Include="Assets\Scripts\StartScreenManager.cs" />
+    <Compile Include="Assets\Scripts\TrafficSignalMlAgent.cs" />
     <Compile Include="Assets\Scripts\CameraManager.cs" />
     <Compile Include="Assets\Scripts\Sensor.cs" />
     <Compile Include="Assets\Scripts\exitManager.cs" />
@@ -456,12 +458,32 @@
       <HintPath>C:\Program Files\Unity\Hub\Editor\2022.3.21f1\Editor\Data\Managed\UnityEngine\UnityEditor.UnityConnectModule.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="System.IO.Abstractions">
+      <HintPath>Library\PackageCache\com.unity.ml-agents@2.3.0-exp.3\Plugins\System.IO.Abstractions.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="ReportGeneratorMerged">
       <HintPath>Library\PackageCache\com.unity.testtools.codecoverage@1.2.5\lib\ReportGenerator\ReportGeneratorMerged.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="System.Interactive.Async">
+      <HintPath>Library\PackageCache\com.unity.ml-agents@2.3.0-exp.3\Plugins\ProtoBuffer\System.Interactive.Async.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="Unity.VisualScripting.Antlr3.Runtime">
       <HintPath>Library\PackageCache\com.unity.visualscripting@1.9.1\Runtime\VisualScripting.Flow\Dependencies\NCalc\Unity.VisualScripting.Antlr3.Runtime.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Google.Protobuf">
+      <HintPath>Library\PackageCache\com.unity.barracuda@3.0.0\Barracuda\Runtime\Plugins\ProtoBuffer\Google.Protobuf.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Grpc.Core">
+      <HintPath>Library\PackageCache\com.unity.ml-agents@2.3.0-exp.3\Plugins\ProtoBuffer\Grpc.Core.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.IO.Abstractions.TestingHelpers">
+      <HintPath>Library\PackageCache\com.unity.ml-agents@2.3.0-exp.3\Plugins\System.IO.Abstractions.TestingHelpers.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="FLS">
@@ -978,9 +1000,25 @@
       <Project>{0DB37B56-C8EE-2ADB-0B0A-4AC042615EBB}</Project>
       <Name>Unity.AI.Navigation</Name>
     </ProjectReference>
+    <ProjectReference Include="Unity.Burst.Editor.csproj">
+      <Project>{CF8FF38D-51ED-03C4-4223-58ACF1931DE5}</Project>
+      <Name>Unity.Burst.Editor</Name>
+    </ProjectReference>
+    <ProjectReference Include="Unity.Burst.csproj">
+      <Project>{765AE6D5-4BC1-E2B3-188E-B657DF18E113}</Project>
+      <Name>Unity.Burst</Name>
+    </ProjectReference>
     <ProjectReference Include="Unity.PlasticSCM.Editor.csproj">
       <Project>{29E392C0-33CA-0EF8-D1C1-9B2839B7F40D}</Project>
       <Name>Unity.PlasticSCM.Editor</Name>
+    </ProjectReference>
+    <ProjectReference Include="Unity.Barracuda.ONNX.csproj">
+      <Project>{C26E4DB1-6E6E-4239-5A6C-3F1361C6F5D8}</Project>
+      <Name>Unity.Barracuda.ONNX</Name>
+    </ProjectReference>
+    <ProjectReference Include="Unity.Barracuda.MacBLAS.csproj">
+      <Project>{DA917894-B311-FC4E-F072-D8992FF414F4}</Project>
+      <Name>Unity.Barracuda.MacBLAS</Name>
     </ProjectReference>
     <ProjectReference Include="Unity.Timeline.Editor.csproj">
       <Project>{EB6DE6BB-B92D-4E1E-C175-9BC2990FE788}</Project>
@@ -990,13 +1028,21 @@
       <Project>{868B883D-F960-A51F-0357-D2D86F8DAFB0}</Project>
       <Name>Unity.VisualScripting.Shared.Editor</Name>
     </ProjectReference>
-    <ProjectReference Include="Unity.VisualStudio.Editor.csproj">
-      <Project>{68C63D70-58F1-55D5-CE46-B1184B15B93B}</Project>
-      <Name>Unity.VisualStudio.Editor</Name>
+    <ProjectReference Include="Unity.Barracuda.iOSBLAS.csproj">
+      <Project>{115E10ED-E2D9-2F59-7928-BB0DF53DBF9B}</Project>
+      <Name>Unity.Barracuda.iOSBLAS</Name>
+    </ProjectReference>
+    <ProjectReference Include="Unity.ML-Agents.Editor.csproj">
+      <Project>{0F693F5F-0A8A-0183-D51E-7E99F45FF10A}</Project>
+      <Name>Unity.ML-Agents.Editor</Name>
     </ProjectReference>
     <ProjectReference Include="Unity.VisualScripting.Core.csproj">
       <Project>{63AF9424-2016-3387-59A8-406A3B252640}</Project>
       <Name>Unity.VisualScripting.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="Unity.VisualStudio.Editor.csproj">
+      <Project>{68C63D70-58F1-55D5-CE46-B1184B15B93B}</Project>
+      <Name>Unity.VisualStudio.Editor</Name>
     </ProjectReference>
     <ProjectReference Include="Unity.VisualScripting.Core.Editor.csproj">
       <Project>{B11E6964-6BFC-1D20-E50C-D42FD28551E3}</Project>
@@ -1006,6 +1052,14 @@
       <Project>{D5AD54FD-E959-691C-98C9-E24A03613E6A}</Project>
       <Name>Unity.Rider.Editor</Name>
     </ProjectReference>
+    <ProjectReference Include="Unity.Barracuda.csproj">
+      <Project>{11092760-BF4A-4C96-F182-65BE810B81F3}</Project>
+      <Name>Unity.Barracuda</Name>
+    </ProjectReference>
+    <ProjectReference Include="Unity.Barracuda.BurstBLAS.csproj">
+      <Project>{4C00D5D0-076F-5268-121A-2DC28EA8C5BB}</Project>
+      <Name>Unity.Barracuda.BurstBLAS</Name>
+    </ProjectReference>
     <ProjectReference Include="Unity.VisualScripting.Flow.csproj">
       <Project>{38B4CA15-291C-43ED-253C-B2BD5674917D}</Project>
       <Name>Unity.VisualScripting.Flow</Name>
@@ -1013,6 +1067,10 @@
     <ProjectReference Include="Unity.VisualScripting.Flow.Editor.csproj">
       <Project>{7370CB8D-85BF-FDE7-9FBB-7A2A8ACF8F4D}</Project>
       <Name>Unity.VisualScripting.Flow.Editor</Name>
+    </ProjectReference>
+    <ProjectReference Include="Unity.Mathematics.Editor.csproj">
+      <Project>{7ED333FE-C20C-0E9C-147D-C7C60CA64B6B}</Project>
+      <Name>Unity.Mathematics.Editor</Name>
     </ProjectReference>
     <ProjectReference Include="Unity.Timeline.csproj">
       <Project>{2550ABC7-27DE-97F2-8B57-3576A9F0E191}</Project>
@@ -1042,9 +1100,21 @@
       <Project>{141EAF59-E03A-4E9F-BADF-333097597D9F}</Project>
       <Name>Unity.AI.Navigation.Updater</Name>
     </ProjectReference>
+    <ProjectReference Include="Unity.ML-Agents.csproj">
+      <Project>{74D80D1D-04D6-141C-17F5-1077DD5233EC}</Project>
+      <Name>Unity.ML-Agents</Name>
+    </ProjectReference>
+    <ProjectReference Include="Unity.ML-Agents.CommunicatorObjects.csproj">
+      <Project>{17AC216A-3853-29DE-9A8E-A2BBD03E8401}</Project>
+      <Name>Unity.ML-Agents.CommunicatorObjects</Name>
+    </ProjectReference>
     <ProjectReference Include="Unity.VisualScripting.State.Editor.csproj">
       <Project>{355F4057-831B-478B-3C76-57E4031281D1}</Project>
       <Name>Unity.VisualScripting.State.Editor</Name>
+    </ProjectReference>
+    <ProjectReference Include="Unity.Mathematics.csproj">
+      <Project>{73DA445A-8509-47A1-BCB1-02B270FFB207}</Project>
+      <Name>Unity.Mathematics</Name>
     </ProjectReference>
     <ProjectReference Include="Unity.TextMeshPro.csproj">
       <Project>{76DFCEEB-5465-36B9-4EAB-3FF00E66E680}</Project>
@@ -1053,6 +1123,10 @@
     <ProjectReference Include="Unity.TextMeshPro.Editor.csproj">
       <Project>{08656E8E-EC99-9B77-1E3B-CE113BED0F3F}</Project>
       <Name>Unity.TextMeshPro.Editor</Name>
+    </ProjectReference>
+    <ProjectReference Include="Unity.Barracuda.Editor.csproj">
+      <Project>{5FB2F02A-E98D-065E-6C4B-A5B87ECE5066}</Project>
+      <Name>Unity.Barracuda.Editor</Name>
     </ProjectReference>
     <ProjectReference Include="Unity.AI.Navigation.Editor.csproj">
       <Project>{115B892D-0F82-584A-FFBC-BB9EA9CC2A77}</Project>

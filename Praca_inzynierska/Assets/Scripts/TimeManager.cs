@@ -13,6 +13,7 @@ public class TimeManager : MonoBehaviour
     [SerializeField] private int simulationSpeedUpValue;
     [SerializeField] public bool isAfternoonPeakOnly; // Czy symulacja działa tylko w szczycie popołudniowym?
     [SerializeField] private CountOfVehiclesManager countOfVehiclesManager;
+    [SerializeField] private bool repeatHourForMlTraining;
 
     private bool isPaused = false;
     private bool isSpeeded = false;
@@ -20,8 +21,10 @@ public class TimeManager : MonoBehaviour
     private const float realToSimRatio = 1f;
     public int choosedHour;
     private bool hasStartedStatistics = false;
+    private int completedTrainingEpisodes;
 
     public float SimulationTime => simulationTime;
+    public bool RepeatHourForMlTraining => repeatHourForMlTraining;
 
     private void Start()
     {
@@ -58,7 +61,7 @@ public class TimeManager : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.P)) TogglePause();
         if (Input.GetKeyDown(KeyCode.Q)) ToggleSpeedUp();
-        if (simulationTime >= 3620f) // Jeśli upłynęła cała godzina lub 12 minut i 20 sekund, zatrzymaj symulację
+        if (simulationTime >= 3620f && !repeatHourForMlTraining) // Tryb zwykły kończy się po godzinie.
         {
             PauseGame();
         }
@@ -93,11 +96,35 @@ public class TimeManager : MonoBehaviour
     private void ResetSimulation()
     {
         simulationTime = 0f;
+        hasStartedStatistics = false;
         foreach (Counter counter in Counters) counter.ResetCounter();
         foreach (GameObject car in GameObject.FindGameObjectsWithTag("Car")) Destroy(car, 0.5f);
         foreach (GameObject bus in GameObject.FindGameObjectsWithTag("Bus")) Destroy(bus, 0.5f);
         foreach (VehicleSpawner spawner in countOfVehiclesManager.spawners) spawner.ResetSpawner();
         foreach (VehicleSpawner tramSpawner in countOfVehiclesManager.tramSpawners) tramSpawner.ResetSpawner();
+    }
+
+    /// <summary>
+    /// Kończy epizod treningowy po pełnej godzinie i przygotowuje tę samą godzinę ruchu ponownie.
+    /// Wywoływane przez MainTrafficController na granicy pełnego cyklu świateł.
+    /// </summary>
+    public bool CompleteMlTrainingEpisode(TrafficSignalMlAgent agent)
+    {
+        if (!repeatHourForMlTraining || simulationTime < 3620f || agent == null)
+            return false;
+
+        completedTrainingEpisodes++;
+        ResetSimulation();
+        ResetAllSensors();
+        ResetTrafficLights();
+        ResetStatistics();
+        ExitTrigger.ResetTotalVehiclesExited();
+        isPaused = false;
+        Time.timeScale = isSpeeded ? simulationSpeedUpValue : realToSimRatio;
+        agent.EndEpisode();
+
+        Debug.Log($"[ML Training] Zakończono epizod {completedTrainingEpisodes}; rozpoczęto ponownie symulację godziny {choosedHour:D2}:00.");
+        return true;
     }
     private void ResetAllSensors()
     {

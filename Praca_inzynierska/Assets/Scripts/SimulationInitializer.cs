@@ -1,5 +1,4 @@
 using UnityEngine;
-using System.Collections;
 
 public class SimulationInitializer : MonoBehaviour
 {
@@ -31,44 +30,12 @@ public class SimulationInitializer : MonoBehaviour
 
         Debug.Log($"Załadowano scenariusz: {scenario.scenarioName} | Fuzzy Logic: {scenario.useFuzzyLogic}");
 
+        RoadClosureRuntime.Configure(scenario.roadClosureEvent);
+
         if (scenario.roadClosureEvent != null && scenario.roadClosureEvent.enabled)
         {
-            StartCoroutine(ManageRoadClosureEvent(scenario.roadClosureEvent));
-        }
-    }
-    private IEnumerator ManageRoadClosureEvent(RoadClosureEventSettings eventSettings)
-    {
-        TimeManager timeManager = null;
-        while (timeManager == null)
-        {
-            timeManager = FindObjectOfType<TimeManager>();
-            yield return null;
-        }
-
-        bool eventWasActive = false;
-        float eventEndTime = eventSettings.startTimeSeconds + eventSettings.durationSeconds;
-        while (true)
-        {
-            float simulationTime = timeManager.SimulationTime;
-            bool eventIsActive = eventSettings.durationSeconds > 0f
-                && simulationTime >= eventSettings.startTimeSeconds
-                && simulationTime < eventEndTime;
-
-            if (eventIsActive != eventWasActive)
-            {
-                if (countOfVehiclesManager != null)
-                {
-                    // Spawner indices 0 and 1 correspond to lanes 1 and 2.
-                    countOfVehiclesManager.SetStraightClosureForLaneIds(new[] { 1, 2 }, eventIsActive);
-                }
-
-                Debug.Log(eventIsActive
-                    ? "Zdarzenie rozpoczęte: zamknięto jazdę na wprost z Plater od Firlika; objazd prowadzi w lewo."
-                    : "Zdarzenie zakończone: przywrócono normalny wybór trasy.");
-                eventWasActive = eventIsActive;
-            }
-
-            yield return null;
+            Debug.Log($"Zdarzenie drogowe skonfigurowane: start {scenario.roadClosureEvent.startTimeSeconds}s, " +
+                      $"czas trwania {scenario.roadClosureEvent.durationSeconds}s.");
         }
     }
 }
