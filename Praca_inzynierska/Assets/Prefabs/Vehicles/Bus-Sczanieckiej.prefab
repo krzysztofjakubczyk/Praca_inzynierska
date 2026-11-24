@@ -102,10 +102,13 @@ MonoBehaviour:
   stopDistance: 12
   obstacleCheckRadius: 1.5
   waypoints: []
-  speed: 8
+  speed: 15
   rotationSpeed: 5
   CurrentSpeed: 0
   vehicleLength: 4
+  sourceLaneId: 0
+  hasChosenLaneRoute: 0
+  stopForRoadClosure: 0
   lineManager: {fileID: 0}
   isTurningLeft: 0
   stopForLight: 0

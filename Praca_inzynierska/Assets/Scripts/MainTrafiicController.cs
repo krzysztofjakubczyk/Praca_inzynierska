@@ -26,7 +26,12 @@ public class MainTrafficController : MonoBehaviour
     [SerializeField] private NNModel trainedPolicyModel;
     [Header("ML Agent Diagnostics")]
     [SerializeField, Min(1)] private int mlLogIntervalCycles = 10;
+    [Header("ML Reward")]
+    [Tooltip("Dodatkowa kara za każdy metr wzrostu łącznej kolejki względem poprzedniego cyklu.")]
+    [SerializeField, Min(0f)] private float queueGrowthPenaltyPerMeter = 0.05f;
     private int completedMlCycles;
+    private float previousCycleQueueLength;
+    private bool hasPreviousCycleQueueLength;
     public int fullCycleTime = 120;
     private int periodOfTimeToCheckCountOfVehicles = 4;
     private int sample = 0;
@@ -187,10 +192,16 @@ public class MainTrafficController : MonoBehaviour
 
         float queueAfter = GetTotalQueueLength();
         int vehiclesExited = ExitTrigger.TotalVehiclesExited - exitsBefore;
+        float comparisonQueue = hasPreviousCycleQueueLength ? previousCycleQueueLength : queueBefore;
+        float queueChangeFromPreviousCycle = queueAfter - comparisonQueue;
+        float queueGrowthPenalty = Mathf.Max(0f, queueChangeFromPreviousCycle) * queueGrowthPenaltyPerMeter;
         float queuePenalty = queueAfter * fullCycleTime * 0.0001f;
-        float queueChangeReward = (queueBefore - queueAfter) * 0.005f;
+        float queueChangeReward = -queueChangeFromPreviousCycle * 0.005f;
         float reward = vehiclesExited * 0.1f + queueChangeReward - queuePenalty;
+        reward -= queueGrowthPenalty;
         trafficSignalMlAgent.AddPhaseReward(reward);
+        previousCycleQueueLength = queueAfter;
+        hasPreviousCycleQueueLength = true;
 
         completedMlCycles++;
         if (mlLogIntervalCycles > 0 && completedMlCycles % mlLogIntervalCycles == 0)
@@ -203,7 +214,8 @@ public class MainTrafficController : MonoBehaviour
             }
 
             Debug.Log($"[ML Traffic] Cykl {completedMlCycles}; {phaseTimings}; " +
-                      $"pojazdy wyjechały: {vehiclesExited}; kolejka: {queueBefore:F1} -> {queueAfter:F1}; nagroda: {reward:F3}");
+                      $"pojazdy wyjechały: {vehiclesExited}; kolejka: {comparisonQueue:F1} -> {queueAfter:F1}; " +
+                      $"kara za wzrost kolejki: {queueGrowthPenalty:F3}; nagroda: {reward:F3}");
         }
 
         TimeManager timeManager = FindObjectOfType<TimeManager>();
@@ -216,6 +228,8 @@ public class MainTrafficController : MonoBehaviour
                 carQueueOnInlet[phase] = 0f;
             }
             sample = 0;
+            previousCycleQueueLength = 0f;
+            hasPreviousCycleQueueLength = false;
         }
     }
 
