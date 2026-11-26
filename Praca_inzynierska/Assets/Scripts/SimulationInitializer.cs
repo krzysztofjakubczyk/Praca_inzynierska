@@ -2,7 +2,8 @@ using UnityEngine;
 
 public class SimulationInitializer : MonoBehaviour
 {
-    [SerializeField] private TraficController traficController;
+    [SerializeField] private TraficController traficController; // stary sterownik (nieużywany w scenach)
+    [SerializeField] private MainTrafficController mainTrafficController;
     [SerializeField] private CountOfVehiclesManager countOfVehiclesManager;
 
     private void Awake()
@@ -16,19 +17,21 @@ public class SimulationInitializer : MonoBehaviour
             return;
         }
 
-        // 1. Ustawienie flage Fuzzy Logic w sterowniku świateł
         if (traficController != null)
-        {
             traficController.useFuzzyLogic = scenario.useFuzzyLogic;
-        }
 
-        // 2. Podpięcie listy SO z natężeniem pojazdów dla poszczególnych godzin
+        // Wcześniej flaga trafiała tylko do starego TraficController, którego nie ma w scenach,
+        // więc wybór "Logika rozmyta" w menu nic nie zmieniał. Teraz ustawiamy właściwy sterownik.
+        if (mainTrafficController == null)
+            mainTrafficController = FindObjectOfType<MainTrafficController>();
+
+        if (mainTrafficController != null && TryGetSystemType(scenario, out systemType type))
+            mainTrafficController.SetSystemType(type);
+
         if (countOfVehiclesManager != null && scenario.vehicleCountsByHour != null)
-        {
             countOfVehiclesManager.countOfVehiclesToSpawn = scenario.vehicleCountsByHour;
-        }
 
-        Debug.Log($"Załadowano scenariusz: {scenario.scenarioName} | Fuzzy Logic: {scenario.useFuzzyLogic}");
+        Debug.Log($"Załadowano scenariusz: {scenario.scenarioName} | sterowanie: {scenario.controlSystem} | Fuzzy Logic: {scenario.useFuzzyLogic}");
 
         RoadClosureRuntime.Configure(scenario.roadClosureEvent);
 
@@ -36,6 +39,21 @@ public class SimulationInitializer : MonoBehaviour
         {
             Debug.Log($"Zdarzenie drogowe skonfigurowane: start {scenario.roadClosureEvent.startTimeSeconds}s, " +
                       $"czas trwania {scenario.roadClosureEvent.durationSeconds}s.");
+        }
+    }
+
+    private static bool TryGetSystemType(SimulationScenarioSO scenario, out systemType type)
+    {
+        switch (scenario.controlSystem)
+        {
+            case ScenarioControlSystem.FromUseFuzzyLogicFlag:
+                type = scenario.useFuzzyLogic ? systemType.fuzzySystem : systemType.staticSystem;
+                return true;
+            case ScenarioControlSystem.Static: type = systemType.staticSystem; return true;
+            case ScenarioControlSystem.Fuzzy: type = systemType.fuzzySystem; return true;
+            case ScenarioControlSystem.MachineLearning: type = systemType.machineLearning; return true;
+            case ScenarioControlSystem.Actuated: type = systemType.actuatedSystem; return true;
+            default: type = systemType.staticSystem; return false;
         }
     }
 }

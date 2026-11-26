@@ -1,8 +1,28 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Generuje popyt (pojazdy) na wlocie. Pojazd, który nie może wjechać, bo wjazd jest zajęty,
+/// NIE przepada – trafia do kolejki wirtualnej (Backlog) i wjedzie, gdy zrobi się miejsce.
+/// Dzięki temu korek sięgający poza symulację jest widoczny w nagrodzie i statystykach,
+/// a agent nie może "pozbyć się" ruchu, blokując wjazd.
+/// </summary>
 public class VehicleSpawner : MonoBehaviour
 {
+    public static readonly List<VehicleSpawner> All = new List<VehicleSpawner>();
+
+    /// <summary>Łączna liczba pojazdów czekających na wjazd we wszystkich spawnerach.</summary>
+    public static int TotalBacklog
+    {
+        get
+        {
+            int total = 0;
+            for (int i = 0; i < All.Count; i++) total += All[i].Backlog;
+            return total;
+        }
+    }
+
     [Header("Prefabs & Waypoints")]
     [SerializeField] private GameObject vehiclePrefabs;
     [SerializeField] private GameObject busPrefab;
@@ -16,7 +36,7 @@ public class VehicleSpawner : MonoBehaviour
 
     [Header("Spawn Safeguard")]
     [Tooltip("Minimalny odstęp czasowy (w sekundach) między jakimikolwiek dwoma pojazdami z tego spawnera.")]
-    [SerializeField] private float minSpawnCooldown = 2f; // <--- NOWE ZABEZPIECZENIE (np. 2 sekundy)
+    [SerializeField] private float minSpawnCooldown = 2f;
     private float lastSpawnTime = -999f;
 
     [Header("Lane & Turn Settings")]
@@ -29,8 +49,10 @@ public class VehicleSpawner : MonoBehaviour
     [SerializeField] private float raycastDistance = 8f;
     [SerializeField] private LayerMask detectionLayer;
 
-    private int spawnedVehicles = 0;
-    private bool canSpawn = true;
+    private int generatedVehicles;   // ile pojazdów popytu już wygenerowano (wjechały + czekają)
+    private int pendingVehicles;     // samochody czekające na wjazd
+    private int pendingBuses;        // autobusy czekające na wjazd
+    private float intervalMultiplier = 1f;
     private int trafficLaneId;
 
     public int MaxVehicles
@@ -39,39 +61,95 @@ public class VehicleSpawner : MonoBehaviour
         set => maxVehicles = value;
     }
 
-    public void SetSpawnInterval(float interval)
-    {
-        spawnInterval = interval;
-    }
+    public int Backlog => pendingVehicles + pendingBuses;
 
-    public void SetTrafficLaneId(int laneId)
-    {
-        trafficLaneId = laneId;
-    }
+    private void OnEnable() => All.Add(this);
+    private void OnDisable() => All.Remove(this);
+
+    public void SetSpawnInterval(float interval) => spawnInterval = interval;
+    public float GetSpawnInterval() => spawnInterval;
+
+    /// <summary>Mnożnik interwału (np. 0.25 = 4x częściej w fazie wypełniania). Nie nadpisuje bazowego interwału.</summary>
+    public void SetIntervalMultiplier(float multiplier) => intervalMultiplier = Mathf.Max(0.01f, multiplier);
+
+    public void SetTrafficLaneId(int laneId) => trafficLaneId = laneId;
 
     public void ResetSpawner()
     {
-        spawnedVehicles = 0;
+        generatedVehicles = 0;
+        pendingVehicles = 0;
+        pendingBuses = 0;
         lastSpawnTime = -999f;
         StopAllCoroutines();
+        CancelInvoke(nameof(StartSpawning)); // zabezpieczenie przed podwójnym startem
         Invoke(nameof(StartSpawning), 2f);
     }
 
     public void StartSpawning()
     {
-        StartCoroutine(CheckSpawnAvailabilityLoop());
-        StartCoroutine(SpawnVehicles());
-
+        StopAllCoroutines();
+        StartCoroutine(GenerateCarDemand());
         if (isSpawningBuses)
-            StartCoroutine(SpawnBusRoutine());
+            StartCoroutine(GenerateBusDemand());
+        StartCoroutine(ReleaseVehicles());
     }
 
-    private IEnumerator CheckSpawnAvailabilityLoop()
+    // Popyt samochodów: postęp liczony co klatkę, więc zmiana interwału/mnożnika działa od razu.
+    private IEnumerator GenerateCarDemand()
+    {
+        float progress = 1f; // pierwszy pojazd od razu (jak w poprzedniej wersji)
+        while (generatedVehicles < maxVehicles)
+        {
+            float interval = spawnInterval * intervalMultiplier;
+            if (!float.IsInfinity(interval) && interval > 0f)
+                progress += Time.deltaTime / interval;
+
+            while (progress >= 1f && generatedVehicles < maxVehicles)
+            {
+                progress -= 1f;
+                pendingVehicles++;
+                generatedVehicles++;
+            }
+            yield return null;
+        }
+    }
+
+    private IEnumerator GenerateBusDemand()
+    {
+        while (generatedVehicles < maxVehicles)
+        {
+            yield return new WaitForSeconds(intervalForBus);
+            if (generatedVehicles >= maxVehicles) yield break;
+            pendingBuses++;
+            generatedVehicles++;
+        }
+    }
+
+    private IEnumerator ReleaseVehicles()
     {
         WaitForSeconds wait = new WaitForSeconds(0.2f);
         while (true)
         {
-            canSpawn = CheckIfClearAhead();
+            bool busNext = pendingBuses > 0 && busPrefab != null;
+            if (Backlog > 0 && Time.time - lastSpawnTime >= minSpawnCooldown &&
+                CheckIfClearAhead() && IsSpawnAreaFree(busNext ? busPrefab : vehiclePrefabs))
+            {
+                if (pendingBuses > 0 && busPrefab != null)
+                {
+                    pendingBuses--;
+                    SpawnBus();
+                }
+                else if (pendingVehicles > 0)
+                {
+                    pendingVehicles--;
+                    SpawnVehicle();
+                }
+                else
+                {
+                    pendingBuses = 0; // brak prefabu autobusu – nie blokujemy kolejki
+                }
+                lastSpawnTime = Time.time;
+            }
             yield return wait;
         }
     }
@@ -82,54 +160,55 @@ public class VehicleSpawner : MonoBehaviour
         foreach (var col in colliders)
         {
             if (col.CompareTag("Car") || col.CompareTag("Bus"))
-            {
                 return false;
-            }
         }
 
         Vector3 rayOrigin = transform.position + Vector3.up * 0.5f;
         if (Physics.SphereCast(rayOrigin, 1.2f, transform.forward, out RaycastHit hit, raycastDistance, detectionLayer))
         {
             if (hit.collider.CompareTag("Car") || hit.collider.CompareTag("Bus"))
-            {
                 return false;
-            }
         }
 
         return true;
     }
 
-    // Pomocnicza metoda sprawdzająca fizyczną strefę ORAZ czasowy bufor
-    private bool CanSafelySpawn()
+    /// <summary>
+    /// Czy pojazd o długości prefabu zmieści się w miejscu spawnu z zapasem przed nim (sprawdzane po pozycjach
+    /// pojazdów, niezależnie od warstw fizyki). Wcześniej sprawdzano tylko kulę 3 m – 12-metrowy autobus
+    /// pojawiał się na stojącym aucie.
+    /// </summary>
+    private bool IsSpawnAreaFree(GameObject prefab)
     {
-        return canSpawn && (Time.time - lastSpawnTime >= minSpawnCooldown);
+        float newLength = PrefabLength(prefab);
+        Vector3 forward = transform.forward;
+        forward.y = 0f;
+        forward.Normalize();
+        Vector3 right = new Vector3(forward.z, 0f, -forward.x);
+
+        foreach (CarController car in CarController.Active)
+        {
+            Vector3 offset = car.transform.position - transform.position;
+            offset.y = 0f;
+            if (Mathf.Abs(Vector3.Dot(offset, right)) > 2.2f) continue; // inny pas
+            float along = Vector3.Dot(offset, forward);
+            float halfLengths = newLength * 0.5f + car.Length * 0.5f;
+            if (along > -halfLengths - 1f && along < halfLengths + 6f) return false;
+        }
+        return true;
     }
 
-    private IEnumerator SpawnVehicles()
-    {
-        while (spawnedVehicles < maxVehicles)
-        {
-            if (CanSafelySpawn())
-            {
-                SpawnVehicle();
-                lastSpawnTime = Time.time; // Zapisujemy czas ostatniego spawnu
-            }
-            yield return new WaitForSeconds(spawnInterval);
-        }
-    }
+    private static readonly System.Collections.Generic.Dictionary<GameObject, float> LengthCache =
+        new System.Collections.Generic.Dictionary<GameObject, float>();
 
-    private IEnumerator SpawnBusRoutine()
+    private static float PrefabLength(GameObject prefab)
     {
-        while (spawnedVehicles < maxVehicles)
-        {
-            yield return new WaitForSeconds(intervalForBus);
-
-            if (CanSafelySpawn())
-            {
-                SpawnBus();
-                lastSpawnTime = Time.time; // Zapisujemy czas ostatniego spawnu
-            }
-        }
+        if (prefab == null) return 4f;
+        if (LengthCache.TryGetValue(prefab, out float length)) return length;
+        BoxCollider box = prefab.GetComponent<BoxCollider>();
+        length = box != null ? Mathf.Abs(box.size.z * prefab.transform.localScale.z) : 4f;
+        LengthCache[prefab] = length;
+        return length;
     }
 
     private void SpawnVehicle()
@@ -144,15 +223,14 @@ public class VehicleSpawner : MonoBehaviour
             if (isOnlyLeftTurn)
             {
                 carController.isTurningLeft = true;
+                carController.movement = TrafficMovement.Left;
             }
             else if (isRandomTurn)
             {
                 float randomVal = Random.Range(0f, 100f);
-                carController.isTurningLeft = (randomVal < leftTurnProbability);
+                carController.isTurningLeft = randomVal < leftTurnProbability;
             }
-
         }
-        spawnedVehicles++;
     }
 
     private void SpawnBus()
@@ -165,12 +243,6 @@ public class VehicleSpawner : MonoBehaviour
             carController.SetFirstWaypoint(waypointList);
             carController.isTurningLeft = false;
         }
-        spawnedVehicles++;
-    }
-
-    public float GetSpawnInterval()
-    {
-        return spawnInterval;
     }
 
     private void OnDrawGizmos()

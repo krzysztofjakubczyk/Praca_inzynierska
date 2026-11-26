@@ -1,26 +1,52 @@
+# Agent "przedłuż / przełącz" (2 akcje dyskretne, 27 obserwacji, decyzja co 5 s zielonego).
+# Nagroda na krok = -(pojazdo-sekundy oczekiwania) / (50 * 5 s)  ->  zwykle -0.1 ... -1.5.
+#
+# Dlaczego takie wartości:
+#  - 1 decyzja ~ co 6-7 s symulacji, epizod 20 min -> ~180 decyzji. gamma 0.97 = horyzont ~33 decyzji (~3.5 min),
+#    tyle trwa "skutek" decyzji (rozładowanie kolejki, cykl świateł). Dłuższy horyzont tylko zwiększa szum.
+#  - 2 akcje: wystarczy mała sieć (128x2) i niska entropia (beta 3e-3), inaczej polityka długo zostaje losowa.
+#  - buffer 2048 / batch 128: aktualizacja co ~2048 decyzji (ok. 3-4 min przy 4 środowiskach i time-scale 20),
+#    więc w 30-minutowym teście próbnym jest ~10 aktualizacji – wystarczy, by zobaczyć trend.
+#  - normalize: true – liczby pojazdów mocno zależą od godziny/natężenia, bieżąca normalizacja stabilizuje naukę.
 behaviors:
   TrafficSignal:
     trainer_type: ppo
     hyperparameters:
-      batch_size: 64
-      buffer_size: 1024
-      learning_rate: 0.0003
-      beta: 0.005
+      batch_size: 128
+      buffer_size: 2048
+      learning_rate: 3.0e-4
+      beta: 3.0e-3
       epsilon: 0.2
       lambd: 0.95
-      num_epoch: 3
+      num_epoch: 4
       learning_rate_schedule: linear
+      beta_schedule: linear
+      epsilon_schedule: linear
     network_settings:
       normalize: true
       hidden_units: 128
       num_layers: 2
     reward_signals:
       extrinsic:
-        gamma: 0.99
+        gamma: 0.97
         strength: 1.0
-    max_steps: 10000
+    max_steps: 300000
     time_horizon: 128
-    summary_freq: 100
-    checkpoint_interval: 50000
-    keep_checkpoints: 5
-    threaded: true
+    summary_freq: 2000
+    checkpoint_interval: 20000
+    keep_checkpoints: 15
+    threaded: false
+
+# Losowanie warunków w każdym epizodzie – jeden model dla wszystkich godzin i różnych natężeń.
+environment_parameters:
+  demand_scale:            # mnożnik natężenia z pomiarów
+    sampler_type: uniform
+    sampler_parameters:
+      min_value: 0.7
+      max_value: 1.3
+  hour_index:              # 0..3 = godziny z listy TimeManager (07:00, 12:00, 15:00, 21:00)
+    sampler_type: uniform
+    sampler_parameters:
+      min_value: 0.0
+      max_value: 3.999
+  episode_length: 1200     # [s symulacji] krótsze epizody = więcej różnorodnych startów

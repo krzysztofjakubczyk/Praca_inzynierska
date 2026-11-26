@@ -70,6 +70,7 @@ public class ChooseLane : MonoBehaviour
         TrafficMovement selectedMovement = selectedIndex == 0 ? lane0Movement : lane1Movement;
         Waypoint[] selectedPath = GetPath(selectedIndex);
         controller.isTurningLeft = selectedMovement == TrafficMovement.Left;
+        controller.movement = selectedMovement; // prawo-/lewoskręt ustępuje jadącym prosto
         controller.stopForRoadClosure = false;
         controller.SetFirstWaypoint(selectedPath);
         controller.hasChosenLaneRoute = true;

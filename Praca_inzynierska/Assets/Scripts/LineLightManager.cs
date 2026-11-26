@@ -26,6 +26,8 @@ public class LineLightManager : MonoBehaviour
 
     public List<Sensor> sensors = new List<Sensor>();
     private MeshRenderer meshRenderer;
+    private bool hasAppliedColor;
+    private TrafficLightColor appliedColor;
 
     [Header("Timings")]
     public double timeToStartGreenLight;
@@ -34,29 +36,31 @@ public class LineLightManager : MonoBehaviour
     public double timeOfAfterYellowLight;
 
     [Header("Flags")]
-    public bool isBlocked = false;        // Czy pas jest zablokowany przez zator?
-    public bool leftTurnAllowed = false; // Czy można bezpiecznie skręcić w lewo?
+    public bool isBlocked = false;        // Czy pas jest zablokowany przez zator za skrzyżowaniem?
+    public bool leftTurnAllowed = false;  // Czy można bezpiecznie skręcić w lewo?
     public bool hasToWait;                // Flaga oczekiwania na skrzyżowaniu
+
+    /// <summary>Kolor przed ostatnią zmianą – pozwala odróżnić żółte po zielonym od czerwono-żółtego.</summary>
+    public TrafficLightColor PreviousColor { get; private set; } = TrafficLightColor.red;
+
+    /// <summary>Żółte po zielonym: kierowca, który nie zdąży bezpiecznie wyhamować, może przejechać.</summary>
+    public bool IsAmberAfterGreen => currentColor == TrafficLightColor.yellow && PreviousColor == TrafficLightColor.green;
 
     private void Start()
     {
         if (planeToShowCurrentColor != null)
-        {
             meshRenderer = planeToShowCurrentColor.GetComponent<MeshRenderer>();
-        }
 
-        // Uruchamiamy JEDNĄ, ujednoliconą pętlę zarządzania stanem
         StartCoroutine(UpdateTrafficStateMaster());
     }
 
     private IEnumerator UpdateTrafficStateMaster()
     {
+        WaitForSeconds wait = new WaitForSeconds(0.2f); // Odświeżanie 5 razy na sekundę
         while (true)
         {
-            // 1. Zliczanie pojazdów i długości kolejek
             int totalVehicles = 0;
             float totalQueueLength = 0f;
-
             bool shouldBlock = false;
             bool leftTurnBlockedBySensor = false;
 
@@ -71,12 +75,11 @@ public class LineLightManager : MonoBehaviour
                     totalQueueLength += sensor.QueueLength;
                 }
 
-                // 2. Sensor ZJAZDOWY ZA skrzyżowaniem (wykrywa realny zator na wyjeździe)
+                // 2. Sensor zjazdowy za skrzyżowaniem (zator na wyjeździe)
                 if (sensor.isForCollision && sensor.isBlockingTraffic)
                 {
-                    shouldBlock = true; // Zator ZA skrzyżowaniem -> zatrzymaj wjazd!
+                    shouldBlock = true;
                 }
-
                 // 3. Sensor z naprzeciwka do skrętu w lewo
                 else if (sensor.isForLeftTurnCheck && sensor.HasStraightDrivingVehicles())
                 {
@@ -88,58 +91,49 @@ public class LineLightManager : MonoBehaviour
             queueLength = totalQueueLength;
             isBlocked = shouldBlock;
 
-            // 2. Obsługa ukrywania sensorów / wyznaczania pasów na czerwonym świetle
             if (hasCollisionLine)
             {
-                bool isRedOrYellow = (currentColor == TrafficLightColor.red || currentColor == TrafficLightColor.yellow);
+                bool isRedOrYellow = currentColor == TrafficLightColor.red || currentColor == TrafficLightColor.yellow;
 
                 if (sensorToHide != null)
                 {
                     sensorToHide.gameObject.SetActive(!isRedOrYellow);
-                    if (isRedOrYellow)
-                    {
-                        sensorToHide.ResetSensor();
-                    }
+                    if (isRedOrYellow) sensorToHide.ResetSensor();
                 }
 
                 if (laneChooserToHide != null)
                 {
                     foreach (GameObject lanechooser in laneChooserToHide)
                     {
-                        if (lanechooser != null)
-                        {
-                            lanechooser.SetActive(!isRedOrYellow);
-                        }
+                        if (lanechooser != null) lanechooser.SetActive(!isRedOrYellow);
                     }
                 }
             }
             leftTurnAllowed = !leftTurnBlockedBySensor;
 
-            yield return new WaitForSeconds(0.2f); // Odświeżanie 5 razy na sekundę
+            yield return wait;
         }
     }
 
     private void Update()
     {
-        if (meshRenderer != null)
+        // Materiał zmieniamy tylko przy zmianie koloru (wcześniej co klatkę).
+        if (meshRenderer == null || (hasAppliedColor && appliedColor == currentColor)) return;
+
+        switch (currentColor)
         {
-            switch (currentColor)
-            {
-                case TrafficLightColor.green:
-                    meshRenderer.material.color = Color.green;
-                    break;
-                case TrafficLightColor.yellow:
-                    meshRenderer.material.color = Color.yellow;
-                    break;
-                case TrafficLightColor.red:
-                    meshRenderer.material.color = Color.red;
-                    break;
-            }
+            case TrafficLightColor.green: meshRenderer.material.color = Color.green; break;
+            case TrafficLightColor.yellow: meshRenderer.material.color = Color.yellow; break;
+            case TrafficLightColor.red: meshRenderer.material.color = Color.red; break;
         }
+        appliedColor = currentColor;
+        hasAppliedColor = true;
     }
 
     public void ChangeColor(TrafficLightColor color)
     {
+        if (color == currentColor) return;
+        PreviousColor = currentColor;
         currentColor = color;
     }
 }

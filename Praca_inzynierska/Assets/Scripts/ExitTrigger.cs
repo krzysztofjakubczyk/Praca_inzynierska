@@ -14,33 +14,26 @@ public class ExitTrigger : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Car"))
-        {
-            if (CountedVehicleIds.Add(other.transform.root.gameObject.GetInstanceID()))
-                TotalVehiclesExited++;
-            Timers timer = other.GetComponent<Timers>();
-            if (timer != null)
-            {
-                timer.StopTimer(other.gameObject);
+        // Liczymy samochody i autobusy (wcześniej autobusy były pomijane).
+        if (!other.CompareTag("Car") && !other.CompareTag("Bus")) return;
 
-                string cameFrom = timer.cameFrom;
-                float travelTime = timer.timeSpentOnTraffic;
+        GameObject root = other.transform.root.gameObject;
+        if (CountedVehicleIds.Add(root.GetInstanceID()))
+            TotalVehiclesExited++;
 
-                int laneID = GetLaneID(cameFrom); // Pobieramy numer pasa
-                if (laneID != -1)
-                {
-                    StatisticManagerForSczanieckiej.RecordTimeSpent(laneID, travelTime);
-                }
-            }
-        }
+        Timers timer = root.GetComponentInChildren<Timers>();
+        if (timer == null) return;
+
+        timer.StopTimer(root);
+        int laneID = GetLaneID(timer.cameFrom);
+        if (laneID != -1)
+            StatisticManagerForSczanieckiej.RecordTimeSpent(laneID, timer.timeSpentOnTraffic);
     }
 
     private int GetLaneID(string cameFrom)
     {
         if (!string.IsNullOrEmpty(cameFrom) && char.IsDigit(cameFrom[0]))
-        {
             return int.Parse(cameFrom[0].ToString());
-        }
         return -1;
     }
 }

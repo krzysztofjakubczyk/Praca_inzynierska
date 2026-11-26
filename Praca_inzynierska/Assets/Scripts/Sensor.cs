@@ -65,6 +65,16 @@ public class Sensor : MonoBehaviour
         vehiclesInSensor.RemoveWhere(v => v == null);
         VehicleCount = vehiclesInSensor.Count;
 
+        // Długość kolejki liczona od nowa z aktualnej zawartości – zniszczone auta nie
+        // zawyżają jej już na stałe (wcześniej QueueLength tylko rosło przy braku OnTriggerExit).
+        float queue = 0f;
+        foreach (var vehicle in vehiclesInSensor)
+        {
+            CarController car = vehicle.GetComponent<CarController>();
+            if (car != null) queue += car.vehicleLength;
+        }
+        QueueLength = queue;
+
         // Jeśli na skrzyżowaniu znajdują się więcej niż 2 auta, oznaczamy pas jako zablokowany.
         // Nowe auta zatrzymają się PRZED skrzyżowaniem, a te wewnątrz spokojnie zjadą.
         if (isForCollision && VehicleCount > 2)
